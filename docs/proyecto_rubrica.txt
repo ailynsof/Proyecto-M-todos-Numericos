@@ -1,0 +1,585 @@
+Dpto. de Matemáticas
+Pregrado en Ciencia de Datos
+Métodos Numéricos
+
+Guı́a del Proyecto Integrador
+1.
+
+Instrucciones generales
+
+El Proyecto Integrador tiene como propósito aplicar los conocimientos desarrollados durante el curso Métodos
+Numéricos mediante la implementación computacional de métodos numéricos para resolver un problema
+basado en un artı́culo cientı́fico.
+El proyecto se desarrollará durante todo el semestre mediante tres entregas acumulativas y una sustentación
+oral al finalizar el curso.
+Para el desarrollo del proyecto se deberán tener en cuenta las siguientes consideraciones:
+1. El proyecto se desarrollará en equipos de hasta tres (3) estudiantes.
+2. Cada equipo seleccionará un único artı́culo cientı́fico de la lista suministrada por el docente. Una vez
+asignado, ningún otro equipo podrá desarrollar el mismo artı́culo.
+3. Todas las implementaciones deberán realizarse en Python.
+4. Los algoritmos numéricos estudiados durante el curso deberán ser implementados por los estudiantes.
+El uso de funciones de alto nivel estará permitido únicamente para efectos de comparación y validación
+de los resultados.
+5. Cada entrega deberá incluir el informe correspondiente, el código fuente y los archivos necesarios para
+reproducir los resultados obtenidos.
+6. El proyecto tendrá una única sustentación oral al finalizar el semestre, en la cual todos los integrantes
+deberán demostrar dominio conceptual y técnico del trabajo desarrollado.
+7. El uso de herramientas de inteligencia artificial está permitido como apoyo al desarrollo del proyecto,
+siempre que su utilización sea declarada explı́citamente y no sustituya la comprensión ni la implementación de los métodos numéricos.
+8. El proyecto estará sujeto a las normas de integridad académica de la Universidad Externado de Colombia.
+
+2.
+
+Enfoque del Proyecto Integrador
+
+El Proyecto Integrador tiene como propósito que los estudiantes apliquen los conocimientos adquiridos durante el curso para resolver un problema de computación cientı́fica mediante la implementación, análisis y
+comparación de métodos numéricos.
+El proyecto se desarrollará a partir de un artı́culo cientı́fico, seleccionado de una lista suministrada por el
+docente, en el cual los métodos numéricos desempeñen un papel fundamental en la solución de un problema aplicado. A partir de dicho artı́culo, cada equipo deberá comprender el problema planteado, analizar
+los métodos empleados y desarrollar una solución computacional que reproduzca, adapte o extienda los
+principales resultados utilizando exclusivamente las técnicas estudiadas durante el curso.
+El proyecto se desarrollará en tres etapas articuladas: (i) comprensión del artı́culo cientı́fico y formulación
+del problema, (ii) implementación y validación de la solución numérica y (iii) análisis, comparación y comunicación de los resultados.
+El énfasis del proyecto no estará en obtener la solución más sofisticada, sino en justificar la selección de
+los métodos numéricos empleados, analizar su precisión, convergencia, estabilidad y costo computacional, e
+interpretar los resultados obtenidos dentro del contexto del problema estudiado.
+
+1
+
+3.
+
+Herramientas y autorı́a
+Software. El proyecto se desarrollará en Python, utilizando las bibliotecas estudiadas durante el curso,
+entre ellas NumPy, SciPy y Matplotlib. El código entregado deberá ser completamente ejecutable y
+reproducible.
+Reproducibilidad. Todas las implementaciones deberán permitir la reproducción de los resultados
+obtenidos. Cuando el proyecto incluya simulaciones o generación de números pseudoaleatorios, se deberá fijar una semilla aleatoria para garantizar la repetibilidad de los experimentos.
+Autorı́a. Todos los productos entregados deberán ser originales y elaborados para esta asignatura. El uso de código, bibliotecas o repositorios externos estará permitido únicamente cuando se cite
+explı́citamente la fuente correspondiente. El uso de herramientas de inteligencia artificial generativa
+se permitirá como apoyo al desarrollo del proyecto, siempre que su utilización sea declarada y que el
+equipo comprenda y pueda sustentar todas las decisiones metodológicas y técnicas adoptadas.
+Responsabilidad compartida. Todos los integrantes del equipo compartirán la responsabilidad
+académica del proyecto y deberán estar en capacidad de explicar las decisiones metodológicas, computacionales y analı́ticas desarrolladas durante el semestre.
+
+4.
+
+Directrices de formato, extensión y concisión
+Formato del documento. Cada entrega se presentará con portada, en la que se indiquen el tı́tulo
+del proyecto, los integrantes y el curso. El informe deberá organizarse mediante secciones claramente
+definidas, y todas las figuras y tablas deberán estar numeradas. El código se entregará como anexo o
+mediante un enlace a un repositorio.
+Extensión del texto. El cuerpo del informe, excluyendo portada, bibliografı́a, figuras y tablas, deberá
+tener una extensión mı́nima de tres (3) y máxima de cinco (5) páginas. Los documentos con una
+extensión inferior podrán considerarse superficiales, mientras que aquellos que excedan el lı́mite podrán
+ser penalizados en el criterio de comunicación.
+Concisión y rigor. Se valorará la precisión técnica sobre la extensión. El texto deberá justificar de
+manera breve y fundamentada la formulación del problema, la selección de los métodos numéricos, los
+criterios de comparación y las decisiones computacionales adoptadas, evitando la descripción mecánica
+de procedimientos o la repetición innecesaria de la teorı́a vista en clase.
+Evidencia visual. Las figuras y tablas deberán aportar información relevante sobre el comportamiento
+de los métodos, por ejemplo, errores, convergencia, estabilidad, tiempos de ejecución o comparación de
+resultados. Toda evidencia visual deberá estar interpretada en el texto; no se incluirán gráficos, tablas
+ni salidas de código sin análisis.
+
+5.
+
+Tareas iniciales
+
+5.1.
+
+Organización del equipo de trabajo
+
+El proyecto se desarrollará en equipos conformados dentro del plazo establecido al inicio del semestre. Una
+vez registrados, los equipos se considerarán definitivos y solo podrán modificarse en situaciones excepcionales
+autorizadas por el docente. Se espera la participación activa y equitativa de todos los integrantes durante
+todas las fases del proyecto.
+
+5.2.
+
+Selección y comprensión del artı́culo base
+
+El proyecto se desarrollará a partir de un artı́culo cientı́fico seleccionado de la lista suministrada por el
+docente. Cada equipo trabajará sobre un único artı́culo durante todo el semestre. El artı́culo base deberá:
+Abordar un problema aplicado en el que los métodos numéricos desempeñen un papel fundamental.
+
+2
+
+Emplear uno o varios métodos numéricos compatibles con los contenidos desarrollados en el curso.
+Presentar de manera clara el problema, la metodologı́a y los resultados obtenidos, de forma que estos
+puedan implementarse y analizarse computacionalmente.
+No depender exclusivamente de técnicas que excedan el alcance de la asignatura.
+El primer trabajo del equipo consistirá en comprender el problema planteado, los métodos numéricos utilizados, los supuestos considerados y los principales resultados obtenidos. El propósito no será reproducir
+el código de los autores, sino implementar una solución computacional utilizando las técnicas estudiadas
+durante el curso y analizar los resultados obtenidos.
+
+5.3.
+
+Obtención de la información y formulación del problema computacional
+
+A partir del artı́culo seleccionado, cada equipo formulará el problema computacional que desarrollará durante
+el semestre. Dependiendo de la naturaleza del problema, el proyecto podrá apoyarse en:
+Datos reales obtenidos de fuentes confiables.
+Datos simulados, construidos de manera justificada mediante los métodos estudiados durante el curso.
+Funciones matemáticas, modelos computacionales o sistemas de ecuaciones descritos en el artı́culo.
+Una combinación de las anteriores alternativas.
+En todos los casos, el equipo deberá justificar el origen de la información empleada y demostrar que representa adecuadamente el problema estudiado. La formulación del problema deberá identificar claramente los
+objetivos, las variables involucradas, los métodos numéricos que serán implementados y los criterios que se
+utilizarán para analizar y comparar los resultados obtenidos.
+
+6.
+
+Primera entrega
+
+La Primera entrega corresponde a la Fase 1: comprensión del artı́culo y formulación del problema
+computacional. En esta fase, el equipo deberá analizar crı́ticamente el artı́culo seleccionado, definir el
+problema que desarrollará durante el semestre y establecer la estrategia metodológica que seguirá para
+resolverlo. La entrega consistirá en un informe escrito acompañado de los avances correspondientes.
+
+6.1.
+
+Comprensión del artı́culo
+
+El equipo deberá presentar el artı́culo cientı́fico seleccionado, describiendo el problema que aborda, los
+métodos numéricos empleados, los principales supuestos considerados, los resultados obtenidos por los autores
+y las limitaciones identificadas. Se espera una comprensión suficiente del problema que permita orientar el
+desarrollo del proyecto durante el semestre.
+
+6.2.
+
+Formulación del problema computacional
+
+A partir del artı́culo seleccionado, el equipo formulará el problema computacional que desarrollará. Deberá
+definir claramente el objetivo del proyecto, el contexto de aplicación, las variables o modelos involucrados y
+los resultados que espera reproducir, adaptar o extender mediante los métodos numéricos estudiados en el
+curso.
+
+6.3.
+
+Obtención de la información
+
+El equipo describirá la información necesaria para desarrollar el proyecto, indicando si trabajará con datos
+reales, datos simulados, funciones matemáticas, modelos computacionales, sistemas de ecuaciones o una
+combinación de estos elementos. Cuando se utilicen datos simulados, deberá justificarse el procedimiento
+empleado para su generación.
+
+3
+
+6.4.
+
+Plan de implementación
+
+El equipo propondrá los métodos numéricos que implementará durante el proyecto y establecerá los criterios que utilizará para comparar los resultados obtenidos. Entre otros aspectos, podrán considerarse el
+error numérico, la convergencia, la estabilidad, la eficiencia computacional y el tiempo de ejecución, según
+corresponda al problema abordado.
+
+6.5.
+
+Rúbrica de la Primera entrega
+Excelente
+(4.0–5.0)
+
+Bueno
+(3.0–3.9)
+
+Aceptable
+(2.0–2.9)
+
+Deficiente
+(0.0–1.9)
+
+del
+
+Dominio profundo del
+artı́culo
+(problema,
+métodos
+numéricos,
+supuestos y resultados).
+
+Buena comprensión del
+artı́culo, con algunos
+vacı́os.
+
+Comprensión superficial
+o parcialmente fundamentada.
+
+No demuestra comprensión del artı́culo.
+
+Formulación
+del
+problema
+computacional
+
+Problema
+claramente
+definido, con objetivos
+precisos y coherentes
+con el artı́culo.
+
+Problema definido, con
+algunos aspectos por
+precisar.
+
+Formulación ambigua o
+parcialmente desarrollada.
+
+No se define claramente
+el problema computacional.
+
+Obtención de la información
+
+Información claramente
+identificada y plenamente justificada (datos,
+funciones, modelos o
+simulaciones).
+
+Información
+definida,
+con justificación parcial.
+
+Información insuficiente
+o débilmente justificada.
+
+No se establece una estrategia para obtener la
+información.
+
+Plan de implementación
+
+Métodos numéricos y
+criterios de comparación
+claramente definidos y
+justificados.
+
+Plan de implementación
+adecuado, con justificación parcial.
+
+Plan incompleto o con
+debilidades metodológicas.
+
+No existe un plan claro
+de implementación.
+
+Comunicación e informe
+
+Informe claro, organizado y técnicamente sólido.
+
+Informe claro, con algunos aspectos por mejorar.
+
+Informe desorganizado o
+poco claro.
+
+Informe incompleto o deficiente.
+
+Criterio
+Comprensión
+artı́culo
+
+7.
+
+Segunda entrega
+
+La Segunda entrega corresponde a la Fase 2: implementación, comparación y análisis. En esta fase, el
+equipo desarrollará la solución computacional del problema planteado, implementará los métodos numéricos
+definidos en la primera entrega y realizará una comparación preliminar de los resultados obtenidos. La
+entrega consistirá en un informe escrito acompañado del código reproducible.
+
+7.1.
+
+Implementación computacional
+
+El equipo presentará la implementación de los métodos numéricos propuestos en la primera entrega. El código
+deberá estar debidamente organizado, documentado y estructurado, permitiendo comprender claramente
+cada una de las etapas desarrolladas.
+
+7.2.
+
+Reproducibilidad
+
+El equipo garantizará la reproducibilidad del proyecto mediante una adecuada organización del código,
+permitiendo ejecutar nuevamente la implementación y obtener los mismos resultados. Cuando el proyecto
+incluya simulaciones o generación de números pseudoaleatorios, deberá fijarse una semilla para garantizar la
+repetibilidad.
+
+7.3.
+
+Implementación y comparación de métodos
+
+El equipo comparará el desempeño de los métodos numéricos implementados para resolver el problema
+planteado. Dependiendo de la naturaleza del proyecto, podrán analizarse aspectos como precisión, error
+numérico, convergencia, estabilidad, eficiencia computacional y tiempo de ejecución.
+
+4
+
+7.4.
+
+Análisis preliminar de resultados
+
+El equipo presentará un análisis crı́tico de los resultados obtenidos, identificando fortalezas, limitaciones y
+posibles mejoras de los métodos implementados. Asimismo, justificará las diferencias observadas entre los
+resultados obtenidos y los reportados en el artı́culo cientı́fico, cuando estas existan.
+
+7.5.
+
+Rúbrica de la Segunda entrega
+Excelente
+(4.0–5.0)
+
+Bueno
+(3.0–3.9)
+
+Aceptable
+(2.0–2.9)
+
+Deficiente
+(0.0–1.9)
+
+Implementación
+computacional
+
+Implementación correcta
+de los métodos numéricos; código claro, organizado y documentado.
+
+Implementación adecuada, con errores menores
+o aspectos por mejorar.
+
+Implementación parcial
+o con errores importantes.
+
+Los métodos no fueron
+implementados correctamente.
+
+Reproducibilidad
+
+Código reproducible; organización y documentación completas.
+
+Código
+con
+básica.
+
+reproducible,
+documentación
+
+Código parcialmente reproducible o poco organizado.
+
+El código no permite reproducir los resultados.
+
+Implementación
+y comparación de
+métodos
+
+Los métodos se comparan mediante criterios
+técnicos claramente justificados.
+
+Comparación adecuada,
+con justificación parcial.
+
+Comparación superficial
+o poco fundamentada.
+
+No existe comparación
+entre los métodos implementados.
+
+Análisis preliminar
+de resultados
+
+Resultados correctamente analizados e interpretados; fortalezas y
+limitaciones claramente
+identificadas.
+
+Análisis adecuado, con
+algunos aspectos por
+profundizar.
+
+Análisis superficial o interpretación limitada.
+
+No se realiza un análisis
+de los resultados.
+
+Comunicación e informe
+
+Informe claro, organizado y técnicamente sólido.
+
+Informe claro, con algunos vacı́os.
+
+Informe desorganizado o
+poco claro.
+
+Informe incompleto o deficiente.
+
+Criterio
+
+8.
+
+Entrega final
+
+La Entrega final corresponde a la Fase 3: consolidación, análisis y comunicación. En esta fase, el
+equipo consolidará el desarrollo del proyecto, presentará la solución computacional definitiva, analizará los
+resultados obtenidos y comunicará las principales conclusiones. La entrega consistirá en un informe técnico
+final, acompañado del código reproducible y una sustentación oral.
+
+8.1.
+
+Solución computacional final
+
+El equipo presentará la versión definitiva de la solución computacional desarrollada durante el semestre.
+Deberá justificar la selección de los métodos numéricos implementados y contrastar los resultados obtenidos
+con los reportados en el artı́culo cientı́fico, indicando las principales coincidencias y diferencias encontradas.
+
+8.2.
+
+Análisis e interpretación de resultados
+
+El equipo realizará un análisis integral de los resultados obtenidos, interpretándolos dentro del contexto del
+problema abordado. Se discutirán aspectos como precisión, convergencia, estabilidad, eficiencia computacional y demás criterios pertinentes según la naturaleza del proyecto.
+
+8.3.
+
+Validación y reproducibilidad
+
+El equipo verificará el correcto funcionamiento de la solución desarrollada, demostrando que el código reproduce los resultados obtenidos y documentando el procedimiento necesario para su ejecución. Cuando
+corresponda, se validarán los resultados frente a soluciones analı́ticas, resultados reportados en la literatura
+o implementaciones de referencia.
+
+5
+
+8.4.
+
+Limitaciones y trabajo futuro
+
+El equipo discutirá las principales limitaciones del trabajo desarrollado, identificando aspectos susceptibles
+de mejora y posibles extensiones del proyecto. Asimismo, propondrá alternativas metodológicas o computacionales que puedan explorarse en trabajos futuros.
+
+8.5.
+
+Sustentación oral
+
+Cada equipo realizará una sustentación oral del proyecto, presentando el problema abordado, el artı́culo
+cientı́fico de referencia, la metodologı́a implementada, los principales resultados obtenidos y las conclusiones
+del trabajo. Todos los integrantes deberán demostrar dominio conceptual y técnico del proyecto desarrollado.
+Las observaciones realizadas por el docente durante la Primera y la Segunda entrega deberán incorporarse
+en la versión final del proyecto, de manera que esta represente el desarrollo completo del trabajo realizado
+durante el semestre.
+
+8.6.
+
+Rúbrica de la Entrega final
+Excelente
+(4.0–5.0)
+
+Bueno
+(3.0–3.9)
+
+Aceptable
+(2.0–2.9)
+
+Deficiente
+(0.0–1.9)
+
+Solución
+computacional final
+
+La solución es completa, correcta y responde
+plenamente al problema
+planteado.
+
+La solución es adecuada, con aspectos menores por mejorar.
+
+La solución es parcial o
+presenta inconsistencias.
+
+La solución no resuelve
+el problema planteado.
+
+Análisis e interpretación de resultados
+
+Los resultados se analizan e interpretan de manera crı́tica, fundamentada y coherente.
+
+El análisis es adecuado,
+con algunos aspectos por
+profundizar.
+
+El análisis es superficial o parcialmente fundamentado.
+
+No se realiza un análisis
+adecuado de los resultados.
+
+Validación y reproducibilidad
+
+La solución es reproducible y los resultados se
+validan mediante criterios técnicos apropiados.
+
+La solución es reproducible y presenta una validación básica.
+
+La validación es limitada
+o insuficientemente justificada.
+
+No se valida la solución
+ni es posible reproducir
+los resultados.
+
+Limitaciones y trabajo futuro
+
+Identifica claramente las
+limitaciones del proyecto
+y propone mejoras pertinentes.
+
+Reconoce las principales limitaciones y plantea algunas mejoras.
+
+Las limitaciones o mejoras se presentan de forma superficial.
+
+No identifica limitaciones ni propone trabajos
+futuros.
+
+Sustentación e informe
+
+Informe claro y técnicamente sólido; sustentación con dominio conceptual de todo el equipo.
+
+Informe claro; sustentación adecuada con algunos vacı́os.
+
+Informe desorganizado o
+sustentación poco consistente.
+
+Informe incompleto o
+sustentación deficiente.
+
+Criterio
+
+9.
+
+Evaluación del Proyecto Integrador
+
+El Proyecto Integrador corresponde al 20 % de la nota definitiva de la asignatura y se evaluará mediante
+tres entregas acumulativas, distribuidas de la siguiente manera:
+Entrega
+
+Porcentaje del proyecto
+
+Porcentaje del curso
+
+Primera entrega
+
+20 %
+
+4%
+
+Segunda entrega
+
+40 %
+
+8%
+
+Entrega final
+
+40 %
+
+8%
+
+Total
+
+100 %
+
+20 %
+
+6
+
+

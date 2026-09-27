@@ -1,0 +1,337 @@
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+1. INFORMACIÓN GENERAL
+PROGRAMA
+ÁREA
+ASIGNATURA
+CRÉDITOS
+SEMESTRE
+HORAS PRESENCIALES
+HORAS DE TRABAJO AUTÓNOMO
+PROFESOR
+CORREO
+
+Ciencia de Datos
+Matemáticas
+Métodos Numéricos
+4
+Quinto
+64 horas semestrales
+64 horas semestrales
+Edwin Fernando Muñoz Chipatecua
+edwin.munoz2@uexternado.edu.co
+2. PRESENTACIÓN
+
+En la asignatura Métodos Numéricos, los estudiantes del programa de Ciencia de Datos de la
+Universidad Externado de Colombia comprenderán los fundamentos de la computación científica
+necesarios para analizar cómo los computadores representan los números, controlan los errores
+de aproximación y resuelven problemas matemáticos mediante algoritmos numéricos. El curso
+combina fundamentos teóricos con experimentación computacional en Python, enfatizando la
+precisión, estabilidad y eficiencia de los métodos estudiados.
+El contenido se desarrolla a partir de la aritmética de máquina, el análisis del error, el cálculo
+numérico, el álgebra lineal numérica, la solución de ecuaciones no lineales, la interpolación, la
+generación de números pseudoaleatorios, la simulación Monte Carlo y una introducción a la
+optimización numérica. De esta manera, la asignatura proporciona las bases matemáticas y
+computacionales que sustentan cursos posteriores como Optimización, Machine Learning y Deep
+Learning.
+3. COMPETENCIAS
+1. Competencia cognitiva: capacidad para construir y sustentar el saber de un cuerpo
+disciplinario específico y la apropiación del conocimiento especializado.
+a. Identificar y comprender los conceptos matemáticos y computacionales que
+fundamentan los métodos numéricos, con el fin de formular e implementar soluciones
+aproximadas a problemas propios de la Ciencia de Datos.
+b. Analizar y evaluar la pertinencia, precisión y limitaciones de diferentes métodos
+numéricos para seleccionar la alternativa más adecuada en la solución de un problema
+específico.
+
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+2. Competencia comunicativa: entendida como la capacidad para interactuar por medio del
+lenguaje, ubicarse en situaciones específicas y extender a contextos amplios los procesos de
+comprensión y producción de discursos diversos. Las habilidades de hablar, escuchar, leer y
+escribir se fundamentan en esta competencia.
+a. Comunicar de manera clara y rigurosa el planteamiento, desarrollo y resultados obtenidos
+mediante la aplicación de métodos numéricos, utilizando lenguaje matemático,
+computacional y científico apropiado.
+b. Interpretar, argumentar y documentar procedimientos numéricos mediante el uso de
+expresiones matemáticas, representaciones gráficas y herramientas computacionales,
+favoreciendo la discusión y la solución de problemas en contextos de Ciencia de Datos.
+
+4. RESULTADOS DE APRENDIZAJE
+1. Resultados de la competencia cognitiva
+a. Reconoce y analiza las limitaciones de la aritmética computacional, identificando el efecto
+de la representación de números, los errores de aproximación y la precisión de máquina
+sobre los resultados numéricos.
+b. Implementa y compara métodos numéricos para resolver problemas de aproximación,
+analizando su estabilidad, convergencia y costo computacional en diferentes contextos.
+c. Selecciona y justifica el método numérico más apropiado para resolver un problema
+determinado, considerando las características del problema y las limitaciones
+computacionales de cada algoritmo.
+2. Resultados de la competencia comunicativa
+
+Comunica e interpreta de manera clara y rigurosa el planteamiento, desarrollo y resultados
+obtenidos mediante la aplicación de métodos numéricos, utilizando lenguaje matemático,
+representaciones gráficas y herramientas computacionales para sustentar la solución de
+problemas propios de la Ciencia de Datos.
+
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+5. TEMÁTICAS O CONTENIDOS
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+
+Computación científica, representación numérica y análisis del error
+Cálculo numérico
+Álgebra lineal numérica
+Métodos para la solución de ecuaciones no lineales
+Interpolación y aproximación de funciones
+Generación de números pseudoaleatorios y simulación Monte Carlo
+Introducción a la optimización numérica
+
+Semana Sesión
+1
+
+1
+2
+
+2
+
+3
+4
+
+3
+4
+
+5
+6
+7
+
+5
+
+8
+9
+
+6
+7
+8
+9
+10
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+
+Tema por día
+
+Bibliografía
+
+Presentación del curso. Computación científica. Turner Cap.1 + Nocedal
+Cap.1
+Aplicaciones en Ciencia de Datos, ML y Optimización.
+Representación de números. Punto flotante IEEE‑754. Turner Cap.2
+Error absoluto, relativo, redondeo, truncamiento y
+épsilon.
+Overflow, Underflow, cancelación numérica.
+Laboratorio Python.
+Condicionamiento y propagación del error.
+Derivación numérica.
+Integración numérica.
+
+Turner Cap.2
+
+Aplicaciones del cálculo numérico.
+Taller integrador.
+Primera fase del Proyecto Integrador.
+PARCIAL I
+Gauss y pivoteo.
+Factorización LU.
+Jacobi y Gauss-Seidel.
+Mínimos cuadrados y regresión.
+Valores propios. PCA.
+Laboratorio NumPy.
+Bisección, Punto Fijo, Newton y Secante.
+Newton para sistemas.
+Taller integrador.
+Segunda fase del Proyecto Integrador.
+PARCIAL II
+
+Turner Cap.3
+Turner
+
+Turner Cap.2
+Turner Cap.2
+Turner Cap.3
+Turner Cap.3
+
+Turner Cap.4
+Turner Cap.4
+Turner Cap.4
+Turner Cap.4
+Turner Cap.4
+Turner Cap.4
+Turner Cap.5
+Turner Cap.5
+Turner
+
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+11
+12
+
+13
+14
+15
+16
+
+21
+22
+23
+24
+
+Interpolación de Lagrange y Newton.
+Splines.
+Descenso del gradiente y tasa de aprendizaje.
+Momentum, AdaGrad, RMSProp y Adam.
+
+Turner Cap.6
+Turner Cap.6
+Nocedal Cap.1-2
+Goodfellow
+et
+(2016), cap.8;
+Ruder (2016)
+
+25
+26
+27
+28
+29
+30
+31
+32
+
+Generación de números pseudoaleatorios.
+Simulación de variables aleatorias.
+Simulación Monte Carlo.
+Introducción a la Optimización Numérica.
+Taller integrador.
+PARCIAL III
+Proyecto final.
+Retroalimentación y articulación curricular.
+
+Kroese Cap.1
+Kroese Cap.3
+Kroese Cap.3
+Nocedal Cap.1
+Turner+Kroese+Nocedal
+
+al.
+
+Material del curso
+Material del curso
+
+6. METODOLOGÍA
+El curso de Métodos Numéricos se desarrollará mediante clases magistrales apoyadas en
+actividades prácticas de experimentación computacional, en las que el docente presentará los
+fundamentos teóricos de los principales métodos numéricos y orientará a los estudiantes en el
+análisis de su precisión, estabilidad, convergencia y eficiencia computacional. A partir de estos
+elementos, los estudiantes resolverán problemas de manera individual y colaborativa, con el
+acompañamiento permanente del docente y la discusión de aplicaciones propias de la Ciencia de
+Datos.
+Con el propósito de fortalecer el aprendizaje autónomo, se emplearán cuadernos de Python
+diseñados especialmente para la asignatura y disponibles en los repositorios institucionales o en
+el aula virtual. Estos recursos incluirán ejercicios de programación, laboratorios computacionales,
+talleres, actividades de análisis y problemas aplicados que permitirán experimentar con los
+algoritmos numéricos y comprender el comportamiento de la aritmética de máquina, los errores
+de aproximación y los diferentes métodos estudiados durante el curso.
+La metodología privilegiará la comprensión conceptual sobre la ejecución mecánica de
+algoritmos, promoviendo que los estudiantes analicen críticamente los resultados obtenidos,
+comparen diferentes métodos numéricos y seleccionen la estrategia más adecuada para resolver
+un problema específico. Todo el proceso estará acompañado por el docente mediante espacios
+de retroalimentación continua, buscando el desarrollo de las competencias cognitivas y
+comunicativas definidas para la asignatura.
+
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+7. EVALUACIÓN
+La evaluación es un proceso continuo y permanente que se desarrolla a lo largo de todo el
+periodo, valorando todos los aspectos de acuerdo con criterios previamente establecidos, que
+permite identificar los progresos alcanzados por los estudiantes y las dificultades
+experimentadas, estableciendo rutas de mejoramiento.
+La evaluación sumativa y formativa del curso de métodos numéricos se llevará a cabo usando
+diferentes instrumentos de evaluación definidos a continuación:
+1. Ejercicios: son problemas propuestos en clase para que los estudiantes los resuelvan
+usando los métodos enseñados.
+2. Parciales: son pruebas individuales dónde el estudiante demuestra saber los conceptos.
+3. Quices: son pruebas cortas y mucho más sencillas que las evaluaciones en las que los
+estudiantes demuestran que saben los conceptos vistos en clase.
+4. Talleres: Son pruebas que se desarrollan individual o grupalmente en las que los
+estudiantes demuestran que saben los contenidos del curso.
+5. Proyecto final: trabajo aplicado en el que el estudiante debe utilizar los métodos
+numéricos estudiados a lo largo del curso para resolver un problema real o simulado,
+demostrando su comprensión teórica y capacidad de implementación.
+Porcentajes de las evaluaciones sumativas:
+.
+CONCEPTO
+FECHA
+Parcial 1
+Semana 5
+Parcial 2
+Semana 10
+Parcial 3
+Semana 15
+Trabajo en clase: talleres, quices,
+Permanentemente
+participación y otros.
+Proyecto final
+Semana 5, 10 y 16
+
+PORCENTAJE
+20%
+20%
+20%
+20%
+20%
+
+UNIVERSIDAD EXTERNADO DE COLOMBIA
+DEPARTAMENTO DE MATEMÁTICAS
+PROGRAMA EN CIENCIA DE DATOS
+MÉTODOS NUMÉRICOS 2026-2
+
+8. REFERENCIAS BIBLIOGRÁFICAS
+1. Kroese, D. P., Taimre, T., & Botev, Z. I. (2011). Handbook of Monte Carlo Methods. John Wiley &
+Sons.
+2. Nocedal, J., & Wright, S. J. (2006). Numerical Optimization (2nd ed.). Springer.
+3. Turner, P. R., Arildsen, T., & Kavanagh, K. (2018). Applied Scientific Computing: With Python.
+Springer.
+4. Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep learning. MIT Press.
+
+

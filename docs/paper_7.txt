@@ -1,0 +1,1851 @@
+Computational and Applied Mathematics
+(2026) 45:304
+https://doi.org/10.1007/s40314-026-03702-8
+
+Derivative-free optimal multiple-root finding family of
+iterative methods
+Julissa H. Jerezano1,2 · Francisco I. Chicharro1
+
+· Neus Garrido-Saez1
+
+Received: 24 September 2025 / Revised: 30 January 2026 / Accepted: 20 February 2026
+© The Author(s) 2026
+
+Abstract
+A new family of iterative methods for finding multiple roots of nonlinear problems is proposed. The family is derivative-free and optimal in the sense of Kung–Traub’s conjecture.
+The two-step family includes a weight function. The stability analysis uses two different
+weight functions: a polynomial and a rational function. Furthermore, a numerical benchmark
+is carried out on these two weight functions, showing the competitiveness concerning similar
+methods in the literature.
+Keywords Weight function · Derivative-free method · Multiple roots · Optimal
+convergence · Complex dynamics
+Mathematics Subject Classification 65H05 · 65H10 · 37N30 · 68W30
+
+1 Introduction
+Numerous problems in different fields of science, engineering, economics, and other disciplines require the solution of a nonlinear equation or a system of nonlinear equations. Some
+of these problems are the determination of orbits of artificial satellites (Arroyo et al. 2012;
+Chicharro et al. 2013), the relationship between prices of goods and relative remunerations
+(Tramontana and Gardini 2021), the models of continuous stirred tank chemical reactors
+(Cordero et al. 2020; Zafar et al. 2018) or obtaining the wavelength that maximizes the
+energy density given by Planck’s radiation law (Argyros et al. 2019; Bradie 2006), among
+others.
+
+B Francisco I. Chicharro
+frachilo@mat.upv.es
+
+Julissa H. Jerezano
+jhjerull@doctor.upv.es
+Neus Garrido-Saez
+neugarsa@mat.upv.es
+1
+
+orgdivInstituto de Matemática Multidisciplinar Universitat Politècnica de València, Camí de Vera
+s/n, 46022 Valencia, Spain
+
+2
+
+Departamento de Matemática, Universidad Nacional Autónoma de Honduras, 21102 San Pedro Sula,
+Honduras
+0123456789().: V,-vol
+
+123
+
+304
+
+Page 2 of 18
+
+J. H. Jerezano et al.
+
+In general, nonlinear equations and systems lack an analytical solution, so one of the
+alternatives presented for their resolution is iterative techniques. In recent decades, numerous strategies for obtaining such solutions have proliferated in the scientific community, as
+endorsed by the books (Amat and Busquier 2016; Argyros et al. 2018; Argyros and Magreñán
+2017; Cortés et al. 2014; Petković et al. 2013; Rowe 2017; Tabatabaei and Bizon 2021).
+Let f : D ⊆ R −→ R be the nonlinear function whose solution α we wish to obtain. It
+is well known that if the solution is simple, f (α) = 0 and f  (α)  = 0, while if the solution
+has multiplicity m, the evaluations of f and its derivatives on α are 0 until reaching the m-th
+derivative, which satisfies f (m) (α)  = 0. Traditional methods, such as Newton’s method, may
+struggle or fail to converge when applied to such problems, requiring the development of
+robust iterative techniques specifically designed to handle the complexities associated with
+multiple roots. In this sense, one of the most used methods for locating multiple roots is the
+modified Newton’s method, which exhibits quadratic convergence and is given by
+xk+1 = xk − m
+
+f (xk )
+.
+f  (xk )
+
+In addition to the modified Newton’s method, there are numerous methods for calculating
+multiple roots in the literature. However, many of these require the calculation of firstorder, second-order, or both derivatives (Kansal et al. 2015; Sharifi et al. 2012; Geum et al.
+2015; Behl et al. 2019; Li et al. 2010; Soleymani et al. 2013; Kumar et al. 2019; Sharma and
+Sharma 2010a; Lotfi et al. 2015), which limits their application in situations where evaluating
+these derivatives is computationally expensive. To overcome this drawback, derivative-free
+methods have recently been proposed in the literature for handling multiple roots (Arora et al.
+2024; Kansal et al. 2020; Kumar et al. 2020a, 2022, 2023a, b; Behl et al. 2021a, b, 2022a, b,
+2023; Behl 2022; Sharma et al. 2019; Singh and Sharma 2024; Zafar et al. 2023a, b). For this
+purpose, it is common in the literature to use the classical Traub–Steffensen’s method (Traub
+1964) for multiple roots, which is defined as
+x k+1 = xk − m
+
+f (xk )
+,
+f [wk , xk ]
+
+f (xk )
+.
+where wk = xk + β f (xk ), β ∈ R\{0} and f [wk , xk ] = f (wwkk)−
+−xk
+The authors in Hueso et al. (2015) proposed a fourth-order derivative-free method for
+solving nonlinear equations with multiple roots. In this scheme, the first-order derivative is
+approximated by a divided-difference operator, which is expressed as
+
+f  (xk ) ≃ f [wk , xk ],
+where wk = xk + f (xk )s and s ∈ R\{0}.
+Recently, the authors in Arora et al. (2024), Kumar et al. (2022), Behl et al. (2021b,
+2022a, b, 2023), Behl (2022), Kumar et al. (2023b), Singh and Sharma (2024) and Zafar
+et al. (2023a, b) developed families of derivative-free iterative methods that incorporate weight
+functions. Furthermore, these methods are optimal in the sense of the Kung–Traub conjecture
+(Kung and Traub 1974), which states that the convergence order p of a memoryless method
+that uses d distinct functional evaluations per iteration satisfies p ≤ 2d−1 . According to the
+conjecture, methods achieving this equality are called optimal.
+Inspired by these results, an optimal family of derivative-free iterative methods based
+on weight functions for solving nonlinear equations with multiple roots is proposed in this
+paper. This family maintains a simple structure, requires only three functional evaluations,
+and allows for a wide variety of methods to be obtained by selecting appropriate weight
+functions.
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 3 of 18
+
+304
+
+The article is structured as follows: Sect. 2 develops the new family of methods and studies
+their convergence. We carry on a stability analysis in Sect. 3 and a numerical test on a range
+of nonlinear equations with multiple solutions in Sect. 4 to assess the performance of the
+family. Finally, Sect. 5 collects the main conclusions.
+
+2 Convergence of the iterative scheme
+We construct a fourth-order optimal scheme of modified Traub–Steffensen type, with one
+weight function for multiple roots, which is defined by
+g(xk )
+,
+g[wk , xk ]
+g(xk )
+xk+1 = xk − m H (tk )
+,
+g[wk , xk ]
+yk = xk − m
+
+k = 0, 1, 2 . . . ,
+
+(1)
+
+where w = x + β [g(x)]2 , β ∈ C\{0}, and m ≥ 1 is known as the multiplicity of the required root. In addition, H (t) is a single variable weight function, and
+
+
+g(w) − g(x)
+g(y) 1/m
+g[w, x] =
+is the first order divided difference. Moreover, t =
+w−x
+g(x)
+is a multi-valued function.
+branches
+
+s as a principal
+
+Suppose
+their principal
+ analytic
+
+root
+
+ g(y) 
+1
+g(y)
+g(y)
+g(y)
+ + i arg
+given by t = exp
+log
+, with log
+= log 
+for
+g(x)
+g(x)
+g(x) 
+g(x)
+
+m
+g(y)
+−π < arg
+≤ π. The choice of arg{z} for z ∈ C agrees with that of log(z)
+g(x)
+to be employed later in the numerical experiments of the section. In an analogous way,
+
+
+
+
+
+ g(y) 1/m
+1
+g(y)
+
+
+exp
+arg
+= O (ek ) .
+t =
+g(x) 
+m
+g(x)
+We observe that the number of functional evaluations per iteration in scheme (1) is three,
+being an optimal scheme because its order of convergence is four for certain conditions of
+the weight function, as demonstrated below. Theorem 1 considers the case m = 1.
+Theorem 1 Let g : D ⊆ C −→ C be an analytic function in D surrounding the required root
+α ∈ D, which is a solution of multiplicity m = 1 of equation g(x) = 0. If the initial estimate
+x0 is close enough to α, then the order of convergence of the iterative scheme defined by (1)
+is at least 4, provided the weight function H satisfies
+
+
+H (0) = H  (0) = 1, H  (0) = 4,  H  (0) < ∞.
+The error equation is
+ek+1 = −
+
+
+1
+2
+6β g  (α) A1 + H  (0) − 30 A21 + 6A2 A1 ek4 + O ek5 ,
+6
+
+g (1+i) (α)
+1
+, i ≥ 1, and ek = xk − α, ∀k ∈ N are the asymptotic error
+(1 + i)! g  (α)
+constant numbers and the errors in the kth iteration, respectively.
+
+where Ai =
+
+Proof Using Taylor series expansion around the solution α, and taking into account that
+g(α) = 0 and g  (α)  = 0, g(xk ) can be expressed as
+
+g(xk ) = g  (α)ek 1 + A1 e K + A2 ek2 + A3 ek3 + A4 ek4 + O ek5 .
+(2)
+
+123
+
+304
+
+Page 4 of 18
+
+J. H. Jerezano et al.
+
+Additionally, the Taylor series expansion of g(wk ) around α is
+
+
+2
+3
+4
+5
+g(wk ) = g  (α)ewk 1 + A1 ewk + A2 ew
++ O ew
+,
++ A 3 ew
++ A 4 ew
+k
+k
+k
+k
+
+(3)
+
+
+2
+where ewk = wk − α = ek + β g  (α)ek 1 + A1 e K + A2 ek2 + A3 ek3 + A4 ek4 + O ek5
+.
+From (2) and (3) we obtain that
+g [wk , xk ] = g  (α) + 2g  (α)A1 ek + β g  (α)
+
+3
+
+A1 + 3g  (α)A2 ek2 + O ek3 .
+
+(4)
+
+Therefore, the first step of scheme (1) is
+yk − α = ek −
+
+g(xk )
+2
+= A1 ek2 + β g  (α) A1 − 2 A21 + 2 A2 ek3 + O ek4 ,
+g[wk , xk ]
+
+then,
+g (yk ) = g  (α)A1 ek2 + g  (α) β g  (α)
+
+2
+
+A1 − 2 A21 + 2 A2 ek3 + O ek4 .
+
+(5)
+
+Using (2) and (5), we obtain
+tk = A1 ek + β g  (α)
+
+2
+
+A1 − 3A21 + 2 A2 ek2 + O ek3 .
+
+(6)
+
+Expression (6) shows that tk is of order one (tk = O(en )). Then, we can expand the weight
+function H (tk ) around zero as
+H (tk ) = H (0) + H  (0)tk +
+
+1 
+1
+H (0)tk2 + H  (0)tk3 .
+2!
+3!
+
+(7)
+
+Replacing (2), (4) and (7) in scheme (1), we obtain the error equation
+ek+1 = ek −
+
+
+g(xk )
+H (tk ) = K 1 ek + K 2 ek2 + K 3 ek3 + K 4 ek4 + O ek5 ,
+g[wk , xk ]
+
+(8)
+
+where,
+K1 = 1
+ − H (0),
+
+K 2 = H (0) − H  (0) A1 ,
+  2 
+
+
+
+
+1
+4H (0) − 8H  (0) + H  (0) A21 + 2 H (0) − H  (0) A2 ,
+H (0) − H  (0) A1 −
+K 3 = β g (α)
+2
+
+
+
+2 
+
+7
+1
+K 4 = −β g  (α)
+H (0) − 4H  (0) + H  (0) A21 + 4H (0) − 13H  (0) + H  (0) − H  (0) A31
+2
+6
+
+
+
+
+2
++ −7H (0) + 14H  (0) − 2H  (0) A1 A2 + 3 H (0) − H  (0) β g  (α) A2 + A3 .
+
+To obtain a family of iterative methods of order four, the coefficients of ek , ek2 and ek3 in the
+error equation (8) must be zero simultaneously. Solving K 1 = 0, K 2 = 0 and K 3 = 0, the
+following conditions are deduced to cancel the terms up to order 3 of Eq. (8):
+
+
+H (0) = 1, H  (0) = 1, H  (0) = 4,  H  (0) < ∞.
+Using the above conditions, scheme (1) satisfies the error equation
+ek+1 = −
+
+
+1
+2
+6β g  (α) A1 + H  (0) − 30 A21 + 6A2 A1 ek4 + O ek5 ,
+6
+
+showing that the two-step iterative scheme (1) reaches convergence order four for m = 1.
+Theorem 2 considers the general case m ≥ 2.
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 5 of 18
+
+304
+
+Theorem 2 Let g : D ⊆ C −→ C an analytic function in D surrounding the required root
+α ∈ D, which is a solution of multiplicity m ≥ 2 of equation g(x) = 0. If the initial estimate
+x0 is close enough to α, then the order of convergence of the iterative scheme defined by (1)
+is at least 4 when the weight function H satisfies
+
+
+H (0) = H  (0) = 1, H  (0) = 4,  H  (0) < ∞,
+and satisfies the error equation
+ek+1 =
+
+
+1 
+−H  (0) + 3(9 + m) B13 − 6m B1 B2 ek4 + O ek5 ,
+3
+6m
+
+m! g (m+i) (α)
+, i ≥ 1, and ek = xk − α, ∀k ∈ N are the asymptotic error
+(m + i)! g (m) (α)
+constant numbers and the errors in the kth iteration, respectively.
+where Bi =
+
+Proof Let α be a multiple root of g(x) of multiplicity m ≥ 2. Using expansions in Taylor series
+around x = α, and considering that g ( j) (α) = 0 for 0 ≤ j ≤ m − 1 and g (m) (α)  = 0, g(xk )
+can be expressed as
+g(xk ) =
+
+
+g (m) (α) m
+ek 1 + B1 ek + B2 ek2 + B3 ek3 + B4 ek4 + O ek5 .
+m!
+
+(9)
+
+Replacing (9) into wk = xk + β[g(xk )]2 , we obtain
+ewk = wk − α = xk − α + β[g(xk )]2
+
+
+ 2
+g (m) (α) m
+2
+3
+4
+5
+ek 1 + B1 ek + B2 ek + B3 ek + B4 ek + O ek
+= ek + β
+.
+m!
+Then the Taylor series expansion of g(wk ) around α is
+g(wk ) =
+
+
+g (m) (α) m
+2
+3
+4
+5
+,
+ewk 1 + B1 ewk + B2 ew
++ B3 ew
++ B4 ew
++ O ew
+k
+k
+k
+k
+m!
+
+(10)
+
+From (9) and (10), we have that
+
+
+em g (m) (α)
+m
++ (m + 1)B1 + (m + 2)B2 ek + (m + 3)B3 ek2 + O ek3 .
++
+g [wk , xk ] = k
+m!
+ek
+(11)
+Then, the first step of scheme (1) is
+yk − α = ek − m
+
+
+1
+g(xk )
+1 
+= B1 ek2 + 2 −(m + 1)B12 + 2 m B2 ek3 + O ek4 ,
+g[wk , xk ]
+m
+m
+
+therefore,
+⎡
+⎢
+g (yk ) = ek2m ⎢
+⎣
+
+g (m) (α)
+
+
+
+B1
+m
+
+m!
+
+m
+
+g (m) (α)
+−
+
+
+
+B1
+m
+
+m
+
+
+
+(1 + m)B12 − 2m B2
+
+m!B1
+
+⎤
+
+
+
+⎥
+ek + O ek2 ⎥
+⎦.
+(12)
+
+Using (9) and (12), we have
+tk =
+
+
+1
+1 
+B1 ek + 2 −(2 + m)B12 + 2m B2 ek2 + O ek3 .
+m
+m
+
+123
+
+(13)
+
+304
+
+Page 6 of 18
+
+J. H. Jerezano et al.
+
+Expression (13) shows that tk is of order one (tk = O(en )). Then, we can expand the weight
+function H (tk ) around zero as
+H (tk ) = H (0) + H  (0)tk +
+
+1 
+1
+H (0)tk2 + H  (0)tk3 .
+2!
+3!
+
+(14)
+
+Replacing (9), (11) and (14) in scheme (1), we obtain the error equation
+ek+1 = ek − m
+
+
+g(xk )
+H (tk ) = K 1 ek + K 2 ek2 + K 3 ek3 + K 4 ek4 + O ek5 ,
+g[wk , xk ]
+
+(15)
+
+where,
+K 1 = 1 − H (0),
+
+1 
+H (0) − H  (0) B1 ,
+m
+1
+− H  (0) + 2H (0)(1 + m) − 2H  (0)(3 + m) B12 + 4 H (0) − H  (0) m B2 ,
+K3 =
+2m 2
+1
+K4 =
+15H  (0) − H  (0) + 6m H  (0) + 6H (0)(1 + m)2 − 3H  (0)(2m 2 + 11m + 13) B13
+6m 3 
+
+−6m 2H  (0) + H (0)(4 + 3m) − H  (0)(11 + 3m) B1 B2 + 18 H (0) − H  (0) m 2 B3 .
+
+K2 =
+
+To obtain a family of iterative methods of order four, the coefficients of ek , ek2 and ek3 in the
+error equation (15) must be zero simultaneously. Solving K 1 = 0, K 2 = 0 and K 3 = 0, the
+following conditions are deduced to cancel the terms up to order 3 of Eq. (15)
+
+
+H (0) = 1, H  (0) = 1, H  (0) = 4,  H  (0) < ∞.
+Using the above conditions, scheme (1) satisfies the error equation
+ek+1 =
+
+
+
+1 
+−H  (0) + 3(9 + m) B13 − 6m B1 B2 ek4 + O ek5 .
+3
+6m
+
+This demonstrates that the two-step iterative scheme (1) achieves the optimal convergence
+order four using only three functional evaluations per iteration for m ≥ 2.
+Remark 1 It is important to note that the parameter β, used in wk , appears in the error
+equation only in the case m = 1 but not for m ≥ 2. For m ≥ 2, this parameter appears in
+the coefficient of ek4 or higher order. However, such terms are unnecessary when finding the
+equation demonstrating fourth-order convergence.
+
+3 Stability of the introduced family
+Section 2 presented a fourth-order optimal family of iterative schemes with a weight function
+and a parameter. This section performs a dynamical analysis of the proposed iterative family
+using tools from complex dynamics. Theorems 1 and 2 show the theoretical order that all
+the methods belonging to family (1) have under the conditions presented. However, different
+methods would be obtained for different weight functions and varying the values of parameter
+β, which, while keeping their optimal order of convergence, could have very different stability
+properties. For this reason, we now study how the value of parameter β affects the stability
+of the associated methods, i.e., the set of initial estimates for which the family’s methods
+converge to the problem’s multiple roots. Previously, we describe some tools of complex
+dynamics that are necessary for the study.
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 7 of 18
+
+304
+
+3.1 Basics on complex dynamics
+The stability of iterative schemes is commonly analyzed using complex dynamical tools.
+In the following we describe the most relevant aspects of complex dynamics to analyze
+the rational function obtained after applying the iterative method under study to solve the
+nonlinear equation f (z) = 0, where f : C −→ C. More precise information concerning
+this study can be found in Devaney (1989) and Blanchard (1984).
+Let R : Ĉ −→ Ĉ be a rational function, where Ĉ denotes the Riemann sphere. The orbit
+of a point z 0 ∈ Ĉ is defined as the set of the successive applications of the operator starting
+from this point, i.e., {z 0 , R(z 0 ), . . . , R n (z 0 ), . . .}. A fixed point of R satisfies R(z) = z.
+Fixed points z F ∈ Ĉ are classified according to their asymptotic behavior based on the value
+of the fixed point multiplier, |R  (z F )|. Depending on whether |R  (z F )| is greater, less, or
+equal to 1, the fixed point is classified as attracting, repelling, or neutral, respectively. When
+|R  (z F )| = 0, the fixed point is considered to have a superattracting behavior. Furthermore, if
+a fixed point z F is different from the roots of the nonlinear function f (z), ideally a low-degree
+polynomial, it is called a strange fixed point.
+For an attracting fixed point z ∗ , the set of its successive preimages of any order defines its
+basin of attraction, denoted as
+A(z ∗ ) = {z 0 ∈ Ĉ : R n (z 0 ) −→ z ∗ , n → ∞}.
+
+The Fatou set is the set of points whose orbit tends to an attracting fixed point. Its complementary on the Riemann sphere is the Julia set, which covers all repelled points and establishes
+the boundaries between the basins of attraction.
+Different graphical tools allow us to visualize some of the dynamical properties of the
+methods. The dynamical plane is used to observe the basins of attraction of the fixed points
+of the rational operator. This plane is obtained by dividing the complex plane into a mesh of
+points and taking each of these points as an initial estimate. After the successive application of
+the operator, the orbit of the point is analyzed and represented with different colors depending
+on the point to which they converge. In this way, all the initial estimates converging to the
+same point can be visualized: the basins of attraction and the Julia and Fatou sets.
+A critical point z C ∈ Ĉ of R satisfies R  (z C ) = 0. Free critical points are those critical
+points different from the roots of f (z). The knowledge of the critical points is relevant since
+each invariant component of Fatou’s set is associated with at least one critical point (Fatou
+1920; Julia 1918).
+The stability of the parametric family (1) is discussed below. For this purpose, we will
+select two different weight functions that satisfy Theorem 2. These weight functions are
+a polynomial function and a rational function to ensure that the final fixed point operator
+R is a rational function and that complex dynamics theory can be applicable. In addition to
+comparing the results obtained for each family, we can determine the values of β that provide
+the best members in terms of stability.
+
+3.2 Stability analysis of family M1
+First, we select in family (1) the polynomial weight function H1 (t) = 1 + t + 2t 2 which
+satisfies Theorem 2. By selecting this weight function, we obtain a fourth-order parametric
+family, from now on denoted as M1, belonging to (1).
+Now, we will analyze the family’s stability when it is applied to low-degree polynomials.
+The analysis is conducted on simple polynomials. Since the analysis performs poorly even
+
+123
+
+304
+
+Page 8 of 18
+
+J. H. Jerezano et al.
+
+in this setting, it is to be expected that its behavior will deteriorate further when applied to
+more complex functions. In particular, family M1 is applied to p(z) = (z − 1)2 . Let us note
+that p(z) only has a root with double multiplicity, so m = 2. The resulting rational operator
+depends on β, whose expression is
+R1 (z, β) =
+
+N10 (z, β)
+3
+β z3 − 3 β z2 + 3 β z − β + 2
+
+,
+
+being N10 (z, β) = β 3 z 10 − 9 β 3 z 9 + 36 β 3 z 8 − 2β 2 (42β + 1)z 7 + 2β 2 (63β + 10)z 6 −
+6β 2 (21β + 13)z 5 + 4β 2 (40β + 21)z 4 − 2β(18β 2 + 95β − 6)z 3 + 3β(3β 2 + 44β − 12)z 2 −
+β(β 2 + 50β − 36)z + 8β 2 − 12β + 8.
+The fixed points of R1 (z, β) are the double root of p(z),
+z F = 1, and the strange
+√ 1 √
+√
+√
+3
+√
+3
+i 3+i
+−6±2i 7
+7
+F
+F
+F
+√
+√
+= 1 + 2−3±i
+, and z 6,7
+= 1+
+fixed points z 2,3
+3β
+2/3 3 β , z 4,5 = 1 +
+4
+√
+√ √
+3
+
+−6±2i 7
+√
+, corresponding to the roots of 2β 2 z 6 − 12β 2 z 5 + 30β 2 z 4 − 40β 2 z 3 +
+43β
+3βz 3 + 30β 2 z 2 − 9βz 2 − 12β 2 z + 9βz − 3β + 2β 2 + 2 = 0. The stability of the fixed points
+−1−i 3
+
+is analyzed depending on the value of |R1 (z, β)| evaluated on each fixed point. Then, from
+the derivative
+R1 (z, β) =
+
+β 2 (z − 1)6 β 2 (z − 1)6 + 24β(z − 1)3 − 28
+β(z − 1)3 + 2
+
+4
+
+,
+
+we can easily check that |R1 (1, β)| = 0, so the root of the polynomial can be classified as a
+F , whose expression
+superattracting fixed point. The stability of the strange fixed points z 2−7
+depends on β, is studied graphically using the stability plane.
+The stability plane represents for each strange fixed point the values of β for which the
+asymptotic behavior of the point is attracting or repelling. To generate each stability plane, the
+complex plane is divided into a grid of points representing complex values of the parameter
+(the axes represent the real and imaginary parts of the parameter). Then, the derivative of the
+operator of the corresponding strange fixed point at each point is evaluated. Each point in the
+plane is represented in white or black depending on whether that value of β has repelling or
+attracting behavior, respectively.
+F
+Each strange fixed point z 2−7
+has a corresponding stability plane. The unified stability
+plane (Chicharro et al. 2020) merges the information of every single stability plane in one
+representation. Figure 1 shows the unified stability plane of R1 (z, β).
+Figure 1 evidence that all the fixed points are repelling for all values of β. This reveals that
+the only attracting behavior of the family corresponds to the root of the polynomial, which
+is proof of the stability of all the methods of family M1.
+Critical points are obtained by solving equation R1 (z, β) = 0. The rational operator under
+study has, in addition to the root of p(z), denoted
+as z 1C = 1, and the six free critical points
+
+√ 
+√ √
+√ √
+√
+3
+3
+3 √
+−1±i 3
+
+43−6
+
+2 −6± 43
+
+1±i 3
+
+43+6
+
+C =1+
+C =1+
+C =1+
+√
+√
+√
+, z 4,5
+, and z 6,7
+.
+z 2,3
+3β
+22/3 3 β
+22/3 3 β
+The parameter planes are a graphical representation that allows us to determine, in case
+there are free critical points, which parameter values provide the most stable methods of the
+iterative family. They are generated by iterating the method successively for each value of
+β, whose real and imaginary parts are represented on the axes, and using as initial estimate
+the same free critical point for each point of the plane, representing a different method of
+the family. When the corresponding method converges to the root of p(z), the value of β in
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 9 of 18
+
+304
+
+Fig. 1 Unified stability plane for
+the strange fixed points of
+R1 (z, β)
+
+0
+
+0
+
+-5
+-5
+
+5
+
+Re{ }
+
+-5
+-5
+
+5
+
+0
+
+5
+
+Re{ }
+
+0
+
+-5
+-5
+
+5
+
+5
+
+Im{ }
+
+0
+
+0
+
+Re{ }
+
+5
+
+Im{ }
+
+Im{ }
+
+0
+
+0
+
+Re{ }
+
+5
+
+-5
+-5
+
+Im{ }
+
+0
+
+-5
+-5
+
+5
+
+5
+
+Im{ }
+
+Im{ }
+
+5
+
+0
+
+Re{ }
+
+5
+
+0
+
+-5
+-5
+
+0
+
+5
+
+Re{ }
+
+C
+Fig. 2 Parameters planes of z 2−7
+
+the plane is represented in white and black in another case. Figure 2 shows the parameters
+C .
+planes corresponding to the six free critical points z 2−7
+Figure 2 has been generated using a mesh of 100×100 complex points in (Re(β), I m(β)) ∈
+[−5, 5] × [−5, 5]. The convergence to z 1F = 1 is set with a tolerance of 10−3 . We can see
+in Fig. 2a–d that many values of parameter β would provide stable methods as most of the
+points are represented in white, indicating convergence to the root. However, when we gather
+all the detailed information provided by each free critical point, the information we get from
+the graphs is that we cannot determine values of β that give the best members of the itera-
+
+123
+
+304
+
+Page 10 of 18
+
+J. H. Jerezano et al.
+
+Fig. 3 Dynamical planes of R1 (z, β) for different values of β
+
+tive family for all the cases. We will obtain more information by visualizing the basins of
+attraction depicted in the dynamical planes below.
+The dynamical planes collected in Fig. 3 show the basins of attraction of the root of p(z).
+Each plane corresponds to a parameter β value associated with a particular method of family
+M1. They have been generated using a mesh of 1000 × 1000 complex points used as initial
+estimations to iterate the rational operator. When the distance between the root, represented
+with a white star, and any of the points of the orbit of the iterated point is less than 10−3 , we
+consider the initial estimate convergent and represent it in orange. Otherwise, it is defined in
+black. In addition, the strange fixed and free critical points are described in the dynamical
+planes with white circles and squares, respectively.
+From Fig. 3, we can observe that dynamical planes associated with parameter values closer
+to 1 provide methods with larger basins of attraction. Let us note that the planes have been
+generated by taking large sets of initial estimates at [−20, 20] × [−20, 20]. It is also seen
+in all the plans that the strange fixed points remain, as expected, in the borders between the
+basins of attraction, i.e., Julia’s set. However, while three of the free critical points belong
+to the basin of attraction of the root, the other three belong to the divergence zone shown in
+black.
+Remark 2 Let D(β) be the dynamical plane of R1 (z, β). Known a member D(β0 ) of the
+family, the rest of the members D(βi ) are known by rotating D(β0 ) an angle of ∠β0 − ∠βi
+π
+concerning 1 + 0i. Figure 3b and c show this behaviour. Note that D(i) = D(1)e−i 2 .
+To observe in more detail the dynamic behavior of some members of family M1, we show
+in Figs. 4 and 5 the dynamical planes obtained by taking initial estimations in [−20, 20] ×
+[−20, 20] and a detail in [−5, 5] × [−5, 5]. The results are similar to those of the previous
+graphs, and this allows us to conclude that for small values of β, we obtain methods of the
+family with large sets of initial guesses for which convergence to the root is obtained.
+
+3.3 Stability analysis of family M2
+We will now study the stability of the parametric family (1) using a different weight function to
+compare the results obtained previously. Specifically, we will replace in the iterative scheme
+1−t
+(1) the rational weight function H2 (t) = 1−2t
+, which also satisfies Theorem 2 and thus gives
+rise to an iterative family, called family M2, with optimal order of convergence 4. To compare
+the results, we will apply again the iterative scheme to the quadratic polynomial with a double
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 11 of 18
+
+304
+
+Fig. 4 Dynamical planes of R1 (z, β) for β = 1/100
+
+Fig. 5 Dynamical planes of R1 (z, β) for β = 5
+
+root p(z) = (z − 1)2 . After this application, the rational operator obtained is the following:
+R2 (z, β) = −
+
+β 2 z 7 − 6 β 2 z 6 + 15 β 2 z 5 − 20 β 2 z 4 + 15 β 2 z 3 − 6 β 2 z 2 + β 2 z − 4
+.
+−β z 3 + 3βx 2 − 3 β z + β + 2 β z 3 − 3βx 2 + 3 β z − β + 2
+
+The only fixed point of R2 (z, β) is z ∗ = 1, so there are no strange fixed points for any value
+of β. Now, from the derivative
+R2 (z, β) = −
+
+β 2 (z − 1)6 −β 2 z 6 + 6 β 2 z 5 − 15 β 2 z 4 + 20 β 2 z 3 − 15 β 2 z 2 + 6 β 2 z − β 2 + 28
+−β 2 z 6 + 6 β 2 z 5 − 15 β 2 z 4 + 20 β 2 z 3 − 15 β 2 z 2 + 6 β 2 z − β 2 + 4
+
+2
+
+
+,
+
+we can verify that |R2 (z ∗ , β)| = 0 and then the root of p(z) is a superattracting fixed point
+of the rational operator. In addition, by solving equation R2 (z, β) = 0, the only critical point
+ 
+ √
+√
+3
+C
+C
+3 2 6
+= 1 ± 6 27 −1±i
+,
+and
+z
+=
+1
+±
+is z ∗ = 1 and the free critical points are z 2−5
+2/3
+6−7
+β 7.
+β
+
+123
+
+304
+
+Page 12 of 18
+
+J. H. Jerezano et al.
+
+C
+Fig. 6 Parameters plane of z 2−7
+
+Fig. 7 Dynamical planes of R2 (z, β) for different values of β
+
+From the free critical points, we can again generate the parameters planes as assistance to
+select the most convenient values of β. As in the iterative family M1, the same parameters
+plane is obtained for all the free critical points, which has been shown in Fig. 6.
+The values of β in (Re(β), I m(β)) ∈ [−5, 5] × [−5, 5] in Fig. 6 do not allow us to
+select any method from the family so that we will use the dynamical planes. Using the same
+implementation described previously, Fig. 7 shows the dynamical planes corresponding to
+the operator R2 (z, β) associated with different values of β.
+The size of the basins of attraction is similar to that of the planes in Fig. 3, obtaining
+larger basins when the parameter is very close to zero. We also show a detail of the basins
+of attraction for β = 1/100 and β = 5 in Figs. 8 and 9. In contrast to family M1, all the
+C corresponding to R (z, β), represented on the dynamical planes with
+free critical points z 2−7
+2
+white squares, belong to the region that does not converge to the expected root as they are
+marked in black.
+
+4 Numerical benchmark
+This section applies the proposed family to different test functions to verify the theoretical
+results. We select two members of family (1), setting the weight function. In this way, method
+M1 refers to the polynomial weight function H1 (t) = 2t 2 + t + 1 while method M2 is
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 13 of 18
+
+20
+
+304
+
+5
+4
+
+15
+
+3
+10
+2
+1
+
+Im{z 0 }
+
+Im{z 0 }
+
+5
+
+0
+
+0
+-1
+
+-5
+
+-2
+-10
+-3
+-15
+
+-4
+
+-20
+
+-5
+-20
+
+-15
+
+-10
+
+-5
+
+0
+
+5
+
+10
+
+15
+
+20
+
+Re{z0 }
+
+-5
+
+-4
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Re{z0 }
+
+Fig. 8 Dynamical planes of R2 (z, β) for β = 1/100
+
+Fig. 9 Dynamical planes of R2 (z, β) for β = 5
+
+1−t
+1
+generated with the rational weight function H2 (t) = 1−2t
+. In addition, we take β = 100
+as
+the parameter value.
+The proposed methods are compared with other multiple-root solvers from the literature.
+In this sense, we compare with
+
+• method SS (Sharma and Sharma 2010a)
+2m g(xk )
+,
+
+m+
+ 2 g (xk )
+m 
+
+m
+g (xk )
+m
+xk+1 = xk −
+m 3 − 4m + 8 − (m + 2)2
+
+8
+m
++
+2
+
+
+m 
+ g (yk )
+m
+g(xk )
+g (xk )
+× 2(m − 1) − (m + 2)
+, k = 0, 1, . . . ,
+m+2
+g  (yk )
+g  (xk )
+yk = xk −
+
+123
+
+304
+
+Page 14 of 18
+
+J. H. Jerezano et al.
+
+• method BH (Behl et al. 2016)
+2m g(xk )
+,
+m + 2 g  (xk )
+m 2 (m + 2)3 μg(xk )
+xk+1 = xk −
+3(m + 2)μg  (xk ) − mg  (yk )
+
+mg(xk ) m 2 (m +3)g  (yk )+(m 3 +3m 2 +2m −4)μg  (xk )
++
+, k = 0, 1, . . . ,
+4μ [g  (xk )]2
+m
+
+m
+,
+where μ =
+m+2
+• method KK (Kumar et al. 2020b)
+yk = xk −
+
+yk = xk − m
+xk+1 = yk −
+
+g(xk )
+,
+g[wk , xk ]
+
+g(xk )
+(m + 2)tk
+, k = 0, 1, . . . ,
+1 − 2tk g[wk , xk ] + 2g[wk , yk ]
+
+
+g(y) 1/m
+and w = x + βg(x), and
+g(x)
+• method BB (Behl et al. 2021a)
+
+
+where t =
+
+g(xk )
+,
+g[wk , xk ]
+
+
+g(xk )
+sk
+tk
+xk+1 = xk − (1 + tk )
+−1−
+− 2sk2
+, k = 0, 1, . . . ,
+2
+2
+g[wk , xk ]
+
+
+
+
+g(y) 1/m
+g(y) 1/m
+,s =
+and w = x + βg(x).
+where t =
+g(x)
+g(w)
+yk = xk − m
+
+The multiple-root nonlinear functions under consideration are
+• a particular case of the Van de Waals equation g1 (x) = x 3 − 5.22x 2 + 9.0825x − 5.2675,
+having a double root at α1 = 1.75 and a single root at α2 = 1.72,
+• a particular case of finding the energy density in a black body using the Planck
+3
+law radiation (Bradie 2006) g2 (x) = e−x − 1 + x5 , that has a triple root at α ≈
+4.96511423174428, and
+• the calculus of the eigenvalues of a 9 × 9 square matrix whose characteristic equation is
+g3 (x) = x 9 − 29x 8 + 349x 7 − 2261x 6 + 8455x 5 − 17,663x 4 + 15,927x 3 + 6993x 2 −
+24,732x + 12,960, that as a root of multiplicity 4 at α = 3.
+The numerical tests are conducted with Matlab R2022b in a PC equipped with an IntelCore i7-14700 processor at 2.10 GHz with 16 GB of RAM. The operations use variable
+precision arithmetics with 4000 digits of mantissa to guarantee that the stopping criterion
+|xk+1 − xk | + |g(xk )| < 10−200 is reached without division by zero problems. Despite in
+real-world applications the tolerance of 10−8 can be enough, in numerical experiments, the
+tolerance is set to very high precision in order to assess the full accuracy and stability of the
+iterative methods. Looser tolerances would obscure subtle differences in performance and
+fail to reveal their behavior near the limits of machine precision.
+The results are collected in Tables 1, 2 and 3. Tables collect the initial guess x0 , the number
+of iterations k to reach the solution, the approximated computational order of convergence
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 15 of 18
+
+304
+
+Table 1 Methods performance for g1 (x)
+x0
+
+Method
+
+k
+
+ACOC
+
+|xk+1 − xk |
+
+|g(xk+1 )|
+
+1.9
+
+SS
+
+7
+
+4.0000
+
+3.6268 × 10−615
+
+0
+0
+1.8515 × 10−1661
+
+3
+
+BH
+
+7
+
+4.0000
+
+8.1906 × 10−562
+
+KK
+
+6
+
+4.0000
+
+4.813 × 10−209
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+M1
+
+7
+
+4.0000
+
+9.5190 × 10−537
+
+0
+
+M2
+
+7
+
+4.0000
+
+1.3790 × 10−776
+
+1.7679 × 10−1796
+0
+
+SS
+
+8
+
+4.0000
+
+2.3856 × 10−556
+
+BH
+
+8
+
+4.0000
+
+9.8505 × 10−487
+
+1.0296 × 10−3881
+
+3.2533 × 10−216
+
+8.0677 × 10−1719
+
+KK
+
+7
+
+4.0000
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+M1
+
+8
+
+4.0000
+
+2.5168 × 10−450
+
+3.1316 × 10−3590
+
+M2
+
+7
+
+4.0000
+
+4.1018 × 10−204
+
+1.1594 × 10−1621
+
+Table 2 Methods performance for g2 (x)
+x0
+
+Method
+
+k
+
+ACOC
+
+|xk+1 − xk |
+
+|g(xk+1 )|
+
+5.3
+
+SS
+
+5
+
+4.0000
+
+9.8376 × 10−394
+
+3.0999 × 10−4728
+
+4.0000
+
+1.1712 × 10−393
+
+2.5351 × 10−4727
+3.6042 × 10−5630
+
+BH
+KK
+
+5
+
+4.0000
+
+1.1056 × 10−468
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+4.0000
+
+5.918 × 10−463
+
+3.5181 × 10−5561
+
+4.0000
+
+1.2564 × 10−468
+
+1.6833 × 10−5629
+1.0671 × 10−8480
+
+M1
+M2
+10
+
+5
+
+5
+5
+
+SS
+
+6
+
+4.0000
+
+1.9392 × 10−706
+
+BH
+
+6
+
+4.0000
+
+2.4379 × 10−706
+
+1.677 × 10−8479
+
+4.0000
+
+4.271 × 10−278
+
+3.9802 × 10−3343
+
+KK
+
+5
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+M1
+
+5
+
+4.0000
+
+3.8971 × 10−278
+
+2.3392 × 10−3343
+
+M2
+
+5
+
+4.0000
+
+3.0934 × 10−280
+
+8.3522 × 10−3369
+
+ACOC (Cordero and Torregrosa 2007), the residual |xk+1 − xk | at the last iterate and the
+value of the function |g(xk+1 )| at the last iterate.
+Table 1 shows the competitiveness of the proposed methods for a problem with multiplicity
+2. The derivative-free methods converge in fewer iterations, and M2 solves the least number
+of iterations. Table 2 illustrates the best performance of methods M1 and M2 in terms of
+iterations for a problem with a triple root. Finally, Table 3 depicts a similar performance in
+terms of iterations and residual for a problem with a root of multiplicity 4.
+
+123
+
+304
+
+Page 16 of 18
+
+J. H. Jerezano et al.
+
+Table 3 Methods performance for g3 (x)
+x0
+
+Method
+
+k
+
+ACOC
+
+|xk+1 − xk |
+
+|g(xk+1 )|
+
+2.8
+
+SS
+
+nc
+
+–
+
+–
+
+–
+
+BH
+
+nc
+
+–
+
+–
+
+–
+
+KK
+
+5
+
+4.0000
+
+5.8464 × 10−322
+
+4.4803 × 10−4002
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+M1
+
+5
+
+4.0000
+
+1.9058 × 10−284
+
+3.3602 × 10−4002
+8.8006 × 10−4003
+
+3.4
+
+M2
+
+5
+
+4.0000
+
+2.5976 × 10−299
+
+SS
+
+nc
+
+–
+
+–
+
+–
+
+BH
+
+nc
+
+–
+
+–
+
+–
+
+KK
+
+7
+
+4.0000
+
+1.1278 × 10−270
+
+2.0001 × 10−4002
+
+BB
+
+nc
+
+–
+
+–
+
+–
+
+M1
+
+6
+
+4.0000
+
+3.3389 × 10−272
+
+2.2401 × 10−4002
+
+4.0000
+
+1.3305 × 10−269
+
+4.8003 × 10−4003
+
+M2
+
+6
+
+5 Conclusions
+An iterative procedure has been introduced to find the multiple roots of nonlinear problems
+that may be differentiable or not. The family has been constructed using divided differences
+to avoid using the derivative and the weight function technique. Every family member is
+optimal in the sense of Kung–Traub’s conjecture. The stability analysis evidences the regions
+where the method converges for two specific weight functions and low-degree polynomials.
+The numerical tests show the competitiveness of the introduced family in relation to other
+contributions in the literature.
+Future research could focus on the extension of this derivative-free family of iterative
+methods to the multidimensional case, replacing the scalar divided differences by its vector
+version and the scalar weight function by a matrix weight function.
+Acknowledgements Funded with “Ayuda a Primeros Proyectos de Investigación (PAID-06-23) and (PAID11-24), both from Vicerrectorado de Investigación de la Universitat Politècnica de València (UPV)”.
+Author contributions Julissa H. Jerezano: data curation, formal analysis, investigation, writing—original
+draft preparation. Francisco I. Chicharro: funding acquisition, methodology, project administration, resources,
+writing—review & editing. Neus Garrido-Saez: conceptualization, validation, software, supervision.
+Funding Open Access funding provided thanks to the CRUE-CSIC agreement with Springer Nature. Francisco
+I. Chicharro and Neus Garrido-Saez have been partially funded with grants “Ayuda a Primeros Proyectos de
+Investigación (PAID-06-23) and (PAID-11-24), both from Vicerrectorado de Investigación de la Universitat
+Politècnica de València (UPV)”.
+Data availability Not applicable.
+Material availability Not applicable.
+Code availability Not applicable.
+
+Declarations
+
+123
+
+Derivative-free optimal multiple-root finding…
+
+Page 17 of 18
+
+304
+
+Conflict of interest The authors have no conflict of interest to declare that are relevant to the content of this
+article.
+Ethical approval and consent to participate Not applicable.
+Consent for publication Not applicable.
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which
+permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give
+appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence,
+and indicate if changes were made. The images or other third party material in this article are included in the
+article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is
+not included in the article’s Creative Commons licence and your intended use is not permitted by statutory
+regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder.
+To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.
+
+References
+Amat S, Busquier S (2016) Advances in iterative methods for nonlinear equations. Springer, Cham, Switzerland
+Argyros IK, Magreñán ÁA (2017) Iterative methods and their dynamics with applications: a contemporary
+study. CRC Press, Boca Raton
+Argyros IK, George S, Thapa N (2018) Mathematical modeling for the solution of equations and systems of
+equations with applications. Nova Science, Hauppauge, New York, NY, USA
+Argyros IK, Magreñán ÁA, Orcos L, Sarría Í, Sicilia JA (2019) Different methods for solving STEM problems.
+J Math Chem 57:1268–1281
+Arora H, Cordero A, Torregrosa JR (2024) On generalized one-step derivative-free iterative family for evaluating multiple roots. Iran J Numer Anal Optim 14:291–314
+Arroyo V, Cordero A, Torregrosa JR, Vassileva MP (2012) Artificial satellites preliminary orbit determination
+by the modified high-order Gauss method. Int J Comput Math 89:347–356
+Behl R (2022) A derivative free fourth-order optimal scheme for applied science problems. Mathematics
+10:1372
+Behl R, Cordero A, Motsa SS, Torregrosa JR (2016) An optimal fourth-order family of methods for multiple
+roots and its dynamics. Numer Algorithms 271:775–796
+Behl R, Alsolami AJ, Pansera BA, Al-Hamdan WM, Salimi M, Ferrara M (2019) A new optimal family of
+Schröder’s method for multiple zeros. Mathematics 7:1076
+Behl R, Bhalla S, Magreñán ÁA, Moysi A (2021a) An optimal derivative free family of Chebyshev–Halley’s
+method for multiple zeros. Mathematics 9:546
+Behl R, Bhalla S, Martínez E, Alsulami MA (2021b) Derivative-free King’s scheme for multiple zeros of
+nonlinear functions. Mathematics 9:1242
+Behl R, Cordero A, Torregrosa JR (2022a) A new higher-order optimal derivative free scheme for multiple
+roots. J Comput Appl Math 404:113773
+Behl R, Bhalla S, Mallawi F, Alsulami MA (2022b) An optimal iterative technique for multiple root finder of
+nonlinear problems. Math Comput Appl 27:74
+Behl R, Arora H, Martínez E, Singh T (2023) Approximating multiple roots of applied mathematical problems
+using iterative techniques. Axioms 12:270
+Blanchard P (1984) Complex analytic dynamics on the Riemann sphere. Bull AMS 11:85–141
+Bradie B (2006) A friendly introduction to numerical analysis. Pearson Education Inc., New Delhi, Upper
+Saddle River, NJ, USA
+Chicharro FI, Cordero A, Torregrosa JR (2013) Derivative-free high-order methods applied to preliminary
+orbit determination. Math Comput Model 57:1795–1799
+Chicharro FI, Cordero A, Garrido N, Torregrosa JR (2020) On the choice of the best members of the Kim
+family and the improvement of its convergence. Math Methods Appl Sci 43:8051–8066
+Cordero A, Torregrosa JR (2007) Variants of Newton’s method using fifth order quadrature formulas. Appl
+Math Comput 190:686–698
+Cordero A, Ramos H, Torregrosa JR (2020) Some variants of Halley’s method with memory and their applications for solving several chemical problems. J Math Chem 58:751–774
+Cortés JC, Jódar LA, Villanueva RJ (2014) Mathematical modeling in social sciences and engineering. Nova
+Science, Hauppauge, Cham, Switzerland
+
+123
+
+304
+
+Page 18 of 18
+
+J. H. Jerezano et al.
+
+Devaney RL (1989) An introduction to chaotic dynamical systems. Addison-Wesley, Denver, Redwood City,
+CA, USA
+Fatou P (1920) Sur les équations fonctionelles. Bull Soc Math Fr 48:208–314
+Geum YH, Kim YI, Neta B (2015) A class of two-point sixth-order multiple-zero finders of modified doubleNewton type and their dynamics. Appl Math Comput 70:387–400
+Hueso JL, Martínez E, Teruel C (2015) Determination of multiple roots of nonlinear equations and applications.
+J Math Chem 53:880–892
+Julia G (1918) Mémoire sur l’iteration des fonctions rationnelles. J Math Pures Appl 8:47–245
+Kansal M, Kanwar V, Bhatia S (2015) On some optimal multiple root-finding methods and their dynamics.
+Appl Appl Math 10:349–367
+Kansal M, Alshomrani AS, Bhalla S, Behl R, Salimi M (2020) One parameter optimal derivative-free family
+to find the multiple roots of algebraic nonlinear equations. Mathematics 8:2223
+Kumar D, Sharma JR, Cesarano C (2019) One-point optimal family of multiple root solvers of second order.
+Mathematics 7:655
+Kumar D, Sharma JR, Argyros IK (2020a) Optimal one-point iterative function free from derivatives for
+multiple roots. Mathematics 8:709
+Kumar S, Kumar D, Sharma JR, Cesarano C, Agarwal P, Chu YM (2020b) An optimal fourth order derivativefree numerical algorithm for multiple roots. Symmetry 12:1038
+Kumar S, Bhagwan J, Jäntschi L (2022) Optimal derivative-free one-point algorithms for computing multiple
+zeros of nonlinear equations. Symmetry 14:1881
+Kumar S, Kumar D, Sharma JR, Argyros IK (2023a) An efficient class of fourth-order derivative-free method
+for multiple-roots. Int J Nonlinear Sci Numer Simul 24:265–275
+Kumar S, Sharma JR, Bhagwan J, Jäntschi L (2023b) Numerical solution of nonlinear problems with multiple
+roots using derivative-free algorithms. Symmetry 15:1249
+Kung HT, Traub JF (1974) Optimal order of one-point and multipoint iteration. J Assoc Comput Mach 21:643–
+651
+Li SG, Cheng LZ, Neta B (2010) Some fourth-order nonlinear solvers with closed formulae for multiple roots.
+Comput Math Appl 59:126–135
+Lotfi T, Sharifi S, Salimi M, Siegmund S (2015) A new class of three-point methods with optimal convergence
+order eight and its dynamics. Numer Algorithms 68:261–288
+Petković MS, Neta B, Petković LD, Dz̆unić J (2013) Multipoint methods for solving nonlinear equations.
+Elsevier, Boston
+Rowe MA (2017) Mathematical research summaries. Nova Science, Hauppauge, New York, NY, USA
+Sharifi M, Babajee DKR, Soleymani F (2012) Finding the solution of nonlinear equations by a class of optimal
+methods. Comput Math Appl 63:764–774
+Sharma JR, Sharma R (2010a) Modified Jarratt method for computing multiple roots. Appl Math Comput
+217:878–881
+Sharma JR, Kumar S, Jäntschi L (2019) On a class of optimal fourth order multiple root solvers without using
+derivatives. Symmetry 11:1452
+Singh H, Sharma JR (2024) An efficient class of Traub–Steffensen-type optimal order multiple root solvers.
+Numer Algorithm 96:1727–1754
+Soleymani F, Babajee DKR, Lotfi T (2013) On a numerical technique for finding multiple zeros and its
+dynamics. J Egypt Math Soc 21:346–353
+Tabatabaei NM, Bizon N (2021) Numerical methods for energy applications. Springer, Cham, Switzerland
+Tramontana F, Gardini L (2021) Revisiting Samuelson’s models, linear and nonlinear, stability conditions and
+oscillating dynamics. J Econ Struct 10:9
+Traub JF (1964) Iterative methods for the solution of equations. Prentice-Hall series in automatic computation.
+Prentice-Hall, Englewood Cliffs
+Zafar F, Cordero A, Quratulain R, Torregrosa JR (2018) Optimal iterative methods for finding multiple roots
+of nonlinear equations using free parameters. J Math Chem 56:1884–1901
+Zafar F, Cordero A, Ashraf I, Torregrosa JR (2023a) An optimal eighth order derivative free multiple root
+finding numerical method and applications to chemistry. J Math Chem 61:98–124
+Zafar F, Iqbal S, Nawaz T (2023b) A Steffensen type optimal eighth order multiple root finding scheme for
+nonlinear equations. J Comput Math Data Sci 7:100079
+Publisher’s Note Springer Nature remains neutral with regard to jurisdictional claims in published maps and
+institutional affiliations.
+
+123
+
+
