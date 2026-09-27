@@ -1,153 +1,66 @@
-\documentclass[10pt, a4paper]{article}
+\documentclass[11pt, a4paper]{article}
 
-% ==============================================================================
-% PAQUETES PRINCIPALES Y CONFIGURACIÓN TIPOGRÁFICA
-% ==============================================================================
+% --- Paquetes Esenciales y Configuración de Página ---
 \usepackage[utf8]{inputenc}
 \usepackage[spanish, es-nodecimaldot]{babel}
-\usepackage{amsmath, amssymb, amsfonts, amsthm}
-\usepackage{graphicx}
+\usepackage{amsmath, amssymb, amsfonts}
 \usepackage{geometry}
 \usepackage{hyperref}
-\usepackage{xcolor}
 \usepackage{booktabs}
-\usepackage{caption}
 \usepackage{tabularx}
+\usepackage{xcolor}
 \usepackage{fancyhdr}
-\usepackage{microtype}
 
-% --- Configuración de Márgenes Cuidadosamente Calibrados ---
-\geometry{top=1.6cm, bottom=1.6cm, left=1.6cm, right=1.6cm}
+\geometry{top=2.0cm, bottom=2.0cm, left=2.0cm, right=2.0cm}
 
-% --- Paleta de Colores Institucionales y Elegantes ---
-\definecolor{uexternado}{RGB}{0, 48, 87}       % Azul institucional profundo
-\definecolor{accentblue}{RGB}{14, 116, 144}     % Azul petróleo para subtítulos
-\definecolor{darkslate}{RGB}{30, 41, 59}        % Gris pizarra para texto
-\definecolor{lightgraybg}{RGB}{248, 250, 252}   % Fondo gris muy tenue
-\definecolor{tablehead}{RGB}{237, 242, 247}     % Encabezado de tablas
+% Colores discretos para lectura cómoda
+\definecolor{azulinst}{RGB}{0, 50, 95}
+\definecolor{grisoscuro}{RGB}{40, 40, 40}
 
-% --- Configuración de Hipervínculos ---
 \hypersetup{
     colorlinks=true,
-    linkcolor=uexternado,
-    citecolor=accentblue,
-    urlcolor=accentblue,
-    pdfborder={0 0 0}
+    linkcolor=azulinst,
+    citecolor=azulinst,
+    urlcolor=azulinst
 }
 
-% --- Ajustes de Espaciado y Párrafos ---
-\setlength{\parskip}{2.5pt plus 0.5pt minus 0.5pt}
+\setlength{\parskip}{4pt plus 1pt minus 1pt}
 \setlength{\parindent}{0pt}
-\captionsetup{font=small, labelfont=bf, skip=3pt}
 
-% Reducción de espacios en listas
-\def\tightlist{\setlength{\itemsep}{1.5pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}}
-
-% Reducción de espacios alrededor de ecuaciones
-\expandafter\def\expandafter\normalsize\expandafter{%
-    \normalsize
-    \setlength\abovedisplayskip{4pt plus 1pt minus 1pt}
-    \setlength\belowdisplayskip{4pt plus 1pt minus 1pt}
-    \setlength\abovedisplayshortskip{2pt}
-    \setlength\belowdisplayshortskip{2pt}
-}
-
-% --- Encabezados y Pies de Página ---
+% Encabezados y pie de página limpios
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
-\fancyhead[L]{\footnotesize\itshape Universidad Externado de Colombia --- Métodos Numéricos}
-\fancyhead[R]{\footnotesize\bfseries Proyecto Integrador: Primera Entrega}
-\fancyfoot[L]{\footnotesize\textcolor{darkslate}{Pregrado en Ciencia de Datos}}
+\fancyhead[L]{\small\itshape Universidad Externado}
+\fancyhead[R]{\small\bfseries Métodos Numéricos}
 \fancyfoot[C]{\thepage}
-\fancyfoot[R]{\footnotesize\textcolor{darkslate}{Semestre 2026-2}}
-
-% ==============================================================================
-% INICIO DEL DOCUMENTO
-% ==============================================================================
-
-% --- Ajustes de Espaciado en Títulos de Sección ---
-\makeatletter
-\renewcommand\section{\@startsection {section}{1}{\z@}%
-                                   {-1.8ex \@plus -0.4ex \@minus -.2ex}%
-                                   {0.8ex \@plus .2ex}%
-                                   {\normalfont\large\bfseries\color{uexternado}}}
-\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
-                                     {-1.2ex\@plus -0.3ex \@minus -.2ex}%
-                                     {0.5ex \@plus .2ex}%
-                                     {\normalfont\normalsize\bfseries\color{accentblue}}}
-\makeatother
 
 \begin{document}
 
 % ==============================================================================
-% PÁGINA 1: PORTADA INSTITUCIONAL ELEGANTE Y MODERNA
+% PORTADA LIMPIA Y DIRECTA
 % ==============================================================================
 \begin{titlepage}
-    \thispagestyle{empty}
-    \begin{center}
-        
-        \vspace*{0.1cm}
-        {\scshape\Large\textbf{Universidad Externado de Colombia}}\\[0.15cm]
-        {\scshape\large Facultad de Finanzas, Gobierno y Relaciones Internacionales}\\[0.1cm]
-        {\scshape\large Departamento de Matemáticas \ $\cdot$ \ Pregrado en Ciencia de Datos}\\[0.2cm]
-        {\normalsize\textbf{Asignatura:} Métodos Numéricos \quad $\cdot$ \quad \textbf{Período Académico:} 2026-2}\\[0.6cm]
-
-        % Caja de Título Principal con Marco Estilizado
-        \colorbox{lightgraybg}{%
-            \begin{minipage}{0.96\textwidth}
-                \centering
-                \vspace{0.35cm}
-                {\color{accentblue}\rule{0.92\linewidth}{1.2pt}}\\[0.3cm]
-                {\Large\bfseries\color{uexternado} PROYECTO INTEGRADOR DE MÉTODOS NUMÉRICOS}\\[0.15cm]
-                {\large\bfseries Fase 1: Comprensión del Artículo y Formulación del Problema Computacional}\\[0.25cm]
-                {\large\color{darkslate}\textbf{Familia Óptima de Métodos Iterativos Libres de Derivadas\\para la Búsqueda de Raíces Múltiples}}\\[0.15cm]
-                {\normalsize\itshape Análisis teórico, articulación curricular y formulación algorítmica}\\[0.25cm]
-                {\color{accentblue}\rule{0.92\linewidth}{1.2pt}}
-                \vspace{0.25cm}
-            \end{minipage}%
-        }
-        
-        \vspace{0.5cm}
-
-        % Reseña del Artículo Científico Base
-        \colorbox{tablehead}{%
-            \begin{minipage}{0.96\textwidth}
-                \small
-                \textbf{Artículo Científico de Referencia:}\\
-                Jerezano, J. H., Chicharro, F. I., \& Garrido-Sáez, N. (2026). \textit{Derivative-free optimal multiple-root finding family of iterative methods}. \textbf{Computational and Applied Mathematics}, 45:304. \href{https://doi.org/10.1007/s40314-026-03702-8}{doi:10.1007/s40314-026-03702-8}
-            \end{minipage}%
-        }
-
-        \vspace{0.7cm}
-
-        % Bloque de Información del Equipo y Docente
-        \begin{minipage}[t]{0.52\textwidth}
-            \raggedright
-            \textbf{\color{uexternado}\large Integrantes del Equipo:}\\[0.2cm]
-            \textbf{Ailyn Sofía Gómez Rodríguez}\\
-            \small\href{mailto:ailyn.gomez@estudiantes.uexternado.edu.co}{ailyn.gomez@estudiantes.uexternado.edu.co}\\[0.15cm]
-            \textbf{Julián Santiago Jiménez}\\
-            \small\href{mailto:julian.jimenez01@estudiantes.uexternado.edu.co}{julian.jimenez01@estudiantes.uexternado.edu.co}\\[0.15cm]
-            \textbf{Julián Esteban Duarte}\\
-            \small\href{mailto:julian.duarte@estudiantes.uexternado.edu.co}{julian.duarte@estudiantes.uexternado.edu.co}
-        \end{minipage}
-        \hfill
-        \begin{minipage}[t]{0.44\textwidth}
-            \raggedleft
-            \textbf{\color{uexternado}\large Docente Titular:}\\[0.2cm]
-            \textbf{Edilberto Edwin Muñoz Chipatecua}\\[0.1cm]
-            \small Departamento de Matemáticas\\[0.5cm]
-            \textbf{\color{uexternado}\large Repositorio del Proyecto:}\\[0.1cm]
-            \small\url{https://github.com/ailynsof/Proyecto-M-todos-Numericos}
-        \end{minipage}
-
-        \vfill
-
-        {\normalsize\textbf{Bogotá D.C., Colombia} \ $\cdot$ \ \textbf{Septiembre de 2026}}
-        \vspace*{0.2cm}
-    \end{center}
+    \centering
+    \vspace*{2.5cm}
+    
+    {\Large\textbf{Métodos Numéricos}}\\[2.5cm]
+    
+    {\LARGE\bfseries\color{azulinst} Proyecto Integrador: Primera Entrega}\\[0.8cm]
+    {\large\itshape Derivative-free optimal multiple-root finding family of iterative methods}\\[3.5cm]
+    
+    \begin{minipage}{0.75\textwidth}
+        \centering
+        \textbf{\large Integrantes:}\\[0.4cm]
+        Ailyn Sofía Gómez Rodríguez\\[0.2cm]
+        Julián Camilo Jiménez\\[0.2cm]
+        Julián Steven Duarte
+    \end{minipage}
+    
+    \vfill
+    
+    {\normalsize Bogotá D.C., Colombia --- Septiembre de 2026}
+    \vspace*{0.8cm}
 \end{titlepage}
 
 \newpage
@@ -155,213 +68,246 @@
 \setcounter{page}{2}
 
 % ==============================================================================
-% SECCIÓN 1: COMPRENSIÓN DEL ARTÍCULO CIENTÍFICO
+% 1. COMPRENSIÓN DEL ARTÍCULO CIENTÍFICO
 % ==============================================================================
 \section{Comprensión del Artículo Científico}
 
-\subsection{Problema Abordado e Intuición Teórica}
-En la computación científica y la Ciencia de Datos, gran parte de los problemas aplicados se formulan como la búsqueda de un valor $\alpha$ tal que una función continua $g$ satisfaga $g(\alpha) = 0$. A este valor $\alpha$ se le denomina \textbf{raíz} o solución de la ecuación no lineal.
+\subsection{El problema de encontrar raíces múltiples}
+Uno de los problemas fundamentales en computación científica y modelado matemático consiste en hallar las soluciones de una ecuación no lineal, es decir, encontrar los valores $\alpha$ tales que una función continua $g$ cumpla que $g(\alpha) = 0$. A estos valores los llamamos raíces.
 
-En diversos fenómenos físicos y termodinámicos —como el cálculo del volumen molar en la ecuación de Van der Waals o la densidad espectral en la ley de radiación de Planck— las soluciones presentan \textbf{multiplicidad} $m \ge 2$. Matemáticamente, $\alpha$ es una raíz de multiplicidad $m$ si la función y sus primeras $m-1$ derivadas se anulan en $\alpha$, mientras que su $m$-ésima derivada es no nula:
+Sin embargo, en diversos fenómenos reales (como modelos termodinámicos o cálculos de radiación térmica), las soluciones presentan \textbf{multiplicidad}\footnote{En el análisis matemático de raíces, $\alpha$ tiene multiplicidad $m$ si el desarrollo de Taylor de $g$ alrededor de $\alpha$ comienza en $(x-\alpha)^m$, lo cual implica formalmente que $g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0$ con $g^{(m)}(\alpha) \neq 0$.} $m \ge 2$:
 \begin{equation}
-    g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0, \quad \text{con } g^{(m)}(\alpha) \neq 0.
+    g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0, \quad \text{pero } g^{(m)}(\alpha) \neq 0.
 \end{equation}
+Gráficamente, esto genera un aplanamiento muy marcado: en lugar de que la curva corte el eje horizontal con una pendiente clara, la gráfica se vuelve casi plana alrededor de la raíz, dificultando su localización precisa.
 
-\textbf{¿Por qué las raíces múltiples degradan los métodos convencionales?}
-\begin{itemize}\tightlist
-    \item \textbf{Aplanamiento geométrico:} Mientras una raíz simple ($m=1$) corta el eje $x$ con pendiente pronunciada, en una raíz múltiple la curva se vuelve tangente y horizontal al eje, asemejando un valle muy plano.
-    \item \textbf{Frenado del método de Newton estándar:} En el método clásico de Newton-Raphson ($x_{k+1} = x_k - \frac{g(x_k)}{g'(x_k)}$), tanto el residuo $g(x_k)$ como la pendiente tangente $g'(x_k)$ se aproximan a cero simultáneamente. La división entre magnitudes infinitesimales reduce los pasos drásticamente, frenando la convergencia de rapidez cuadrática ($p=2$) a una lenta marcha lineal ($p=1$).
-    \item \textbf{Restauración con Newton modificado:} Para compensar el aplanamiento, Ernst Schröder propuso amplificar el paso multiplicándolo por la multiplicidad $m$: $x_{k+1} = x_k - m \frac{g(x_k)}{g'(x_k)}$. Esto restaura con éxito el orden cuadrático ($p=2$).
-\end{itemize}
+\subsection{Por qué fallan los métodos comunes y la necesidad de evitar derivadas}
+Al aplicar el método clásico de Newton-Raphson ($x_{k+1} = x_k - \frac{g(x_k)}{g'(x_k)}$) en una raíz múltiple, tanto el residuo $g(x_k)$ como la derivada $g'(x_k)$ se aproximan a cero simultáneamente. Al dividir dos magnitudes extremadamente pequeñas, los pasos que da el algoritmo se vuelven diminutos, degradando la rapidez del método de cuadrática ($p=2$) a una convergencia lineal ($p=1$).
 
-\textbf{El desafío computacional: Prescindir de derivadas analíticas.}
-El método de Newton modificado exige evaluar la derivada analítica $g'(x_k)$ en cada paso. En problemas reales de Ciencia de Datos, las funciones suelen provenir de simuladores computacionales complejos de caja negra (\textit{black-box}), datos experimentales discretos o modelos donde la derivada analítica es intratable o costosa. Además, como estudiamos en la \textbf{Semana 4} del curso, aproximar $g'(x)$ mediante diferencias finitas convencionales es propenso a amplificar errores de redondeo por la precisión finita de la máquina ($\varepsilon_M \approx 2.22 \times 10^{-16}$). Por ello, el artículo de \textbf{Jerezano, Chicharro y Garrido-Sáez (2026)} propone un esquema bifásico que alcanza \textbf{orden óptimo 4 sin calcular ninguna derivada analítica}.
-
-\subsection{Estructura del Esquema Iterativo Propuesto}
-Los autores introducen un esquema predictor-corrector de dos pasos inspirado en Traub-Steffensen:
+Para corregir este retraso, el método de Newton modificado de Schröder amplifica el paso multiplicándolo por la multiplicidad $m$:
 \begin{equation}
-    w_k = x_k + \beta [g(x_k)]^2, \quad 
-    y_k = x_k - m \frac{g(x_k)}{g[w_k, x_k]}, \quad 
-    x_{k+1} = x_k - m \, H(t_k) \frac{g(x_k)}{g[w_k, x_k]},
-    \label{eq:esquema}
+    x_{k+1} = x_k - m \frac{g(x_k)}{g'(x_k)}.
 \end{equation}
-donde $\beta \in \mathbb{C} \setminus \{0\}$, $g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k}$ es la diferencia dividida de primer orden, y la variable adimensional de control $t_k$ se calcula mediante la rama principal del logaritmo complejo:
-\begin{equation}
-    t_k = \left( \frac{g(y_k)}{g(x_k)} \right)^{1/m} = \exp\left( \frac{1}{m} \operatorname{Log}\left(\frac{g(y_k)}{g(x_k)}\right) \right).
-\end{equation}
+Aunque esto restaura la convergencia cuadrática, tiene un costo importante: \textbf{obliga a calcular y evaluar la derivada analítica $g'(x)$ en cada iteración}. En Ciencia de Datos, muchas funciones provienen de simuladores complejos, modelos de caja negra o datos discretos donde no existe una fórmula analítica para la derivada. Si se intenta aproximar $g'(x)$ mediante diferencias finitas convencionales, el límite de precisión de la máquina\footnote{Bajo el estándar IEEE-754 en precisión doble (\texttt{float64}), el épsilon de máquina es $\varepsilon_M \approx 2.22 \times 10^{-16}$. En raíces con multiplicidad $m \ge 2$, la cercanía al cero induce cancelación catastrófica de cifras significativas si se dividen restas infinitesimales.} amplifica los errores de redondeo.
 
-\textbf{Funcionamiento intuitivo paso a paso:}
-\begin{enumerate}\tightlist
-    \item \textbf{Punto auxiliar adaptativo $w_k$:} Para trazar una recta secante sin derivadas, se perturba $x_k$ sumándole $\beta [g(x_k)]^2$. Como $g(x_k) \to 0$ al acercarse a la raíz, $[g(x_k)]^2$ se desvanece cuadráticamente. Esto hace que $w_k$ converja hacia $x_k$ de forma autoadaptativa, eliminando la necesidad de calibrar un paso fijo $h$.
-    \item \textbf{Aproximación por diferencia dividida $g[w_k, x_k]$:} Se calcula la pendiente secante entre $x_k$ y $w_k$. Por el Teorema del Valor Medio, aproxima fielmente a $g'(x_k)$ sin requerir diferenciación analítica.
-    \item \textbf{Paso intermedio predictor $y_k$:} Proporciona una estimación intermedia equivalente a un paso de Steffensen modificado.
-    \item \textbf{Paso corrector refinado con función de peso $H(t_k)$:} La variable $t_k$ cuantifica la fracción de reducción del residuo lograda en el paso previo ($g(y_k) \ll g(x_k) \implies t_k \to 0$). La función $H(t_k)$ actúa como un \textbf{acelerador inteligente}: pondera el residuo y amplifica el avance final para alcanzar un orden de convergencia cuatro.
+Por esta razón, el artículo de \textbf{Jerezano, Chicharro y Garrido-Sáez (2026)} propone una familia de métodos en dos pasos que \textbf{no utiliza derivadas analíticas} y que aun así alcanza un \textbf{orden de convergencia cuatro ($p=4$)}, cuadruplicando el número de decimales exactos en cada ciclo.
+
+\subsection{Intuición matemática y optimalidad de Kung-Traub}
+El esquema se apoya en dos elementos principales:
+\begin{enumerate}
+    \item \textbf{Aproximación secante adaptativa:} Se perturba el iterado actual sumándole una cantidad proporcional al cuadrado del residuo: $w_k = x_k + \beta [g(x_k)]^2$. A medida que nos acercamos a la raíz, $[g(x_k)]^2$ se desvanece de forma natural, logrando que $w_k$ converja hacia $x_k$. Así, la diferencia dividida $g[w_k, x_k] = \frac{g(w_k)-g(x_k)}{w_k-x_k}$ aproxima fielmente a la primera derivada sin requerir un tamaño de paso artificial.
+    \item \textbf{Función de peso aceleradora:} Mediante una estimación intermedia $y_k$ y un cociente de control adimensional $t_k$, se introduce una función de peso $H(t)$ que amplifica la corrección final.
 \end{enumerate}
 
-\clearpage
-\subsection{Condiciones Analíticas y Optimalidad de Kung-Traub}
-Mediante expansiones en series de Taylor del error $e_k = x_k - \alpha$, los autores imponen la anulación simultánea de los coeficientes de error de orden 1, 2 y 3, deduciendo cuatro condiciones que debe cumplir la función de peso $H(t)$ en el origen:
+Mediante series de Taylor del error asintótico $e_k = x_k - \alpha$, los autores dedujeron que para anular los términos de error de órdenes 1, 2 y 3, la función de peso debe cumplir en el origen:
 \begin{equation}
     H(0) = 1, \qquad H'(0) = 1, \qquad H''(0) = 4, \qquad |H'''(0)| < \infty.
 \end{equation}
-Bajo estas condiciones, la ecuación asintótica del error toma la forma:
+Con estas condiciones, el error en el paso siguiente satisface la relación $e_{k+1} \propto e_k^4$. 
+
+Además, el método cumple la \textbf{conjetura de Kung y Traub (1974)}\footnote{La conjetura de Kung-Traub establece que el orden máximo admisible para un método iterativo sin memoria que efectúa $d$ evaluaciones funcionales por iteración está acotado por $p \le 2^{d-1}$.}, según la cual el orden máximo posible para un método sin memoria con $d$ evaluaciones funcionales por ciclo es $p_{\text{máx}} = 2^{d-1}$. Al requerir únicamente tres evaluaciones funcionales ($g(x_k), g(w_k), g(y_k)$) y cero derivadas ($d=3$), el orden máximo teórico es $2^{3-1} = 4$. Al alcanzar exactamente dicho orden, la familia se clasifica como \textbf{óptima}.
+
+\subsection{Supuestos y limitaciones del método}
+El análisis del artículo permite identificar tres limitaciones técnicas:
+\begin{itemize}
+    \item \textbf{Conocimiento previo de la multiplicidad $m$:} El algoritmo presupone conocida la multiplicidad exacta. Si se especifica un valor incorrecto, el método pierde el orden 4 y puede divergir.
+    \item \textbf{Selección de $\beta$ y de la semilla inicial $x_0$:} Valores grandes de $\beta$ o semillas lejanas pueden ocasionar oscilaciones antes de entrar en la cuenca de atracción. Los autores sugieren utilizar $\beta = 0.01$.
+    \item \textbf{Ramas en potencias fraccionarias complejas:} La evaluación de $t_k$ requiere fijar la rama principal del logaritmo complejo ($-\pi < \operatorname{Arg}(z) \le \pi$) para evitar discontinuidades numéricas.
+\end{itemize}
+
+% ==============================================================================
+% 2. FORMULACIÓN DEL PROBLEMA COMPUTACIONAL Y DEL MODELO
+% ==============================================================================
+\section{Formulación del Problema Computacional y del Modelo}
+
+\subsection{Contexto en Ciencia de Datos y objetivo del proyecto}
+En Ciencia de Datos, encontrar puntos óptimos en funciones de pérdida o ajustar modelos no lineales equivale a resolver sistemas donde las ecuaciones no admiten solución analítica cerrada. Cuando el cálculo explícito de gradientes es inviable por el volumen de datos o la complejidad funcional, disponer de algoritmos libres de derivadas con orden 4 optimiza el tiempo de cómputo y la estabilidad numérica.
+
+El objetivo central del proyecto es implementar en Python estas familias de métodos iterativos libres de derivadas ($M_1$ y $M_2$), comprobar empíricamente que alcancen el orden de convergencia 4 reportado en el artículo y comparar su desempeño frente a métodos de la literatura.
+
+\subsection{Formulación matemática del modelo iterativo}
+El modelo iterativo de Jerezano et al. (2026) se formula formalmente mediante el siguiente esquema predictor-corrector en dos pasos:
+\begin{align}
+    w_k &= x_k + \beta [g(x_k)]^2, \label{eq:paso1} \\[4pt]
+    y_k &= x_k - m \frac{g(x_k)}{g[w_k, x_k]}, \label{eq:paso2} \\[6pt]
+    x_{k+1} &= x_k - m \, H(t_k) \frac{g(x_k)}{g[w_k, x_k]}. \label{eq:paso3}
+\end{align}
+donde el operador de diferencia dividida $g[w_k, x_k]$ y la variable adimensional de control $t_k$ se calculan como:
 \begin{equation}
-    e_{k+1} = \frac{-H'''(0) + 3(9+m)B_1^3 - 6m B_1 B_2}{6m^3} e_k^4 + \mathcal{O}(e_k^5),
+    g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k}, \qquad 
+    t_k = \left( \frac{g(y_k)}{g(x_k)} \right)^{1/m} = \exp\left( \frac{1}{m} \operatorname{Log}\left(\frac{g(y_k)}{g(x_k)}\right) \right).
 \end{equation}
-demostrando que el método alcanza formalmente un \textbf{orden de convergencia cuatro ($p=4$)}.
 
-\textbf{Optimalidad según la conjetura de Kung-Traub (1974):} Kung y Traub establecieron que el orden de convergencia $p$ de cualquier método iterativo sin memoria que realice $d$ evaluaciones funcionales por ciclo está acotado por $p \le 2^{d-1}$. El esquema propuesto requiere exactamente $d=3$ evaluaciones funcionales ($g(x_k), g(w_k), g(y_k)$) y cero derivadas. Por lo tanto, el orden máximo alcanzable es $p_{\text{máx}} = 2^{3-1} = 4$. Al alcanzar exactamente dicho límite con el mínimo número de evaluaciones, la familia es \textbf{óptima}. Prácticamente, el orden 4 implica que el número de cifras decimales exactas se cuadruplica en cada iteración ($10^{-2} \to 10^{-8} \to 10^{-32}$).
-
-\subsection{Familias Concretas Analizadas y Dinámica Compleja}
-Los autores seleccionan dos funciones de peso que satisfacen las condiciones del teorema:
-\begin{itemize}\tightlist
-    \item \textbf{Familia $M_1$ (Acelerador Polinomial):} $H_1(t) = 1 + t + 2t^2$.
-    \item \textbf{Familia $M_2$ (Acelerador Racional):} $H_2(t) = \frac{1-t}{1-2t}$.
-\end{itemize}
-\textbf{Estabilidad dinámica en el plano complejo:} Al aplicar el operador de iteración racional $R(z, \beta)$ sobre el polinomio cuadrático $p(z) = (z-1)^2$, se demuestra que la raíz $\alpha = 1$ es un \textbf{punto superatractor} ($|R'(1,\beta)| = 0$). El parámetro $\beta$ es crucial: valores moderados como $\beta = 0.01$ generan cuencas de atracción casi globales, evitando comportamientos caóticos. Además, la familia racional $M_2$ no presenta puntos fijos extraños atractores, lo cual garantiza una robustez superior frente a raíces espurias.
-
-\subsection{Limitaciones Identificadas}
-\begin{enumerate}\tightlist
-    \item \textbf{Conocimiento previo de la multiplicidad $m$:} El algoritmo presupone conocida la multiplicidad exacta. Si $m$ es incorrecto, el orden decae drásticamente a convergencia lineal o el método diverge.
-    \item \textbf{Sensibilidad paramétrica ante $\beta$ y $x_0$:} Valores grandes de $\beta$ con semillas alejadas pueden inducir oscilaciones cíclicas o bifurcaciones.
-    \item \textbf{Manejo de ramas en potencias fraccionarias:} La evaluación de $t_k$ en el plano complejo requiere fijar la rama principal del logaritmo para evitar saltos de discontinuidad.
+\textbf{Familias de métodos a programar ($M_1$ y $M_2$):}
+A partir de la función de peso $H(t)$, se definen dos variantes específicas:
+\begin{enumerate}
+    \item \textbf{Método $M_1$ (Acelerador Polinomial):} Utiliza un polinomio de segundo grado:
+    \begin{equation}
+        H_1(t) = 1 + t + 2t^2.
+    \end{equation}
+    Es la alternativa más directa y económica, basada en operaciones aritméticas elementales.
+    \item \textbf{Método $M_2$ (Acelerador Racional):} Utiliza una función racional:
+    \begin{equation}
+        H_2(t) = \frac{1 - t}{1 - 2t}.
+    \end{equation}
+    Esta variante posee la ventaja teórica de carecer de puntos fijos extraños atractores en el plano complejo, evitando que el método converja hacia raíces falsas.
 \end{enumerate}
 
-% ==============================================================================
-% SECCIÓN 2: FORMULACIÓN DEL PROBLEMA COMPUTACIONAL
-% ==============================================================================
-\section{Formulación del Problema Computacional}
+\subsection{Tabla descriptiva de las variables y parámetros del modelo}
+La Tabla~\ref{tab:variables} detalla el significado computacional de cada símbolo del esquema iterativo:
 
-\subsection{Contexto de Aplicación en Ciencia de Datos y Justificación}
-En la Ciencia de Datos y el aprendizaje automático, resolver ecuaciones no lineales es esencial para optimizar funciones de pérdida complejas (como regresión logística regularizada, estimación de máxima verosimilitud en distribuciones bimodales o ajuste no lineal de hiperparámetros). Frecuentemente, el cálculo simbólico de gradientes y matrices hessianas es inviable debido al tamaño masivo de los conjuntos de datos o la naturaleza opaca de las funciones objetivo. Disponer de familias de orden 4 libres de derivadas ofrece una alternativa computacional altamente eficiente para encontrar óptimos y ceros con rapidez sin incurrir en costos analíticos de diferenciación.
-
-\subsection{Objetivos del Proyecto}
-\begin{itemize}\tightlist
-    \item \textbf{Objetivo General:} Desarrollar, validar y comparar en Python una suite computacional modular y reproducible que implemente las familias óptimas libres de derivadas $M_1$ y $M_2$, reproduciendo con alta precisión los resultados del artículo base y contrastando su desempeño frente a métodos clásicos y de la literatura.
-    \item \textbf{Objetivos Específicos:}
-    \begin{enumerate}\tightlist
-        \item Programar desde sus fundamentos matemáticos los métodos propuestos ($M_1, M_2$) y los métodos de contraste: Newton Modificado, Steffensen Modificado, SS, BH, KK y BB.
-        \item Reproducir fielmente las pruebas del artículo en problemas con $m=2, 3, 4$, empleando aritmética de precisión múltiple (\texttt{mpmath}) para alcanzar cotas de tolerancia de hasta $10^{-200}$.
-        \item Evaluar cuantitativamente la convergencia empírica mediante el residuo $|g(x_{k+1})|$, paso entre iteraciones $|x_{k+1}-x_k|$, orden computacional ACOC, índice de eficiencia ($EI$) y tiempo de CPU.
-        \item Evaluar computacionalmente la estabilidad y sensibilidad ante variaciones de la semilla $x_0$ y el factor $\beta$, construyendo planos dinámicos en el plano complejo mediante \texttt{NumPy} y \texttt{Matplotlib}.
-    \end{enumerate}
-\end{itemize}
-
-\subsection{Preguntas de Investigación y Resultados Esperados}
-El proyecto responderá: \textit{¿Compensa la eliminación de derivadas analíticas el costo de evaluar la diferencia dividida y la función de peso racional?} y \textit{¿Ofrece el acelerador racional $M_2$ mayor estabilidad numérica que el acelerador polinomial $M_1$ ante multiplicidades elevadas?}
-Se espera constatar que el orden empírico alcance efectivamente $\text{ACOC} \approx 4.0000$ y que los residuos decrezcan por debajo de $10^{-200}$ en menos de 8 iteraciones.
-
-% ==============================================================================
-% SECCIÓN 3: OBTENCIÓN DE LA INFORMACIÓN Y ARTICULACIÓN CURRICULAR
-% ==============================================================================
-\section{Obtención de la Información y Articulación Curricular}
-
-\subsection{Funciones Matemáticas de Prueba del Artículo}
-Para validar empíricamente la formulación computacional, se seleccionaron los tres problemas descritos en el artículo:
-\begin{enumerate}\tightlist
-    \item \textbf{Problema 1: Ecuación de Estado de Van der Waals (Termodinámica):}
-    \begin{equation}
-        g_1(x) = x^3 - 5.22 x^2 + 9.0825 x - 5.2675 = (x - 1.75)^2 (x - 1.72).
-    \end{equation}
-    Modela el comportamiento de gases reales. Presenta una raíz doble ($m=2$) en $\alpha_1 = 1.75$ y una raíz simple inmediata en $\alpha_2 = 1.72$. La escasa separación entre raíces ($\Delta \alpha = 0.03$) evalúa la capacidad del algoritmo para converger a la raíz doble sin saltar a la raíz simple vecina.
-    
-    \item \textbf{Problema 2: Ley de Radiación de Planck en Cuerpo Negro (Física Térmica):}
-    \begin{equation}
-        g_2(x) = \left( e^{-x} - 1 + \frac{x}{5} \right)^3.
-    \end{equation}
-    Determina la longitud de onda de máxima densidad espectral de radiación. Posee una raíz triple ($m=3$) en $\alpha \approx 4.96511423174428$. Al ser una función trascendente que combina términos exponenciales y lineales, examina el desempeño en funciones no algebraicas.
-    
-    \item \textbf{Problema 3: Polinomio Característico y Valores Propios (Álgebra Lineal):}
-    \begin{equation}
-        g_3(x) = x^9 - 29x^8 + 349x^7 - 2261x^6 + 8455x^5 - 17663x^4 + 15927x^3 + 6993x^2 - 24732x + 12960.
-    \end{equation}
-    Ecuación característica $\det(A - \lambda I) = 0$ de una matriz $9 \times 9$, factorizable analíticamente como $(x-3)^4(x-8)(x-5)(x-4)(x-1)(x+1)$. Posee una raíz cuádruple ($m=4$) en $\alpha = 3$ y cinco raíces simples. Sus coeficientes de gran escala evalúan la acumulación de errores de redondeo.
-\end{enumerate}
-
-\begin{table}[h!]
+\begin{table}[htbp]
     \centering
     \small
-    \caption{Caracterización de las funciones de prueba y parámetros experimentales.}
-    \label{tab:problemas}
-    \begin{tabularx}{\textwidth}{lccccX}
+    \caption{Descripción detallada de variables y parámetros del modelo iterativo.}
+    \label{tab:variables}
+    \begin{tabularx}{\textwidth}{c p{3.0cm} c X}
         \toprule
-        \textbf{Función de Prueba $g(x)$} & \textbf{Dominio Físico} & \textbf{Raíz $\alpha$} & \textbf{Mult. ($m$)} & \textbf{Semillas ($x_0$)} & \textbf{Desafío Numérico Central} \\
+        \textbf{Símbolo} & \textbf{Nombre} & \textbf{Tipo / Dominio} & \textbf{Significado y rol en el modelo} \\
         \midrule
-        $g_1(x) = (x-1.75)^2(x-1.72)$ & Termodinámica & $1.75$ & 2 & $1.9, \, 3.0$ & Cercanía extrema a raíz simple ($\Delta=0.03$). \\
-        $g_2(x) = (e^{-x} - 1 + x/5)^3$ & Radiación Térmica & $\approx 4.96511$ & 3 & $5.3, \, 10.0$ & Naturaleza trascendente exponencial. \\
-        $g_3(x) = (x-3)^4 \prod(x - \lambda_i)$ & Álgebra Lineal & $3.0$ & 4 & $2.8, \, 3.5$ & Multiplicidad 4 y coeficientes de gran escala. \\
+        $x_k$ & Iterado actual & Real o complejo & Aproximación a la raíz en el paso $k$; punto base de evaluación funcional. \\
+        \addlinespace[2pt]
+        $w_k$ & Punto auxiliar adaptativo & Real o complejo & Perturbación calculada como $x_k + \beta [g(x_k)]^2$, necesaria para evaluar la recta secante. \\
+        \addlinespace[2pt]
+        $\beta$ & Factor de escala & Constante ($\beta \neq 0$) & Modula la amplitud del paso secante; se establece $\beta = 0.01$ para garantizar estabilidad. \\
+        \addlinespace[2pt]
+        $g(x_k)$ & Residuo funcional & Real o complejo & Valor de la función en el punto actual; mide la discrepancia respecto al cero buscado. \\
+        \addlinespace[2pt]
+        $g[w_k, x_k]$ & Diferencia dividida & Real o complejo & Pendiente secante entre $x_k$ y $w_k$; reemplaza numéricamente a la derivada $g'(x_k)$. \\
+        \addlinespace[2pt]
+        $m$ & Multiplicidad & Entero ($m \ge 2$) & Multiplicidad de la raíz; factor que contrarresta el aplanamiento de la curva. \\
+        \addlinespace[2pt]
+        $y_k$ & Estimador intermedio & Real o complejo & Paso predictor intermedio que reduce preliminarmente el residuo. \\
+        \addlinespace[2pt]
+        $t_k$ & Variable de control & Complejo & Cociente normalizado de reducción del error ($t_k \to 0$ conforme $x_k \to \alpha$). \\
+        \addlinespace[2pt]
+        $H(t)$ & Función de peso & Función analítica & Componente acelerador que neutraliza términos de error inferiores, elevando el orden a 4. \\
+        \addlinespace[2pt]
+        $x_{k+1}$ & Iterado siguiente & Real o complejo & Nueva aproximación refinada obtenida al concluir el ciclo iterativo. \\
+        \addlinespace[2pt]
+        $\alpha$ & Raíz exacta & Real o complejo & Solución analítica buscada tal que $g(\alpha) = 0$. \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-\subsection{Articulación con los Contenidos del Curso (Semanas 1 a 10)}
-El proyecto integrador conecta de forma directa con los temas del microcurrículo desarrollados hasta la fecha:
-\begin{itemize}\tightlist
-    \item \textbf{Semanas 2 y 3 (Aritmética IEEE-754, Épsilon y Cancelación Numérica):} En precisión estándar de 64 bits (\texttt{float64}), el épsilon de máquina es $\varepsilon_M \approx 2.22 \times 10^{-16}$. En una raíz con multiplicidad $m=4$, cuando el error absoluto es de apenas $e_k \approx 10^{-5}$, el residuo evaluado cae a $g(x_k) \approx 10^{-20}$, desbordando la precisión del estándar. Esto genera una \textbf{pérdida total de cifras significativas y división por ceros falsos}. Para evitar este fenómeno de cancelación catastrófica y poder reproducir las tablas del artículo hasta una tolerancia de $|g(x_{k+1})| < 10^{-200}$, justificamos el empleo de aritmética de precisión arbitraria (\texttt{mpmath} configurada con 4000 bits).
-    \item \textbf{Semana 4 (Derivación Numérica y Diferencias Divididas):} El reemplazo de la derivada por la diferencia dividida $g[w_k, x_k]$ aplica el balance entre error de truncamiento y error de redondeo analizado en clase, utilizando la perturbación cuadrática $\beta [g(x)]^2$ como un paso adaptativo.
-    \item \textbf{Semanas 6 a 9 (Álgebra Lineal Numérica y Valores Propios):} El Problema 3 vincula la solución de raíces con los autovalores de matrices en Ciencia de Datos (análisis de componentes principales, PCA), evidenciando el mal condicionamiento que inducen los autovalores múltiples.
-    \item \textbf{Semana 10 (Solución de Ecuaciones No Lineales):} Las familias $M_1$ y $M_2$ extienden los métodos abiertos clásicos (Newton, Secante y Newton para sistemas), introduciendo métodos de alto orden de frontera científica contemporánea (2026).
-\end{itemize}
+% ==============================================================================
+% 3. OBTENCIÓN DE LA INFORMACIÓN Y PROBLEMAS DE PRUEBA
+% ==============================================================================
+\section{Obtención de la Información y Problemas de Prueba}
+
+\subsection{Funciones matemáticas de prueba seleccionadas}
+Para validar empíricamente la suite computacional y verificar si reproduce los resultados de los autores, se emplearán las tres funciones benchmark analizadas en el artículo:
+
+\begin{enumerate}
+    \item \textbf{Problema 1 (Ecuación de Van der Waals en Termodinámica):}
+    \begin{equation}
+        g_1(x) = x^3 - 5.22 x^2 + 9.0825 x - 5.2675 = (x - 1.75)^2 (x - 1.72).
+    \end{equation}
+    Modela el comportamiento de gases reales. Presenta una raíz doble ($m=2$) en $\alpha = 1.75$ y una raíz simple vecina en $1.72$. El desafío numérico radica en converger a la raíz múltiple sin saltar a la raíz simple situada a una distancia de solo $\Delta = 0.03$.
+    
+    \item \textbf{Problema 2 (Ley de Radiación de Planck en Física Térmica):}
+    \begin{equation}
+        g_2(x) = \left( e^{-x} - 1 + \frac{x}{5} \right)^3.
+    \end{equation}
+    Determina la longitud de onda de máxima densidad espectral en un cuerpo negro. Posee una raíz triple ($m=3$) en $\alpha \approx 4.965114$. Al ser una función trascendente que involucra exponenciales, pone a prueba el desempeño en problemas no algebraicos.
+    
+    \item \textbf{Problema 3 (Polinomio Característico en Álgebra Lineal):}
+    \begin{equation}
+        g_3(x) = (x - 3)^4 (x - 8)(x - 5)(x - 4)(x - 1)(x + 1).
+    \end{equation}
+    Corresponde a la ecuación característica de una matriz $9 \times 9$. Presenta una raíz cuádruple ($m=4$) en $\alpha = 3$ y coeficientes de gran escala, evaluando la sensibilidad del método ante la propagación de errores numéricos.
+\end{enumerate}
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Resumen de las funciones de prueba y sus características.}
+    \label{tab:problemas}
+    \begin{tabularx}{\textwidth}{lccccX}
+        \toprule
+        \textbf{Función de prueba $g(x)$} & \textbf{Área de aplicación} & \textbf{Raíz $\alpha$} & \textbf{Mult. ($m$)} & \textbf{Semillas ($x_0$)} & \textbf{Dificultad principal} \\
+        \midrule
+        $g_1(x) = (x-1.75)^2(x-1.72)$ & Termodinámica & $1.75$ & 2 & $1.9, \, 3.0$ & Cercanía extrema a otra raíz simple ($\Delta=0.03$). \\
+        $g_2(x) = (e^{-x} - 1 + x/5)^3$ & Física Térmica & $\approx 4.96511$ & 3 & $5.3, \, 10.0$ & Presencia de términos exponenciales. \\
+        $g_3(x) = (x-3)^4 \prod(x - \lambda_i)$ & Álgebra Lineal & $3.0$ & 4 & $2.8, \, 3.5$ & Multiplicidad 4 y coeficientes grandes. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 % ==============================================================================
-% SECCIÓN 4: PLAN DE IMPLEMENTACIÓN Y CRITERIOS DE EVALUACIÓN
+% 4. PLAN DE IMPLEMENTACIÓN Y CRITERIOS DE EVALUACIÓN
 % ==============================================================================
 \section{Plan de Implementación y Criterios de Evaluación}
 
-\subsection{Métodos a Programar y Métricas Cuantitativas}
-Para una contrastación rigurosa, se implementarán en Python los siguientes métodos:
-\begin{itemize}\tightlist
-    \item \textbf{Familias del Artículo Base:} Métodos libres de derivadas $M_1$ (polinomial) y $M_2$ (racional) con $\beta = 0.01$.
-    \item \textbf{Métodos de Contraste con Derivadas:} Newton Modificado ($p=2$), Método SS de Sharma-Sharma ($p=4$) y Método BH de Behl et al. ($p=4$).
-    \item \textbf{Métodos de Contraste Libres de Derivadas:} Steffensen Modificado ($p=2$), Método KK de Kumar et al. ($p=4$) y Método BB de Behl et al. ($p=4$).
+\subsection{Métodos numéricos a implementar y justificación de la comparativa}
+Para resolver el problema planteado y evaluar objetivamente los aportes del artículo de Jerezano et al. (2026), implementaremos en Python dos grupos de algoritmos:
+\begin{itemize}
+    \item \textbf{Métodos del artículo base:} Las dos variantes de la familia óptima libre de derivadas propuestas por los autores: el Método $M_1$ (acelerador polinomial) y el Método $M_2$ (acelerador racional), ambos con parámetro $\beta = 0.01$.
+    \item \textbf{Métodos de contraste de referencia:}
+    \begin{itemize}
+        \item \textit{Métodos con derivadas:} El método clásico de Newton modificado ($p=2$), y dos esquemas contemporáneos de orden 4: Sharma-Sharma (SS) y Behl et al. (BH).
+        \item \textit{Métodos libres de derivadas:} Steffensen modificado ($p=2$), y dos esquemas contemporáneos de orden 4 de la literatura: Kumar et al. (KK) y Behl et al. (BB).
+    \end{itemize}
 \end{itemize}
 
-\textbf{Métricas Cuantitativas de Evaluación:}
-\begin{enumerate}\tightlist
-    \item \textbf{Residuo y Precisión:} Residuo $|g(x_{k+1})|$ e incremento entre pasos $|x_{k+1}-x_k|$. Criterio de parada: $|x_{k+1}-x_k| + |g(x_{k+1})| < 10^{-200}$.
-    \item \textbf{Orden Computacional de Convergencia Aproximado (ACOC):} Fórmula de Cordero y Torregrosa:
-    \begin{equation}
-        \text{ACOC} \approx \frac{\ln |(x_{k+1} - x_k) / (x_k - x_{k-1})|}{\ln |(x_k - x_{k-1}) / (x_{k-1} - x_{k-2})|}, \quad \text{con valor objetivo } \approx 4.0000.
-    \end{equation}
-    \item \textbf{Índice de Eficiencia de Kung-Traub ($EI = p^{1/d}$):} Mientras Newton modificado ($p=2, d=2$) tiene $EI \approx 1.4142$, las familias propuestas $M_1$ y $M_2$ ($p=4, d=3$) alcanzan $EI = 4^{1/3} \approx 1.5874$, entregando mayor rendimiento por evaluación computacional.
-    \item \textbf{Tiempo de CPU:} Tiempo de ejecución en milisegundos mediante la librería estándar \texttt{time}, promediando 50 ejecuciones.
+\textbf{¿Por qué realizamos esta comparación?}
+En el análisis numérico, el valor práctico de un nuevo método no puede determinarse de forma aislada. La contrastación responde a dos necesidades fundamentales:
+\begin{enumerate}
+    \item \textit{Frente a métodos con derivadas:} Permite comprobar qué se gana o se pierde al prescindir de la derivada analítica. Interesa evaluar si aproximar la pendiente mediante la diferencia dividida secante $g[w_k, x_k]$ introduce alguna penalización en la precisión o si, por el contrario, logra competir en rapidez y estabilidad con métodos que sí disponen de la fórmula analítica exacta de la derivada.
+    \item \textit{Frente a otros métodos sin derivadas:} Permite demostrar si el diseño específico de las funciones de peso $H_1(t)$ y $H_2(t)$ y la perturbación adaptativa cuadrática $\beta [g(x)]^2$ aportan ventajas tangibles frente a otras familias libres de derivadas ya existentes en la literatura científica.
 \end{enumerate}
 
-\subsection{Arquitectura Modular del Software y Reproducibilidad}
-El código se alojará en el repositorio \url{https://github.com/ailynsof/Proyecto-M-todos-Numericos} con la siguiente estructura modular en \texttt{src/}:
-\begin{itemize}\tightlist
-    \item \texttt{src/methods.py}: Implementación de los algoritmos $M_1, M_2$, Newton modificado, Steffensen, SS, BH, KK y BB.
-    \item \texttt{src/benchmarks.py}: Funciones $g_1, g_2, g_3$, multiplicidades, derivadas analíticas y semillas $x_0$.
-    \item \texttt{src/metrics.py}: Funciones de cálculo de ACOC, residuos, análisis de tiempos y exportador automático a tablas \LaTeX.
-    \item \texttt{src/dynamics.py}: Generador de planos dinámicos y mapas de atracción sobre mallas complejas con \texttt{NumPy} y \texttt{Matplotlib}.
-    \item \textbf{Garantía de Reproducibilidad:} Se fijará una semilla aleatoria (\texttt{numpy.random.seed(42)}) y se proveerá un archivo \texttt{requirements.txt}.
-\end{itemize}
+\subsection{Criterios y mediciones para la evaluación de resultados}
+Para contrastar rigurosamente el desempeño de cada algoritmo en los tres problemas de prueba, utilizaremos cinco criterios de evaluación cuantitativos:
 
-\subsection{Cronograma de Fases del Proyecto Integrador}
-\begin{itemize}\tightlist
-    \item \textbf{Fase 1 (Semana 5 --- Entrega Actual):} Comprensión del artículo científico, formulación matemática y estructuración del plan.
-    \item \textbf{Fase 2 (Semana 10):} Implementación computacional completa en Python, contrastación de métodos y reproducción de Tablas 1, 2 y 3.
-    \item \textbf{Fase 3 (Semana 16):} Análisis de estabilidad dinámica, conclusiones globales, entrega de informe final consolidado y sustentación oral.
-\end{itemize}
+\begin{enumerate}
+    \item \textbf{Error numérico y residuo final ($|g(x_{k+1})|$ y distancia entre pasos $|x_{k+1} - x_k|$):}
+    \begin{itemize}
+        \item \textit{¿Qué mide?} El residuo evalúa qué tan cerca de cero queda la función en la última iteración, mientras que el incremento $|x_{k+1} - x_k|$ mide si la sucesión de iterados se ha estabilizado.
+        \item \textit{¿Por qué es indispensable?} En raíces con multiplicidad $m \ge 2$, el aplanamiento de la curva suele engañar a los criterios de parada estándar, provocando que los algoritmos se detengan prematuramente creyendo haber convergido. Por ello, se fija una cota de tolerancia sumamente estricta ($|g(x_{k+1})| < 10^{-200}$) empleando aritmética de precisión múltiple (\texttt{mpmath}), lo que permite certificar si el método es capaz de resolver el problema con precisión extrema sin desestabilizarse por errores de redondeo.
+    \end{itemize}
 
-% ==============================================================================
-% DECLARACIÓN DE USO DE INTELIGENCIA ARTIFICIAL
-% ==============================================================================
-\section*{Declaración de Uso de Herramientas de Inteligencia Artificial}
-En estricto cumplimiento del Reglamento de Integridad Académica de la Universidad Externado de Colombia y las normas del proyecto integrador, los integrantes del equipo declaramos que empleamos herramientas de Inteligencia Artificial Generativa exclusivamente como apoyo técnico para la diagramación tipográfica en \LaTeX{} y la revisión de estilo. Los autores asumimos la autoría total, el entendimiento matemático y la responsabilidad académica sobre el contenido, formulaciones y análisis expuestos en este informe.
+    \item \textbf{Convergencia y orden computacional empírico (ACOC):}
+    \begin{itemize}
+        \item \textit{¿Qué mide?} La tasa real a la que decrece el error entre iteraciones sucesivas. Se calcula mediante la fórmula de Cordero y Torregrosa\footnote{La fórmula ACOC calcula $\text{ACOC} \approx \frac{\ln |(x_{k+1}-x_k)/(x_k-x_{k-1})|}{\ln |(x_k-x_{k-1})/(x_{k-1}-x_{k-2})|}$, permitiendo estimar el orden de convergencia local sin requerir la raíz exacta analítica.}:
+        \begin{equation}
+            \text{ACOC} \approx \frac{\ln |(x_{k+1} - x_k) / (x_k - x_{k-1})|}{\ln |(x_k - x_{k-1}) / (x_{k-1} - x_{k-2})|} \approx 4.0000.
+        \end{equation}
+        \item \textit{¿Por qué es indispensable?} La teoría asintótica promete que el método es de orden 4 bajo condiciones ideales y límites analíticos continuos. Sin embargo, en una computadora real el cálculo puede verse alterado por la aritmética finita. Calcular el valor empírico del ACOC confirma si en la práctica la cantidad de cifras decimales correctas verdaderamente se cuadruplica en cada iteración.
+    \end{itemize}
+
+    \item \textbf{Estabilidad numérica y sensibilidad a la semilla inicial ($x_0$):}
+    \begin{itemize}
+        \item \textit{¿Qué mide?} La capacidad del algoritmo para converger a la raíz deseada cuando la estimación inicial $x_0$ no se encuentra inmediatamente al lado de la solución.
+        \item \textit{¿Por qué es indispensable?} Un método iterativo de alto orden pierde utilidad práctica si su radio de convergencia es diminuto y diverge ante la menor perturbación. Probar semillas cercanas y lejanas (como $x_0 = 1.9$ y $x_0 = 3.0$ en el Problema 1) permite verificar si la perturbación cuadrática $\beta [g(x)]^2$ mantiene la estabilidad global o si induce oscilaciones caóticas.
+    \end{itemize}
+
+    \item \textbf{Eficiencia computacional (Índice de Kung-Traub $EI = p^{1/d}$):}
+    \begin{itemize}
+        \item \textit{¿Qué mide?} La relación matemática entre el orden de convergencia obtenido ($p$) y el costo en número de evaluaciones funcionales ($d$) que se deben realizar por ciclo\footnote{El índice de eficiencia de Ostrowski y Traub cuantifica el rendimiento computacional balanceando el orden $p$ frente al número de evaluaciones funcionales $d$.}.
+        \item \textit{¿Por qué es indispensable?} Un algoritmo puede alcanzar un orden alto simplemente evaluando la función muchas veces en cada paso, lo cual resulta ineficiente. El índice $EI = p^{1/d}$ permite comparar de forma justa el rendimiento: mientras Newton modificado ($p=2, d=2$) tiene $EI = 2^{1/2} \approx 1.414$, las familias propuestas ($p=4, d=3$) alcanzan $EI = 4^{1/3} \approx 1.587$, demostrando que generan más ganancia de precisión por cada operación realizada.
+    \end{itemize}
+
+    \item \textbf{Tiempo de ejecución en procesador (CPU):}
+    \begin{itemize}
+        \item \textit{¿Qué mide?} El tiempo físico en milisegundos que tarda la computadora en ejecutar el algoritmo hasta alcanzar la convergencia, promediando 50 ejecuciones independientes.
+        \item \textit{¿Por qué es indispensable?} Las fórmulas teóricas de complejidad no siempre reflejan el costo real en hardware, pues no consideran operaciones intermedias como sumas, divisiones o llamadas a funciones auxiliares. Medir el tiempo de CPU promediado (para eliminar interferencias del sistema operativo) permite comprobar si la ausencia de derivadas analíticas efectivamente se traduce en un menor tiempo de cómputo en la práctica.
+    \end{itemize}
+\end{enumerate}
+
+\section*{Declaración sobre el uso de herramientas de Inteligencia Artificial}
+De acuerdo con las directrices de integridad académica de la Universidad Externado de Colombia y las normas del curso, los integrantes del equipo declaramos que utilizamos herramientas de Inteligencia Artificial exclusivamente como apoyo técnico para la diagramación del documento en \LaTeX{} y la revisión de estilo. Los autores asumimos la autoría integral, el entendimiento conceptual y la responsabilidad de todo el contenido matemático, análisis y plan de trabajo presentado en este informe.
 
 % ==============================================================================
 % REFERENCIAS BIBLIOGRÁFICAS
 % ==============================================================================
-\begin{thebibliography}{99}
-\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\footnotesize
+\begin{thebibliography}{9}
 \bibitem{Jerezano2026} Jerezano, J. H., Chicharro, F. I., \& Garrido-Sáez, N. (2026). Derivative-free optimal multiple-root finding family of iterative methods. \textit{Computational and Applied Mathematics}, 45:304.
 \bibitem{KungTraub1974} Kung, H. T., \& Traub, J. F. (1974). Optimal order of one-point and multipoint iteration. \textit{Journal of the ACM}, 21(4), 643--651.
 \bibitem{Cordero2007} Cordero, A., \& Torregrosa, J. R. (2007). Variants of Newton’s method using fifth-order quadrature formulas. \textit{Applied Mathematics and Computation}, 190(1), 686--698.
 \bibitem{Sharma2010} Sharma, J. R., \& Sharma, R. (2010). A new family of modified Ostrowski's methods with accelerated eighth-order convergence. \textit{Numerical Algorithms}, 54(2), 243--258.
 \bibitem{Behl2016} Behl, R., Cordero, A., Motsa, S. S., \& Torregrosa, J. R. (2016). An optimal fourth-order family of methods for multiple roots and its dynamics. \textit{Journal of Computational and Applied Mathematics}, 301, 169--178.
 \bibitem{Kumar2020} Kumar, S., Kumar, D., Sharma, J. R., \& Jäntschi, L. (2020). An optimal fourth-order derivative-free family of iterative methods for multiple roots. \textit{Mathematics}, 8(8), 1275.
-\bibitem{Turner2018} Turner, P. R., Arildsen, T., \& Kavanagh, K. (2018). \textit{Applied Scientific Computing: With Python}. Springer.
 \end{thebibliography}
 
 \end{document}
