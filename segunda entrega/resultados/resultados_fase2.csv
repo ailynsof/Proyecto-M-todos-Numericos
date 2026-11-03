@@ -1,31 +1,31 @@
 problema,m,semilla,metodo,estado,iteraciones,eval_g,eval_gprima,error_abs,residuo,ACOC,tiempo_ms
-g1 doble,2,1.9,M1,estancamiento w=x,2,7,0,0.00037237548,4.2115396e-9,,0.2339
-g1 doble,2,1.9,M2,fallo: pendiente nula,2,8,0,0.012096416,6.1596856e-6,,0.2776
-g1 doble,2,1.9,Newton modificado,convergio,6,7,6,5.3170015e-9,0.0,,0.2375
-g1 doble,2,1.9,Steffensen,fallo: pendiente nula,7,16,0,6.9823322e-5,1.465974e-10,-1.0195156956476936,0.3714
-g1 doble,2,1.9,KK,fallo: pendiente nula,2,8,0,3.4850567e-5,3.6479264e-11,,0.2836
-g1 doble,2,3.0,M1,estancamiento w=x,3,10,0,0.00074544971,1.7085103e-8,1.1128952030789399,0.3897
-g1 doble,2,3.0,M2,fallo: pendiente nula,3,11,0,0.011129594,5.0946347e-6,2.9394725616968507,0.4431
-g1 doble,2,3.0,Newton modificado,convergio,8,9,8,1.3487376e-9,0.0,,0.2922
-g1 doble,2,3.0,Steffensen,fallo: pendiente nula,6,14,0,2.4444799e-5,1.7912782e-11,1.5813984511020056,0.3228
-g1 doble,2,3.0,KK,fallo: pendiente nula,4,14,0,2.6919958e-5,2.1760371e-11,5.743366079123768,0.6093
-g2 Planck triple,3,5.3,M1,estancamiento w=x,1,4,0,1.1068474e-6,9.7519041e-21,,0.0826
-g2 Planck triple,3,5.3,M2,estancamiento w=x,1,4,0,9.5974261e-7,6.3575605e-21,,0.091
-g2 Planck triple,3,5.3,Newton modificado,maximo de iteraciones,100,101,100,6.0326703e-16,1.3684555e-48,,3.4244
-g2 Planck triple,3,5.3,Steffensen,estancamiento w=x,2,5,0,1.1482731e-7,1.088834e-23,,0.0613
-g2 Planck triple,3,5.3,KK,estancamiento w=x,1,4,0,9.5797332e-7,6.3224647e-21,,0.0893
-g2 Planck triple,3,10.0,M1,estancamiento w=x,1,4,0,0.00085467172,4.4899786e-12,,0.0815
-g2 Planck triple,3,10.0,M2,estancamiento w=x,1,4,0,0.00084260908,4.3025348e-12,,0.105
-g2 Planck triple,3,10.0,Newton modificado,maximo de iteraciones,100,101,100,6.0326703e-16,1.3684555e-48,,3.291
-g2 Planck triple,3,10.0,Steffensen,estancamiento w=x,2,5,0,3.3203176e-5,2.6324845e-16,,0.061
-g2 Planck triple,3,10.0,KK,estancamiento w=x,3,10,0,1.6235589e-7,3.0777285e-23,0.6477451956726629,0.4865
-g3 cuádruple,4,2.8,M1,estancamiento w=x,1,4,0,7.8636209e-5,2.1827873e-10,,0.1434
-g3 cuádruple,4,2.8,M2,estancamiento w=x,1,4,0,5.8263768e-5,8.7311491e-11,,0.1597
-g3 cuádruple,4,2.8,Newton modificado,maximo de iteraciones,100,101,100,5.0866863,977032.86,-0.3674452749398956,6.6232
-g3 cuádruple,4,2.8,Steffensen,fallo: pendiente nula,45,92,0,0.007325901,2.3179746e-7,-0.26097293058734455,3.3222
-g3 cuádruple,4,2.8,KK,maximo de iteraciones,100,301,0,2.4572741e-5,3.3469405e-10,-3.0631899016922675,29.6967
-g3 cuádruple,4,3.4,M1,estancamiento w=x,2,7,0,0.000118902,0.0,,0.3068
-g3 cuádruple,4,3.4,M2,estancamiento w=x,2,7,0,0.00016385864,3.5652192e-10,,0.3122
-g3 cuádruple,4,3.4,Newton modificado,maximo de iteraciones,100,101,100,11.834476,3.1291531e+9,0.3551414489153367,6.7586
-g3 cuádruple,4,3.4,Steffensen,maximo de iteraciones,100,201,0,0.0023322762,1.8771971e-9,-3.0440031293868737,7.304
-g3 cuádruple,4,3.4,KK,maximo de iteraciones,100,301,0,0.00092411263,1.4241549e-10,-3.4184143036561654,28.5251
+g1 doble,2,1.9,M1,convergio,5,16,0,1.3237786e-35,5.2571697e-72,8.80507036974266,0.9141
+g1 doble,2,1.9,M2,estancamiento w=x,4,13,0,2.033342e-50,1.2403439e-101,,0.6163
+g1 doble,2,1.9,Newton modificado,convergio,8,9,8,1.6913901e-57,8.5824009e-116,1.9999999928804488,0.3623
+g1 doble,2,1.9,Steffensen,convergio,8,17,0,1.7731236e-57,9.4319018e-116,1.9999999928363192,0.4616
+g1 doble,2,1.9,KK,fallo: pendiente secante nula,4,14,0,1.0097648e-53,3.0588751e-108,,0.784
+g1 doble,2,3.0,M1,fallo: pendiente secante nula,5,17,0,3.3358519e-30,3.3383724e-61,,0.8426
+g1 doble,2,3.0,M2,estancamiento w=x,5,16,0,1.5589612e-52,7.2910802e-106,,0.8671
+g1 doble,2,3.0,Newton modificado,convergio,10,11,10,2.6148695e-62,2.0512628e-125,1.9999999983592878,0.4878
+g1 doble,2,3.0,Steffensen,convergio,10,21,0,5.519647e-61,9.1399508e-123,1.9999999975442335,0.6514
+g1 doble,2,3.0,KK,convergio,6,19,0,1.6281571e-55,7.9526864e-112,5.91120064484155,1.0576
+g2 Planck triple,3,5.3,M1,estancamiento w=x,2,7,0,2.0732668e-28,6.4090214e-86,,0.2981
+g2 Planck triple,3,5.3,M2,estancamiento w=x,2,7,0,9.7158488e-29,6.5958139e-87,,0.3073
+g2 Planck triple,3,5.3,Newton modificado,convergio,5,6,5,1.4470664e-71,2.1791722e-215,1.9999999985068524,0.3467
+g2 Planck triple,3,5.3,Steffensen,convergio,5,11,0,1.4872815e-71,2.3659508e-215,1.999999998510426,0.3359
+g2 Planck triple,3,5.3,KK,convergio,3,10,0,9.9128727e-117,7.0052676e-351,3.9680470654440128,0.5238
+g2 Planck triple,3,10.0,M1,estancamiento w=x,3,10,0,4.0963733e-69,4.9433884e-208,,0.5152
+g2 Planck triple,3,10.0,M2,estancamiento w=x,3,10,0,1.281263e-69,1.5126588e-209,,0.4512
+g2 Planck triple,3,10.0,Newton modificado,convergio,6,7,6,4.1303476e-102,5.0674089e-307,1.9999999999998401,0.4573
+g2 Planck triple,3,10.0,Steffensen,convergio,6,13,0,1.9159852e-51,5.0582772e-155,2.00007192701746,0.3802
+g2 Planck triple,3,10.0,KK,estancamiento w=x,3,10,0,4.3944694e-69,6.1030296e-208,,0.4724
+g3 cuádruple,4,2.8,M1,convergio,3,10,0,3.7131159e-18,1.5207017e-68,16.137212219762798,0.7337
+g3 cuádruple,4,2.8,M2,convergio,3,10,0,5.4181947e-19,6.8945897e-72,33.265489232062926,0.6471
+g3 cuádruple,4,2.8,Newton modificado,convergio,8,9,8,2.4086254e-57,1.3514061e-145,-6737775838202767.0,0.6244
+g3 cuádruple,4,2.8,Steffensen,convergio,6,13,0,8.0225234e-23,3.3138584e-87,0.8141218011542014,0.5691
+g3 cuádruple,4,2.8,KK,convergio,4,13,0,1.0589989e-39,2.5026039e-145,8.449754910069096,1.4073
+g3 cuádruple,4,3.4,M1,convergio,4,13,0,2.1625106e-17,1.7495364e-65,14.168361764133607,0.8177
+g3 cuádruple,4,3.4,M2,convergio,4,13,0,3.8966899e-17,1.8444775e-64,23.524125319595594,0.8871
+g3 cuádruple,4,3.4,Newton modificado,convergio,6,7,6,1.5879078e-54,5.0052077e-147,1.999999938672323,0.5525
+g3 cuádruple,4,3.4,Steffensen,convergio,6,13,0,3.6573242e-26,1.4313434e-100,6.759846090966715,0.6138
+g3 cuádruple,4,3.4,KK,convergio,6,19,0,3.2226481e-47,1.0010415e-146,10.253145930017135,1.9247
