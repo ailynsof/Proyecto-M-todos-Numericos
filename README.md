@@ -1,43 +1,31 @@
-# Proyecto Integrador - Métodos Numéricos
+# Proyecto Integrador — Métodos Numéricos
+
+## Equipo
+
+Ailyn Sofía Gómez Rodríguez, Julián Camilo Jiménez y Julián Steven Duarte.
+
+## Artículo base
+
+*Derivative-free optimal multiple-root finding family of iterative methods*, J. H. Jerezano, F. I. Chicharro y N. Garrido-Sáez (2026).
 
 **Universidad Externado de Colombia**  
-**Pregrado en Ciencia de Datos**  
-**Asignatura:** Métodos Numéricos  
+**Pregrado en Ciencia de Datos · 2026-2**
 
----
+## Tema
 
-## 👥 Integrantes del Equipo
-- **Ailyn Gómez**
-- **Julián Jiménez**
-- **Julián Duarte**
+Implementación y análisis de métodos iterativos para hallar raíces múltiples, a partir del artículo *Derivative-free optimal multiple-root finding family of iterative methods* de Jerezano, Chicharro y Garrido-Sáez (2026).
 
----
+## Estructura del repositorio
 
-## 📄 Artículo Base
-* **Título:** *Derivative-free optimal multiple-root finding family of iterative methods*
-* **Autores:** Julissa H. Jerezano, Francisco I. Chicharro, Neus Garrido-Sáez (2026)
-* **Revista:** *Computational and Applied Mathematics*, 45:304.
+- `docs/`: guía del proyecto, rúbrica y artículo científico.
+- `materiales_teams/`: materiales de clase y notebooks de referencia.
+- `primera entrega/`: archivos de la primera fase.
+- `segunda entrega/README.md`: mapa de carpetas, requisitos y pasos de ejecución.
+- `segunda entrega/entregables/`: notebook y fuente LaTeX de la segunda entrega.
+- `segunda entrega/planificacion/`: plan de implementación.
+- `segunda entrega/resultados/`: CSV exportados por el notebook.
+- `segunda entrega/desarrollo/`: utilidad para ejecutar el notebook y borrador antiguo archivado.
 
----
+## Entregables
 
-## 📁 Estructura del Repositorio
-
-```
-.
-├── docs/                      # Documentación del proyecto y PDFs de referencia
-│   ├── Proyecto Integrador Métodos Numéricos.pdf
-│   └── 7. Derivative-free optimal multiple-root finding family of iterative methods.pdf
-├── informe/                   # Informe escrito en un único archivo LaTeX
-│   └── main.tex               # Único archivo LaTeX (portada e informe completo)
-├── materiales_teams/          # Materiales de clase e insumos del equipo
-│   ├── Presentaciones de Clase/
-│   └── Script en Python/
-├── src/                       # Código fuente e implementaciones en Python
-└── README.md                  # Descripción del repositorio
-```
-
----
-
-## 🚀 Fase Actual: Primera Entrega (Fase 1)
-- **Comprensión del artículo base y formulación del problema computacional.**
-- Único archivo `informe/main.tex` configurado de momento únicamente con la portada institucional.
+Los dos archivos principales están en `segunda entrega/entregables/`. Para reproducir las tablas, la prueba de sensibilidad y el informe, siga [las instrucciones de la segunda entrega](segunda%20entrega/README.md).

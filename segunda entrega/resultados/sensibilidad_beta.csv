@@ -1,0 +1,37 @@
+problema,semilla,beta,metodo,estado,iteraciones,error_abs,residuo
+g1 doble,1.9,0.001,M1,convergio,5,1.3237058e-35,5.2565915e-72
+g1 doble,1.9,0.001,M2,estancamiento w=x,4,2.0335165e-50,1.2405568e-101
+g1 doble,1.9,0.01,M1,convergio,5,1.3237786e-35,5.2571697e-72
+g1 doble,1.9,0.01,M2,estancamiento w=x,4,2.033342e-50,1.2403439e-101
+g1 doble,1.9,1.0,M1,convergio,5,1.3318084e-35,5.3211408e-72
+g1 doble,1.9,1.0,M2,estancamiento w=x,4,2.0142158e-50,1.2171195e-101
+g1 doble,3.0,0.001,M1,fallo: pendiente nula,5,8.4831368e-31,2.1589083e-62
+g1 doble,3.0,0.001,M2,estancamiento w=x,5,4.6705423e-51,6.5441896e-103
+g1 doble,3.0,0.01,M1,fallo: pendiente nula,5,3.3358519e-30,3.3383724e-61
+g1 doble,3.0,0.01,M2,estancamiento w=x,5,1.5589612e-52,7.2910802e-106
+g1 doble,3.0,1.0,M1,convergio,7,4.2123794e-35,5.3232422e-71
+g1 doble,3.0,1.0,M2,maximo de iteraciones,100,1.5336311,3.6776987
+g2 Planck triple,5.3,0.001,M1,estancamiento w=x,2,2.0732871e-28,6.4092099e-86
+g2 Planck triple,5.3,0.001,M2,estancamiento w=x,2,9.7159663e-29,6.5960531e-87
+g2 Planck triple,5.3,0.01,M1,estancamiento w=x,2,2.0732668e-28,6.4090214e-86
+g2 Planck triple,5.3,0.01,M2,estancamiento w=x,2,9.7158488e-29,6.5958139e-87
+g2 Planck triple,5.3,1.0,M1,estancamiento w=x,2,2.0710318e-28,6.3883165e-86
+g2 Planck triple,5.3,1.0,M2,estancamiento w=x,2,9.7029359e-29,6.5695502e-87
+g2 Planck triple,10.0,0.001,M1,estancamiento w=x,3,3.9435772e-70,4.410595e-211
+g2 Planck triple,10.0,0.001,M2,estancamiento w=x,3,1.3585254e-70,1.8031401e-212
+g2 Planck triple,10.0,0.01,M1,estancamiento w=x,3,4.0963733e-69,4.9433884e-208
+g2 Planck triple,10.0,0.01,M2,estancamiento w=x,3,1.281263e-69,1.5126588e-209
+g2 Planck triple,10.0,1.0,M1,estancamiento w=x,4,6.5462644e-39,2.0174686e-117
+g2 Planck triple,10.0,1.0,M2,estancamiento w=x,4,9.390584e-32,5.9553042e-96
+g3 cuádruple,2.8,0.001,M1,convergio,3,2.9617525e-18,6.1558076e-69
+g3 cuádruple,2.8,0.001,M2,convergio,3,3.0435167e-19,6.8642444e-73
+g3 cuádruple,2.8,0.01,M1,convergio,3,3.7131159e-18,1.5207017e-68
+g3 cuádruple,2.8,0.01,M2,convergio,3,5.4181947e-19,6.8945897e-72
+g3 cuádruple,2.8,1.0,M1,estancamiento w=x,4,3.7079224e-45,1.1511978e-145
+g3 cuádruple,2.8,1.0,M2,estancamiento w=x,4,8.8416826e-46,8.5088532e-146
+g3 cuádruple,3.4,0.001,M1,convergio,4,2.4114912e-16,2.7054076e-61
+g3 cuádruple,3.4,0.001,M2,convergio,4,7.2758358e-16,2.2419274e-59
+g3 cuádruple,3.4,0.01,M1,convergio,4,2.1625106e-17,1.7495364e-65
+g3 cuádruple,3.4,0.01,M2,convergio,4,3.8966899e-17,1.8444775e-64
+g3 cuádruple,3.4,1.0,M1,maximo de iteraciones,100,0.67376376,4.8204069
+g3 cuádruple,3.4,1.0,M2,maximo de iteraciones,100,0.44740717,1.7035171
