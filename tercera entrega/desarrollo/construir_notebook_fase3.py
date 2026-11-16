@@ -66,7 +66,7 @@ $$x_{k+1} = x_k - m H(t_k) \\frac{g(x_k)}{D_k}$$
 La conjetura de Kung-Traub establece que un método iterativo multipaso sin memoria que realiza $d$ evaluaciones funcionales por iteración puede alcanzar un orden de convergencia máximo de $p \\le 2^{d-1}$. 
 La familia de Jerezano et al. evalúa 3 valores de función ($g(x_k), g(w_k), g(y_k)$) y ninguna derivada, alcanzando un orden óptimo $p = 2^{3-1} = 4$. Su índice de eficiencia es:
 $$\\mathcal{I} = p^{1/d} = 4^{1/3} \\approx 1.587$$
-superando ampliamente a Newton modificado ($p=2, d=2, \\mathcal{I} = 2^{1/2} \\approx 1.414$).
+superando ampliamente a Newton modificado ($p=2, d=2, \\mathcal{I} = 2^{1/2} \\approx 1.414$). Estos índices son medidas teóricas de eficiencia basadas en el orden de convergencia y el número de evaluaciones funcionales por iteración; no implican necesariamente menores tiempos de ejecución en una implementación concreta.
 
 Estudiaremos las dos funciones de ponderación $H(t)$ presentadas en el artículo:
 - **Variante $M_1$ (Polinomial cuadrática):** $H_1(t) = 1 + t + 2t^2$
@@ -332,8 +332,9 @@ En el artículo original, los autores utilizan **Matlab R2022b con aritmética d
 $$|x_{k+1} - x_k| + |g(x_k)| < 10^{-200}$$
 
 En nuestra implementación, operamos con **150 dígitos decimales y tolerancia dual $10^{-25}$**:
-- En $g_1$ con $x_0=1.9$, $M_1$ alcanza la tolerancia en solo 5 iteraciones (frente a 7 en el artículo), debido a que nuestra cota de parada ($10^{-25}$) se satisface antes de alcanzar el régimen de $10^{-200}$.
-- Para $M_2$ y $KK$, se observa que la perturbación $w_k = x_k + \\beta g(x_k)^2$ o la pendiente secante se aproxima a cero antes de satisfacer el paso residual conjunto, lo que ilustra el fenómeno de absorción numérica cuando la precisión de máquina no es de miles de dígitos.
+- En $g_1$ con $x_0=1.9$, $M_1$ alcanza la tolerancia en 5 iteraciones (frente a 7 en el artículo), debido a que nuestra cota de parada ($10^{-25}$) se satisface antes de alcanzar el régimen de $10^{-200}$.
+- Para $g_3$ ($x_0=2.8$), el artículo reporta 5 iteraciones en M1 y M2, mientras que nuestra implementación satisface el criterio dual de terminación en 3 iteraciones. Sin embargo, las aproximaciones obtenidas presentan errores absolutos superiores a la tolerancia establecida. Por tanto, esta diferencia en el número de iteraciones no representa una convergencia efectiva a la precisión deseada, sino una terminación anticipada según el criterio operativo utilizado.
+- Para $M_2$ y $KK$ en ciertos casos, la perturbación $\beta g(x_k)^2$ resulta demasiado pequeña para modificar la representación numérica de $x_k$ bajo la precisión configurada, como confirma la igualdad computacional $w_k=x_k$, forzando una detención controlada. Aunque la aproximación obtenida presenta un error absoluto muy pequeño, 150 dígitos no permiten sostener la perturbación frente a los 4000 dígitos del artículo.
 """))
 
 # ==============================================================================
