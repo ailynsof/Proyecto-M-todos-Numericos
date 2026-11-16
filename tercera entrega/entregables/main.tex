@@ -62,7 +62,7 @@ Usamos las funciones de prueba descritas en el artículo:
 \begin{enumerate}
 \item El polinomio cúbico $g_1(x)=x^3-5.22x^2+9.0825x-5.2675$, derivado de la ecuación de Van der Waals, con raíz doble objetivo en $\alpha_1 = 1.75$ ($m=2$) y una raíz simple vecina en $\alpha_2 = 1.72$. Semillas de prueba: $x_0 \in \{1.9, 3.0\}$.
 \item La función $g_2(x)=(e^{-x}-1+x/5)^3$, correspondiente a la ecuación de radiación de Planck elevada al cubo, con una raíz triple positiva en $\alpha \approx 4.96511423$ ($m=3$). El término lineal es $x/5$, no $x^3/5$. La función también se anula en cero, pero esa raíz no es la que se analiza con las semillas escogidas ($x_0 \in \{5.3, 10.0\}$).
-\item El polinomio $g_3(x)$ de grado nueve derivado de los valores propios de una matriz de tamaño $9\times 9$, con una raíz de multiplicidad cuatro en $\alpha = 3$ ($m=4$). Semillas: $x_0 \in \{2.8, 3.5\}$.
+\item El polinomio $g_3(x)$ de grado nueve derivado de los valores propios de una matriz de tamaño $9\times 9$, con una raíz de multiplicidad cuatro en $\alpha = 3$ ($m=4$). Semillas: $x_0 \in \{2.8, 3.4\}$. En el artículo original los autores evalúan $x_0 = 3.4$ (donde M1 y M2 convergen en 4 iteraciones bajo nuestra tolerancia). Adicionalmente, el cuaderno evalúa la semilla más alejada $x_0 = 3.5$ como caso de estrés diagnóstico, donde las perturbaciones quedan fuera de la cuenca inmediata y alcanzan el límite de iteraciones.
 \end{enumerate}
 
 Las funciones y semillas son deterministas, por lo que no hay muestreo aleatorio ni semillas pseudoaleatorias que controlar. Las raíces conocidas se usan únicamente para medir el error absoluto; los solucionadores no reciben esa solución.
