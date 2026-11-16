@@ -132,7 +132,7 @@ PROBLEMAS = {
                          - 70652*x**3 + 47781*x**2 + 13986*x - 24732),
         "m": 4,
         "alpha": mpf("3.0"),
-        "semillas": [mpf("2.8"), mpf("3.5")]
+        "semillas": [mpf("2.8"), mpf("3.4"), mpf("3.5")]
     }
 }
 print(f"Problemas inicializados: {len(PROBLEMAS)}")
@@ -307,7 +307,7 @@ for pkey, prob in PROBLEMAS.items():
                 "Problema": pkey, "m": prob["m"], "x0": str(x0), "Metodo": met,
                 "Iter": r["iter"], "g_eval": r["g_evals"], "dg_eval": r["dg_evals"],
                 "Error_abs": f"{float(r['err_abs']):.2e}",
-                "Residuo": f"{float(r['residuo']):.2e}",
+                "Residuo": mp.nstr(r["residuo"], 3) if float(r["residuo"]) == 0 and r["residuo"] > 0 else f"{float(r['residuo']):.2e}",
                 "ACOC": f"{r['acoc']:.2f}" if r["acoc"] else "-",
                 "Tiempo_ms": f"{t_prom*1000:.2f}", "Estado": r["estado"]
             })
@@ -515,8 +515,8 @@ El desarrollo de este proyecto integrador se realizó bajo las normas de integri
 
 ### Referencias Bibliográficas
 1. J. H. Jerezano, F. I. Chicharro, N. Garrido-Sáez, *Derivative-free optimal multiple-root finding family of iterative methods*, **Computational and Applied Mathematics**, vol. 45, art. 304, 2026. DOI: [10.1007/s40314-026-03702-8](https://doi.org/10.1007/s40314-026-03702-8).
-2. P. R. Turner, T. Arildsen, K. Kavanagh, *Applied Scientific Computing: With Python*, Springer, Cham, 2018.
-3. J. F. Traub, *Iterative Methods for the Solution of Equations*, Prentice-Hall, Englewood Cliffs, NJ, 1964.
+2. S. Kumar, D. Kumar, J. R. Sharma, C. Cesarano, P. Agarwal, Y. M. Chu, *An optimal fourth order derivative-free numerical algorithm for multiple roots*, **Symmetry**, 12(6): 1038, 2020. DOI: [10.3390/sym12061038](https://doi.org/10.3390/sym12061038).
+3. P. R. Turner, T. Arildsen, K. Kavanagh, *Applied Scientific Computing: With Python*, Springer, Cham, 2018.
 4. H. T. Kung, J. F. Traub, *Optimal order of one-point and multipoint iteration*, **Journal of the ACM**, 21(4): 643–651, 1974.
 5. Universidad Externado de Colombia, Departamento de Matemáticas, *Guía del Proyecto Integrador: Métodos Numéricos*, 2026.
 """))

@@ -51,7 +51,7 @@ PROBLEMAS = {
                          - 70652*x**3 + 47781*x**2 + 13986*x - 24732),
         "m": 4,
         "alpha": mpf("3.0"),
-        "semillas": [mpf("2.8"), mpf("3.5")]
+        "semillas": [mpf("2.8"), mpf("3.4"), mpf("3.5")]
     }
 }
 
@@ -303,6 +303,8 @@ casos_articulo = [
     ("g2 (m=3)", "Ley de Planck al cubo (g2)", "5.3", "KK", 5, 4.0),
     ("g3 (m=4)", "Polinomio grado 9 (g3)", "2.8", "M1", 4, 4.0),
     ("g3 (m=4)", "Polinomio grado 9 (g3)", "2.8", "M2", 4, 4.0),
+    ("g3 (m=4)", "Polinomio grado 9 (g3)", "3.4", "M1", 6, 4.0),
+    ("g3 (m=4)", "Polinomio grado 9 (g3)", "3.4", "M2", 6, 4.0),
     ("g3 (m=4)", "Polinomio grado 9 (g3)", "3.5", "M1", 4, 4.0),
 ]
 comparativa = []
