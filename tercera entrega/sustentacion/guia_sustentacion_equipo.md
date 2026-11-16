@@ -106,33 +106,33 @@
 ### Diapositiva 5: 4. Estabilidad y Dinámica Compleja en $\mathbb{C}$ (Sección 3)
 * **Tiempo asignado:** 1:45 min (04:00 – 05:45)
 * **Lo que debe decir Julián Duarte:**
-> *"Muchas gracias, Ailyn. Entrando en nuestra sección metodológica, el primer desafío fue comprender cómo afecta el parámetro libre $\beta$ a la estabilidad del método. Siguiendo la Sección 3 del artículo, analizamos el comportamiento en el plano complejo sobre el polinomio cuadrático canónico con raíz doble: $p(z) = (z-1)^2$, donde $m=2$.*
+> *"Muchas gracias, Ailyn. Pasando a la parte que desarrollamos nosotros como equipo, el primer reto fue entender qué le pasa realmente al método cuando cambiamos el valor de $\beta$. Los autores en el artículo decían que $\beta=0.01$ era una buena elección, pero queríamos comprobarlo nosotros mismos en la práctica.*
 > 
-> *Al aplicar el esquema iterativo a este polinomio, se obtiene un operador racional de punto fijo $z_{k+1} = R(z, \beta)$. En la raíz exacta $z^* = 1$, la derivada del operador vale exactamente cero: $R'(1, \beta) = 0$. Esto demuestra formalmente que la raíz es un punto fijo superatractor, lo que garantiza convergencia local de orden superior en una vecindad de la solución.*
+> *Para eso, nos fuimos al plano complejo y tomamos el caso de prueba más sencillo posible: el polinomio $p(z)=(z-1)^2$, que tiene una raíz doble en $z=1$. Cuando metemos este polinomio en las fórmulas de M1 y M2, obtenemos una función racional de punto fijo. Lo primero que verificamos matemáticamente es que en la raíz la derivada da exactamente cero ($R'(1)=0$). ¿Qué significa esto en palabras sencillas? Que la raíz es un 'superatractor': si arrancamos lo suficientemente cerca de ella, el método va a converger con muchísima velocidad.*
 > 
-> *Para contrastar empíricamente la estabilidad, programamos una malla computacional uniforme de $350 \times 350$ puntos en el dominio acotado $[-2, 2] \times [-2, 2]$ con un límite de 30 iteraciones, comparando M1 y M2 bajo dos valores: $\beta = 0.01$ (recomendado por los autores) y $\beta = 1.0$ (ensayado en nuestra experimentación).*
+> *Pero la verdadera pregunta era: ¿qué tan cerca hay que arrancar? ¿Qué tan grande es esa zona segura? Para responderlo, programamos en Python una cuadrícula de 350 por 350 puntos en el plano complejo, entre -2 y 2 en ambas direcciones, y pusimos a correr los métodos con un tope de 30 iteraciones.*
 > 
-> *Como observamos en las figuras generadas por nuestro código, con $\beta = 0.01$ una mayor proporción de puntos alcanza el criterio de convergencia en la malla examinada, mostrando cuencas homogéneas. En cambio, con $\beta = 1.0$, aumentan visiblemente los puntos oscuros que no convergen dentro de 30 pasos.*
+> *El resultado lo pueden ver en pantalla: con $\beta = 0.01$ (el valor del artículo), casi todo el plano se pinta de colores claros, lo que significa que desde casi cualquier punto inicial el método encuentra la raíz sin problema. Pero miren lo que pasa cuando subimos $\beta$ a 1.0: el plano se llena de manchas oscuras, que son zonas donde el método no alcanzó a converger en los 30 pasos.*
 > 
-> *Queremos mantener una postura de rigor científico: este ensayo visual delimita cuencas de atracción numéricas finitas bajo una discretización específica; no constituye una demostración formal de caos ni una caracterización analítica completa de los conjuntos de Fatou y Julia."*
+> *Aquí queremos ser muy sinceros y cuidadosos con el lenguaje: este mapa nos muestra un comportamiento numérico muy claro para esta ventana en particular. No estamos diciendo que hayamos demostrado formalmente un fractal o un conjunto de Julia, pero sí comprobamos experimentalmente por qué usar un $\beta$ pequeño como 0.01 hace que el método sea mucho más estable y confiable."*
 
 ---
 
 ### Diapositiva 6: 5. Metodología Computacional y Manejo de Patologías
 * **Tiempo asignado:** 1:45 min (05:45 – 07:30)
 * **Lo que debe decir Julián Duarte:**
-> *"Al trasladar la teoría a una implementación ejecutable y reproducible en Python, establecimos un diseño numérico estricto para evitar sesgos y controlar fallos de hardware:*
+> *"Una vez entendida la estabilidad, el siguiente paso fue llevar toda esta teoría a código real en Python de forma completamente transparente y reproducible. Y aquí nos enfrentamos a tres decisiones fundamentales de diseño:*
 > 
-> *Primero, configuramos la biblioteca `mpmath` con aritmética de 150 dígitos decimales (`dps = 150`), construyendo todas las constantes decimales directamente desde cadenas de texto para erradicar cualquier error de redondeo binario de punto flotante.*
+> *La primera fue la precisión. Para estudiar un método de orden cuatro no podíamos quedarnos con la precisión estándar de 64 bits de la máquina, porque el redondeo nos iba a cortar la convergencia antes de tiempo. Por eso configuramos la biblioteca `mpmath` con 150 dígitos decimales y definimos todas las constantes desde texto, asegurándonos de que ningún error de redondeo binario interfiriera con los cálculos.*
 > 
-> *Segundo, establecimos un criterio de parada dual estricto: en raíces múltiples, evaluar únicamente el residuo es engañoso, porque el residuo decrece aproximadamente como $(x-\alpha)^m$. Si $m=4$, una distancia moderada de $10^{-7}$ ya produce un residuo minúsculo de $10^{-28}$. Por ello, nuestro solucionador exige simultáneamente dos condiciones:*
+> *La segunda decisión fue el criterio de parada. En raíces múltiples hay una trampa muy común: como la curva cerca de la raíz es casi plana, el residuo de la función se vuelve diminuto mucho antes de que el valor de $x$ realmente haya llegado a la solución. Por ejemplo, con multiplicidad 4, si todavía estamos a una distancia de $10^{-7}$, el residuo ya puede parecer de $10^{-28}$. Si nos confiáramos solo del residuo, pararíamos demasiado pronto. Por eso exigimos un criterio dual estricto: tanto el cambio en $x$ como el valor de la función deben ser menores a $10^{-25}$ al mismo tiempo:*
 > $$|\Delta x_k| = |x_{k+1} - x_k| < 10^{-25} \quad \text{y} \quad |g(x_{k+1})| < 10^{-25}$$
 > 
-> *Tercero, y este fue uno de nuestros aportes metodológicos más importantes: auditamos el fenómeno de absorción numérica en precisión finita. Como la perturbación es cuadrática en el residuo, cuando $\beta [g(x_k)]^2$ es tan pequeña que, al sumarse a $x_k$, la mantisa de precisión finita produce el mismo valor representable, el código detecta la igualdad computacional $w_k = x_k$.*
+> *Y la tercera decisión, que consideramos uno de los aportes más valiosos de nuestro trabajo, fue cómo manejar los límites numéricos. En estos métodos sin derivadas, la perturbación que usamos suma $\beta$ por la función al cuadrado. Cuando nos acercamos mucho a la raíz, ese término se vuelve tan microscópico que, al sumarse con $x$, la máquina ya no nota la diferencia y produce $w=x$ por absorción de punto flotante.*
 > 
-> *Si continuáramos, la secante se dividiría por cero ($w_k - x_k = 0$). En lugar de ocultar esto o reemplazarlo artificialmente por una derivada analítica, nuestro algoritmo diagnostica la igualdad y detiene controladamente la corrida clasificándola de forma honesta como `Estancamiento w=x`.*
+> *Si continuáramos como si nada, el denominador de la secante daría cero y el programa colapsaría. En lugar de esconder ese fallo o hacer trampa cambiando a una derivada, nuestro código detecta la igualdad exacta $w=x$, detiene la corrida de forma segura y la reporta con total honestidad en las tablas como `Estancamiento w=x`.*
 > 
-> *A continuación, mi compañero Julián Jiménez presentará los resultados experimentales, la comparación con el paper y las conclusiones."*
+> *Con estas reglas claras y este entorno controlado, le doy la palabra a mi compañero Julián Jiménez para que les muestre qué encontramos al correr los benchmarks y compararnos con el paper."*
 
 ---
 
@@ -216,7 +216,7 @@
 | Pregunta del Docente | Integrante que responde | Respuesta Técnica Concreta |
 | :--- | :---: | :--- |
 | **¿Por qué Newton clásico pierde orden cuadrático ante multiplicidad $m$?** | **Ailyn** | Por la expansión de Taylor: cerca de $\alpha$, $g(x)\approx \frac{g^{(m)}(\alpha)}{m!}(x-\alpha)^m$ y $g'(x)\approx \frac{g^{(m)}(\alpha)}{(m-1)!}(x-\alpha)^{m-1}$. El cociente da $\frac{1}{m}(x-\alpha)$, y el error resulta $x_{k+1}-\alpha = \frac{m-1}{m}(x_k-\alpha)$, demostrando convergencia lineal con factor $(m-1)/m$. |
-| **¿Por qué se estancó M2 si el parámetro $\beta \neq 0$?** | **Julián Duarte** | $\beta \neq 0$ garantiza $w_k \neq x_k$ en $\mathbb{R}$, pero en aritmética finita de 150 dígitos, cuando el residuo decae a $10^{-86}$, la perturbación cuadrática $\beta g(x_k)^2 \approx 10^{-173}$ es menor que la resolución relativa de $x_k$. Al sumarse, la mantisa produce $w_k == x_k$ por absorción numérica. |
+| **¿Por qué se estancó M2 si el parámetro $\beta \neq 0$?** | **Julián Duarte** | Teóricamente, si $\beta \neq 0$, nunca tendríamos $w_k = x_k$. Pero en la computadora, incluso con 150 dígitos, cuando el residuo cae a $10^{-86}$, la perturbación cuadrática $\beta g(x_k)^2$ se vuelve tan diminuta (del orden de $10^{-173}$) que al sumarla con $x_k$ la máquina ya no la distingue y produce $w_k == x_k$ por absorción de punto flotante. Si continuáramos, la secante se dividiría por cero; por eso el algoritmo frena y reporta honestamente el estancamiento. |
 | **¿Por qué no clasificaron como 'Convergió' a $g_3$ si cumplió la tolerancia dual?** | **Julián Jiménez** | Porque cerca de $\alpha=3$, $g_3(x)\approx -80(x-3)^4$. Con un error real de $10^{-18}$, el residuo ya es $10^{-72}$ y el paso $10^{-60}$. Cumple formalmente la cota operativa dual de $10^{-25}$, pero el error frente a la raíz sigue siendo $10^{-18} > 10^{-25}$. Declarar convergencia plena sería un falso positivo metodológico. |
 | **¿El ACOC de 8.81 en M1 significa que el método es de orden 8?** | **Julián Jiménez** | No. El ACOC es una aproximación asintótica. Cuando un método converge en 3 o 4 pasos, la aceleración drástica distorsiona los cocientes logarítmicos, produciendo un valor espurio transitorio. Validamos la rutina en raíz simple donde arrojó $2.0000$ (Newton) y $1.6162$ (Secante). |
 | **¿Broyden reduce el costo por iteración a $O(n^2)$?** | **Julián Jiménez** | No totalmente. Broyden actualiza la matriz en $O(n^2)$ y evita evaluar $n^2$ derivadas parciales, pero en cada paso continúa resolviendo un sistema lineal denso, cuyo costo sigue siendo $O(n^3)$. |
