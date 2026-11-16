@@ -1,0 +1,268 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb,booktabs,graphicx}
+\graphicspath{{../resultados/}{./}}
+
+% Configuración de colores institucionales
+\definecolor{externado}{RGB}{140, 20, 20}
+\setbeamercolor{palette primary}{bg=externado,fg=white}
+\setbeamercolor{structure}{fg=externado}
+\setbeamercolor{titlelike}{parent=palette primary}
+
+\title[Proyecto Integrador -- M\'etodos Num\'ericos]{Familia \'Optima Libre de Derivadas para Ra\'ices M\'ultipliples}
+\subtitle{Implementaci\'on Computacional, Estabilidad Din\'amica y Extensi\'on Multidimensional}
+\author[A. G\'omez, J. Jim\'enez, J. Duarte]{
+  Ailyn Sof\'ia G\'omez Rodr\'iguez \and Juli\'an Camilo Jim\'enez \and Juli\'an Steven Duarte
+}
+\institute[U. Externado]{
+  Pregrado en Ciencia de Datos -- Departamento de Matem\'aticas\\
+  \textbf{Universidad Externado de Colombia}\\
+  Docente: Edwin Fernando Mu\~noz Chipatecua
+}
+\date{Noviembre de 2026}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 1: Portada
+% -----------------------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 2: El Problema de las Raíces Múltiples
+% -----------------------------------------------------------------------------
+\begin{frame}{1. El Problema: Ra\'ices M\'ultipliples y Degeneraci\'on de Newton}
+  \begin{itemize}
+    \item \textbf{Definici\'on:} Una ra\'iz $\alpha$ tiene multiplicidad $m > 1$ cuando $g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0$ con $g^{(m)}(\alpha) \neq 0$.
+    \item \textbf{Colapso del m\'etodo de Newton cl\'asico:}
+    $$x_{k+1} = x_k - \frac{g(x_k)}{g'(x_k)}$$
+    Como $g'(x) \to 0$ al acercarse a la ra\'iz, Newton pierde su orden cuadr\'atico ($p=2$) y decae a \textbf{convergencia lineal lenta} ($p=1$), con raz\'on asint\'otica:
+    $$\lim_{k\to\infty} \frac{|x_{k+1}-\alpha|}{|x_k-\alpha|} = \frac{m-1}{m} < 1$$
+    \item \textbf{Soluci\'on cl\'asica:} Newton modificado $x_{k+1} = x_k - m \frac{g(x_k)}{g'(x_k)}$ restaura $p=2$, pero requiere calcular la derivada anal\'itica $g'(x)$, que suele ser inaccesible o computacionalmente prohibitiva.
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 3: El Artículo Base y la Familia Propuesta
+% -----------------------------------------------------------------------------
+\begin{frame}{2. Art\'iculo Base: Jerezano, Chicharro y Garrido-S\'aez (2026)}
+  \begin{block}{Esquema de Dos Pasos Libre de Derivadas (Jerezano et al., 2026)}
+    \begin{align*}
+      w_k &= x_k + \beta [g(x_k)]^2, \quad \beta \in \mathbb{R}\setminus\{0\}\\
+      D_k &= g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k} \quad \text{(secante con paso cuadr\'atico)}\\
+      y_k &= x_k - m \frac{g(x_k)}{D_k}\\
+      t_k &= \left(\frac{g(y_k)}{g(x_k)}\right)^{1/m} = \exp\left(\frac{1}{m}\mathrm{Ln}\left(\frac{g(y_k)}{g(x_k)}\right)\right) \quad \text{(rama principal continua)}\\
+      x_{k+1} &= x_k - m H(t_k) \frac{g(x_k)}{D_k}
+    \end{align*}
+  \end{block}
+  \begin{itemize}
+    \item \textbf{Variante M1 (Polinomial):} $H_1(t) = 1 + t + 2t^2$
+    \item \textbf{Variante M2 (Racional):} $H_2(t) = \frac{1-t}{1-2t}$
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 4: Optimalidad de Kung-Traub
+% -----------------------------------------------------------------------------
+\begin{frame}{3. Conjetura y Optimalidad de Kung-Traub}
+  \begin{columns}
+    \column{0.55\textwidth}
+    \begin{block}{Conjetura de Kung-Traub (1974)}
+      El orden de convergencia m\'aximo de un m\'etodo iterativo multipaso sin memoria con $d$ evaluaciones funcionales es:
+      $$p \le 2^{d-1}$$
+    \end{block}
+    \begin{itemize}
+      \item En la familia de Jerezano et al., se eval\'uan solo 3 funciones escalares ($g(x_k), g(w_k), g(y_k)$) y \textbf{cero derivadas}.
+      \item Orden \'optimo alcanzado: $p = 2^{3-1} = 4$.
+    \end{itemize}
+    \column{0.45\textwidth}
+    \textbf{\'Indice de Eficiencia Computacional:}
+    $$\mathcal{I} = p^{1/d}$$
+    \begin{table}
+      \centering\small
+      \begin{tabular}{lccc}
+        \toprule
+        M\'etodo & $p$ & $d$ & $\mathcal{I}$ \\
+        \midrule
+        Newton est\'andar & 1 & 2 & 1.000 \\
+        Newton modificado & 2 & 2 & 1.414 \\
+        Steffensen mod. & 2 & 2 & 1.414 \\
+        \textbf{Familia M1 / M2} & \textbf{4} & \textbf{3} & \textbf{1.587} \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+    \vspace{0.2cm}
+    \alert{Supera ampliamente a las líneas base del curso.}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 5: Dinámica Compleja y Planos de Estabilidad
+% -----------------------------------------------------------------------------
+\begin{frame}{4. Estabilidad y Din\'amica Compleja en $\mathbb{C}$ (Secci\'on 3)}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \includegraphics[width=\textwidth]{dinamica_compleja_m1_m2.png}
+    \column{0.5\textwidth}
+    \begin{itemize}
+      \item \textbf{Polinomio Can\'onico:} $p(z)=(z-1)^2$ ($m=2$).
+      \item \textbf{Operador Racional:} $R(z, \beta)$. En la ra\'iz $z^*=1$:
+      $$|R'(1, \beta)| = 0 \implies \text{\textbf{Superatractor}}$$
+      \item \textbf{Efecto del par\'ametro $\beta$:}
+      \begin{itemize}
+        \item $\beta = 0.01$ (propuesto): Cuencas amplias, lisas y globales hacia $z^*=1$.
+        \item $\beta = 1.0$: Fragmentaci\'on fractal, caos de Julia y atracci\'on a ciclos extra\~nos.
+      \end{itemize}
+      \item \alert{Justifica formalmente la selecci\'on de $\beta=0.01$.}
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 6: Diseño Experimental y Reproducibilidad
+% -----------------------------------------------------------------------------
+\begin{frame}{5. Dise\~no Experimental y Reproducibilidad en Python}
+  \begin{itemize}
+    \item \textbf{Aritm\'etica de Alta Precisi\'on:} Se fijan 150 d\'igitos (\texttt{mpmath.dps = 150}) para evitar redondeo prematuro y observar el r\'egimen asint\'otico real.
+    \item \textbf{Criterio Dual de Parada:} Exigencia simult\'anea en paso y residuo:
+    $$|x_{k+1} - x_k| < 10^{-25} \quad \text{y} \quad |g(x_{k+1})| < 10^{-25}$$
+    \item \textbf{Manejo de Patolog\'ias Num\'ericas implementado:}
+    \begin{itemize}
+      \item \texttt{Estancamiento w=x}: p\'erdida de perturbaci\'on por absorci\'on num\'erica.
+      \item \texttt{Pendiente secante nula}: cancelaci\'on catastr\'ofica o puntos cr\'iticos.
+      \item \texttt{Derivada nula}: protecci\'on en Newton modificado.
+      \item \texttt{Rama principal compleja}: continuidad univaluada en potencias fraccionarias $t_k$.
+    \end{itemize}
+    \item \textbf{Problemas Benchmark deterministas:}
+    \begin{enumerate}
+      \item $g_1(x) = x^3 - 5.22x^2 + 9.0825x - 5.2675$ (Van der Waals, $m=2$, ra\'iz $1.75$).
+      \item $g_2(x) = (e^{-x} - 1 + x/5)^3$ (Ley de Planck, $m=3$, ra\'iz $\approx 4.9651$).
+      \item $g_3(x)$ (Polinomio caracter\'istico $9\times 9$, $m=4$, ra\'iz $3.0$).
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 7: Resultados y Contraste con el Artículo
+% -----------------------------------------------------------------------------
+\begin{frame}{6. Resultados Experimentales y Contraste con el Art\'iculo}
+  \begin{table}
+    \centering\scriptsize
+    \begin{tabular}{llccrrrl}
+      \toprule
+      Problema & M\'etodo & $k$ (Paper) & $k$ (150 dps) & Error abs. & Residuo & ACOC & Estado \\
+      \midrule
+      $g_1$, $x_0=1.9$ & M1 & 7 & \textbf{5} & $1.32\times10^{-35}$ & $5.26\times10^{-72}$ & 8.81 & Convergi\'o \\
+      $g_1$, $x_0=1.9$ & M2 & 7 & \textbf{4} & $2.03\times10^{-50}$ & $1.24\times10^{-101}$ & -- & Estancamiento $w=x$ \\
+      $g_1$, $x_0=1.9$ & Newton mod. & -- & 8 & $1.69\times10^{-57}$ & $8.58\times10^{-116}$ & 2.00 & Convergi\'o \\
+      $g_1$, $x_0=1.9$ & Steffensen & -- & 8 & $1.77\times10^{-57}$ & $9.43\times10^{-116}$ & 2.00 & Convergi\'o \\
+      $g_1$, $x_0=1.9$ & KK & 6 & 4 & $1.01\times10^{-53}$ & $3.06\times10^{-108}$ & -- & Pendiente nula \\
+      \midrule
+      $g_3$, $x_0=2.8$ & M1 & 4 & \textbf{3} & $3.71\times10^{-18}$ & $1.52\times10^{-68}$ & -- & Convergi\'o \\
+      $g_3$, $x_0=2.8$ & M2 & 4 & \textbf{3} & $5.42\times10^{-19}$ & $6.89\times10^{-72}$ & -- & Convergi\'o \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{itemize}
+    \item \textbf{¿Por qu\'e menos iteraciones?} El art\'iculo exige tolerancia extrema $10^{-200}$ con 4000 d\'igitos en Matlab; con $10^{-25}$ se alcanza convergencia en 3 a 5 pasos.
+    \item \textbf{Absorci\'on en M2:} El decaimiento ultrarr\'apido de $\beta g(x_k)^2$ produce absorci\'on secante ($w=x$) antes de colapsar al residuo final en 150 d\'igitos.
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 8: Validación de ACOC
+% -----------------------------------------------------------------------------
+\begin{frame}{7. Validaci\'on de ACOC y Lecciones Epistemol\'ogicas}
+  \begin{columns}
+    \column{0.55\textwidth}
+    \begin{block}{C\'alculo de ACOC (Cordero \& Torregrosa, 2007)}
+      $$\mathrm{ACOC} \approx \frac{\log(|x_{k+1}-x_k|/|x_k-x_{k-1}|)}{\log(|x_k-x_{k-1}|/|x_{k-1}-x_{k-2}|)}$$
+    \end{block}
+    \begin{itemize}
+      \item \textbf{Validaci\'on can\'onica (Semana 9):}
+      \begin{itemize}
+        \item $f(x)=x^3-x-2=0$ (ra\'iz simple).
+        \item Newton ($p=2$ te\'orico) $\implies \mathrm{ACOC} \to 2.0000$.
+        \item Secante ($p \approx 1.618$ te\'orico) $\implies \mathrm{ACOC} \to 1.6162$.
+      \end{itemize}
+      \item \textbf{Comportamiento en ra\'ices m\'ultipliples:}
+      En 3 a 5 iteraciones no existe una cola asint\'otica suficiente; ACOC arroja valores espurios (ej. 8.81).
+    \end{itemize}
+    \column{0.45\textwidth}
+    \begin{alertblock}{Conclusi\'on Cr\'itica}
+      El orden experimental ACOC es una herramienta diagn\'ostica asint\'otica, \textbf{no una prueba infalible} de convergencia en pocas iteraciones.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 9: Extensión a Sistemas No Lineales
+% -----------------------------------------------------------------------------
+\begin{frame}{8. Extensi\'on a Sistemas No Lineales (Semana 9)}
+  \begin{itemize}
+    \item En sistemas $\mathbf{F}(\mathbf{x}) = \mathbf{0}$, la derivada escalar se generaliza a la matriz Jacobiana $\mathbf{J}(\mathbf{x}) \in \mathbb{R}^{n \times n}$.
+    \item \textbf{Newton Multivariable:} Resuelve $\mathbf{J}(\mathbf{x}_k)\mathbf{s}_k = -\mathbf{F}(\mathbf{x}_k)$ mediante factorizaci\'on $LU$ ($O(n^3)$ operaciones) y eval\'ua $n^2$ derivadas parciales en cada paso.
+  \end{itemize}
+  \begin{table}
+    \centering\small
+    \begin{tabular}{lcccc}
+      \toprule
+      M\'etodo & Iteraciones & Factorizaciones $LU$ & Evaluaciones derivadas & Residuo final \\
+      \midrule
+      Newton Multivariable & 5 & 5 ($O(n^3)$) & 20 ($n^2$ por paso) & $3.92\times 10^{-15}$ \\
+      Secante Multivariable (Broyden) & 10 & 0 (Rango 1, $O(n^2)$) & \textbf{0 (Libre de derivadas)} & $4.25\times 10^{-15}$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{block}{Impacto de la Familia \'Optima Libre de Derivadas}
+    Eliminar el ensamble expl\'icito de $\mathbf{J}(\mathbf{x})$ evita colapsos por matrices singulares ($\det(\mathbf{J}) \approx 0$) y reduce dr\'asticamente el costo en alta dimensi\'on.
+  \end{block}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 10: Aplicación en Ciencia de Datos y Optimización
+% -----------------------------------------------------------------------------
+\begin{frame}{9. Conexi\'on con Ciencia de Datos y Optimizaci\'on Num\'erica}
+  \begin{columns}
+    \column{0.55\textwidth}
+    \textbf{Condici\'on de Optimalidad de Primer Orden:}
+    $$\nabla L(\boldsymbol{\theta}) = \mathbf{0}$$
+    \begin{itemize}
+      \item En Machine Learning y Deep Learning, los paisajes de p\'erdida presentan mesetas degeneradas y puntos silla planos.
+      \item La matriz Hessiana $\mathbf{H}(\boldsymbol{\theta}) = \mathbf{J}(\nabla L)$ tiene autovalores nulos o casi nulos $\implies$ \textbf{Puntos cr\'iticos con multiplicidad $m > 1$}.
+      \item El descenso de gradiente y Newton cl\'asico se estancan en estas zonas.
+    \end{itemize}
+    \column{0.45\textwidth}
+    \begin{block}{Relevancia Metodol\'ogica}
+      Los esquemas acelerados con conocimiento o adaptaci\'on a multiplicidad $m$ y libres de segundas derivadas (Hessianas) son el fundamento de los optimizadores de segundo orden cuasi-Newton modernos.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+% Diapositiva 11: Conclusiones y Trabajo Futuro
+% -----------------------------------------------------------------------------
+\begin{frame}{10. Conclusiones y Trabajo Futuro}
+  \begin{itemize}
+    \item \textbf{Cumplimiento riguroso:} Se reprodujo, valid\'o y extendi\'o la familia \'optima libre de derivadas de Jerezano et al. (2026), logrando una soluci\'on num\'erica completa y reproducible.
+    \item \textbf{Estabilidad din\'amica en $\mathbb{C}$:} Se verific\'o computacionalmente la superioridad de $\beta=0.01$ en la preservaci\'on de cuencas de atracci\'on amplias y no ca\'oticas.
+    \item \textbf{Rigor conceptual:} Se identificaron y documentaron con transparencia los l\'imites de precisi\'on finita (absorci\'on $w=x$ y sensibilidad del ACOC).
+    \item \textbf{Trabajo futuro:}
+    \begin{enumerate}
+      \item Incorporar estimadores din\'amicos de la multiplicidad $m$ cuando esta es desconocida.
+      \item Extensi\'on tensorial del operador libre de derivadas para optimizaci\'on estoc\'astica a gran escala.
+    \end{enumerate}
+  \end{itemize}
+  \vspace{0.3cm}
+  \centering
+  \textbf{¡Muchas gracias! Preguntas y discusi\'on.}
+\end{frame}
+
+\end{document}
+
