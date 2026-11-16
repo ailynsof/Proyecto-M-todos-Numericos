@@ -13,7 +13,7 @@
 \setbeamercolor{structure}{fg=externado}
 \setbeamercolor{titlelike}{parent=palette primary}
 
-\title[Proyecto Integrador -- M\'etodos Num\'ericos]{Familia \'Optima Libre de Derivadas para Ra\'ices M\'ultipliples}
+\title[Proyecto Integrador -- M\'etodos Num\'ericos]{Familia \'Optima Libre de Derivadas para Ra\'ices M\'ultiples}
 \subtitle{Implementaci\'on Computacional, Estabilidad Din\'amica y Extensi\'on Multidimensional}
 \author[A. G\'omez, J. Jim\'enez, J. Duarte]{
   Ailyn Sof\'ia G\'omez Rodr\'iguez \and Juli\'an Camilo Jim\'enez \and Juli\'an Steven Duarte
@@ -37,7 +37,7 @@
 % -----------------------------------------------------------------------------
 % Diapositiva 2: El Problema de las Raíces Múltiples
 % -----------------------------------------------------------------------------
-\begin{frame}{1. El Problema: Ra\'ices M\'ultipliples y Degeneraci\'on de Newton}
+\begin{frame}{1. El Problema: Ra\'ices M\'ultiples y Degeneraci\'on de Newton}
   \begin{itemize}
     \item \textbf{Definici\'on:} Una ra\'iz $\alpha$ tiene multiplicidad $m > 1$ cuando $g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0$ con $g^{(m)}(\alpha) \neq 0$.
     \item \textbf{Colapso del m\'etodo de Newton cl\'asico:}
@@ -191,7 +191,7 @@
         \item Newton ($p=2$ te\'orico) $\implies \mathrm{ACOC} \to 2.0000$.
         \item Secante ($p \approx 1.618$ te\'orico) $\implies \mathrm{ACOC} \to 1.6162$.
       \end{itemize}
-      \item \textbf{Comportamiento en ra\'ices m\'ultipliples:}
+      \item \textbf{Comportamiento en ra\'ices m\'ultiples:}
       En 3 a 5 iteraciones no existe una cola asint\'otica suficiente; ACOC arroja valores espurios (ej. 8.81).
     \end{itemize}
     \column{0.45\textwidth}

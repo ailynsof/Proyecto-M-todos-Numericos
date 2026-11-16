@@ -4,13 +4,13 @@
 \usepackage{amsmath,amssymb,geometry,hyperref,fancyhdr,microtype,booktabs,float,graphicx}
 \graphicspath{{../resultados/}{./}}
 \geometry{margin=2cm}\pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small Universidad Externado de Colombia}\fancyhead[R]{\small M\'etodos Numéricos -- Entrega Final (Fase 3)}\fancyfoot[C]{\thepage}
+\fancyhead[L]{\small Universidad Externado de Colombia}\fancyhead[R]{\small M\'etodos Numéricos -- Proyecto Integrador (Entrega Final)}\fancyfoot[C]{\thepage}
 \hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue}
 
 \begin{document}
 \begin{titlepage}\centering\vspace*{2cm}
 {\LARGE\bfseries Proyecto Integrador: Entrega Final}\\[.5cm]
-{\large Implementación Reproducible, Estabilidad Dinámica y Análisis Multidimensional para Raíces Múltiples}\\[.6cm]
+{\large Implementación reproducible, estabilidad dinámica y análisis para raíces múltiples}\\[.6cm]
 {\Large M\'etodos Numéricos}\\[2cm]
 Integrantes: Ailyn Sof\'ia Gómez Rodríguez, Juli\'an Camilo Jiménez, Juli\'an Steven Duarte\\[1cm]
 Docente: Edwin Fernando Mu\~noz Chipatecua\vfill 
@@ -20,80 +20,78 @@ Universidad Externado de Colombia\\
 Bogotá D.C., Colombia -- Noviembre de 2026
 \end{titlepage}
 
-\section{El problema de las raíces múltiples y los desafíos computacionales}
-La determinación de raíces de ecuaciones no lineales $g(x)=0$ constituye uno de los problemas cardinales del cálculo científico y la optimización en ciencia de datos. En múltiples aplicaciones prácticas, las funciones exhiben soluciones con multiplicidad algebraica $m > 1$, caracterizadas formalmente por la anulación simultánea de la función y de sus derivadas continuas hasta el orden $m-1$, satisfaciendo $g(\alpha) = g'(\alpha) = \dots = g^{(m-1)}(\alpha) = 0$, con $g^{(m)}(\alpha) \neq 0$. En la proximidad inmediata de dichas raíces, la curva funcional se aplana sustancialmente ($g'(x) \to 0$), provocando que el algoritmo clásico de Newton decaiga de su tasa cuadrática ($p=2$) a una convergencia lineal lenta ($p=1$) con razón asintótica del error $(m-1)/m$ \cite{turner}.
+\section{El problema que estudiamos}
+Resolver una ecuación no lineal $g(x)=0$ significa encontrar un valor de $x$ para el cual la función vale cero. A veces, la raíz aparece repetida: se dice que tiene multiplicidad $m$. Cerca de esa raíz la función se aplana ($g'(x)\to 0$), provocando que el método de Newton clásico pierda su convergencia cuadrática y decaiga a orden lineal ($p=1$), mientras que los errores de redondeo amplifican la cancelación numérica \cite{turner}. Si se conoce $m$, Newton modificado recupera el orden cuadrático ($p=2$). Sin embargo, en muchas situaciones de ciencia de datos e ingeniería no podemos calcular fácilmente la derivada analítica $g'(x)$, o su evaluación computacional es demasiado lenta.
 
-Para contrarrestar esta degradación, el método de Newton modificado, $x_{k+1} = x_k - m \frac{g(x_k)}{g'(x_k)}$, restaura el orden cuadrático ($p=2$). Sin embargo, su aplicabilidad se ve severamente limitada en problemas de ingeniería y ciencia de datos donde la derivada analítica $g'(x)$ no está disponible analíticamente, su evaluación es computacionalmente costosa o su aproximación numérica sufre de cancelaciones catastróficas cerca de puntos críticos. En respuesta a estas limitaciones, Jerezano, Chicharro y Garrido-Sáez (2026) introdujeron una familia de algoritmos multipaso libres de derivadas para raíces múltiples \cite{jerezano}. El presente informe técnico final consolida la formulación matemática, la implementación computacional reproducible en Python, el análisis de estabilidad dinámico en el plano complejo y la extensión multidimensional de dicha familia frente a las líneas base estudiadas durante el curso.
+El artículo de Jerezano, Chicharro y Garrido-Sáez (2026) presenta una familia de métodos que aprovechan el conocimiento de $m$ y evitan calcular derivadas analíticas, alcanzando un orden de convergencia cuatro \cite{jerezano}. Nuestro objetivo en esta entrega final es consolidar la implementación de sus dos variantes principales, analizar experimentalmente su estabilidad en el plano complejo, contrastar honestamente nuestros resultados frente a las tablas del artículo, probar una extensión a sistemas de ecuaciones y discutir sus implicaciones en optimización y ciencia de datos.
 
-\section{Formulación matemática y optimalidad de Kung-Traub}
-Una diferencia dividida calcula la pendiente secante entre dos nodos: $g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k}$. La familia multipaso libre de derivadas de dos pasos propuesta por Jerezano et al. \cite{jerezano} aproxima la derivada mediante una perturbación cuadrática local y un predictor-corrector estructurado de la siguiente forma:
-\begin{align}
-w_k &= x_k + \beta [g(x_k)]^2, \quad \beta \in \mathbb{R}\setminus\{0\}, \label{eq:wk}\\
-D_k &= g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k}, \label{eq:Dk}\\
-y_k &= x_k - m \frac{g(x_k)}{D_k}, \label{eq:yk}\\
-t_k &= \left(\frac{g(y_k)}{g(x_k)}\right)^{1/m} = \exp\left(\frac{1}{m}\mathrm{Ln}\left(\frac{g(y_k)}{g(x_k)}\right)\right), \label{eq:tk}\\
-x_{k+1} &= x_k - m H(t_k) \frac{g(x_k)}{D_k}. \label{eq:xk1}
-\end{align}
+\section{Métodos numéricos y optimalidad de Kung-Traub}
+Una diferencia dividida calcula la pendiente entre dos evaluaciones: $g[w_k,x_k]=(g(w_k)-g(x_k))/(w_k-x_k)$. La familia del artículo primero aproxima esa pendiente sumando a $x_k$ un paso cuadrático y luego calcula un punto intermedio:
+\begin{align*}
+w_k&=x_k+\beta g(x_k)^2,& y_k&=x_k-m\frac{g(x_k)}{g[w_k,x_k]},\\
+t_k&=\left(\frac{g(y_k)}{g(x_k)}\right)^{1/m},&x_{k+1}&=x_k-mH(t_k)\frac{g(x_k)}{g[w_k,x_k]} .
+\end{align*}
 
-\textbf{Rama principal continua en el plano complejo.} La evaluación rigurosa del cociente $t_k$ en la ecuación \eqref{eq:tk} exige de manera indispensable emplear la rama principal del logaritmo complejo, definida como $\mathrm{Ln}(z) = \ln|z| + i\operatorname{Arg}(z)$ con $\operatorname{Arg}(z)\in(-\pi,\pi]$. Esta consideración metodológica es crítica: aunque la raíz buscada $\alpha$ y la semilla $x_0$ sean reales, a lo largo del transitorio iterativo el cociente $g(y_k)/g(x_k)$ puede tomar valores negativos o cambiar de signo entre pasos consecutivos. En aritmética real, elevar una cantidad negativa a una potencia fraccionaria $1/m$ genera errores de dominio (`ValueError`) para cualquier $m$ par ($m=2, 4$). Al formular $t_k$ mediante la rama principal compleja, la evaluación es continua, univaluada y analítica en todo el plano complejo.
+La potencia fraccionaria se calcula empleando la rama principal del logaritmo complejo, es decir, $t_k = \exp\left(\frac{1}{m}\mathrm{Ln}\left(\frac{g(y_k)}{g(x_k)}\right)\right)$, donde $\mathrm{Ln}(z) = \ln|z| + i\operatorname{Arg}(z)$ con $\operatorname{Arg}(z)\in(-\pi,\pi]$. Esta formulación metodológica es indispensable: aunque la raíz que buscamos y la semilla inicial sean reales, a lo largo de las iteraciones el cociente $g(y_k)/g(x_k)$ puede tomar valores negativos o cambiar de signo. En los números reales, elevar un número negativo a una potencia como $1/2$ o $1/4$ produce un error de dominio matemático. Usar la rama principal compleja garantiza que el método mantenga una evaluación continua, univaluada y bien definida durante todo el proceso.
 
-\textbf{Optimalidad de Kung-Traub.} La célebre conjetura de Kung y Traub (1974) establece que el orden de convergencia máximo que puede alcanzar un algoritmo iterativo multipaso sin memoria que realiza $d$ evaluaciones funcionales por iteración está acotado por $p \le 2^{d-1}$ \cite{kungtraub}. La familia de Jerezano et al. evalúa únicamente tres cantidades escalares ($g(x_k)$, $g(w_k)$ y $g(y_k)$) y ninguna derivada, alcanzando el orden óptimo $p = 2^{3-1} = 4$. Su índice de eficiencia computacional, definido por Ostrowski como $\mathcal{I} = p^{1/d} = 4^{1/3} \approx 1.587$, supera categóricamente al de Newton modificado ($\mathcal{I} = 2^{1/2} \approx 1.414$) y al de Steffensen modificado ($\mathcal{I} = 2^{1/2} \approx 1.414$).
+\textbf{Optimalidad de Kung-Traub.} La conjetura de Kung y Traub (1974) establece que si un método iterativo multipaso no utiliza información de pasos anteriores (sin memoria) y realiza $d$ evaluaciones funcionales por iteración, su orden máximo de convergencia no puede superar $2^{d-1}$ \cite{kungtraub}. En la familia de Jerezano et al., cada paso evalúa exactamente tres funciones escalares ($g(x_k)$, $g(w_k)$ y $g(y_k)$) y ninguna derivada ($d=3$). Por lo tanto, el orden teórico máximo alcanzable es $2^{3-1} = 4$. Al alcanzar exactamente ese orden bajo las condiciones del teorema ($H(0)=1, H'(0)=1, H''(0)=4$), decimos que la familia es óptima. Su índice de eficiencia computacional es $\mathcal{I} = 4^{1/3} \approx 1.587$, que supera al valor $\mathcal{I} = 2^{1/2} \approx 1.414$ de Newton modificado y Steffensen modificado.
 
-Bajo el Teorema de convergencia demostrado en el artículo, la función de peso $H(t)$ debe satisfacer las condiciones de frontera $H(0)=1$, $H'(0)=1$ y $H''(0)=4$. En este trabajo evaluamos las dos variantes canónicas:
+Estudiamos las dos funciones de peso $H(t)$ presentadas en el artículo:
 \begin{itemize}
-\item \textbf{Variante M1 (Ponderación polinomial cuadrática):} $H_1(t) = 1 + t + 2t^2$.
-\item \textbf{Variante M2 (Ponderación racional):} $H_2(t) = \frac{1-t}{1-2t}$.
+\item \textbf{M1 (ponderación polinomial cuadrática):} $H_1(t)=1+t+2t^2$.
+\item \textbf{M2 (ponderación racional):} $H_2(t)=(1-t)/(1-2t)$.
 \end{itemize}
-Como competidor de la literatura reciente incorporamos el método libre de derivadas de Kumar et al. (2020) \cite{kk}, denotado KK, de orden cuatro, que utiliza $w_k = x_k + \beta g(x_k)$, el predictor $y_k$ y la corrección $x_{k+1} = y_k - \frac{(m+2)t_k}{1-2t_k} \frac{g(x_k)}{g[w_k, x_k] + 2g[w_k, y_k]}$.
+Ambas se prueban con $\beta=0.01$. Como líneas base del curso implementamos Newton modificado, $x_{k+1}=x_k-mg(x_k)/g'(x_k)$, y Steffensen modificado, que aproxima la derivada con una secante estándar $w_k=x_k+\beta g(x_k)$. Ambos tienen orden teórico dos para raíces múltiples. También incluimos el método KK (Kumar et al., 2020) \cite{kk}, competidor de orden cuatro libre de derivadas que aparece en las tablas del artículo. En KK se usa $w_k=x_k+\beta g(x_k)$, el mismo predictor $y_k$, y el corrector $x_{k+1}=y_k-((m+2)t_k/(1-2t_k))g(x_k)/(g[w_k,x_k]+2g[w_k,y_k])$.
 
-\section{Análisis de estabilidad y dinámica compleja en $\mathbb{C}$}
-Una de las contribuciones conceptuales más profundas del artículo de referencia radica en el análisis de estabilidad del operador racional de punto fijo $R(z, \beta)$ en el plano complejo sobre polinomios canónicos con raíces múltiples. Siguiendo el marco de Devaney y Blanchard, la dinámica se evalúa sobre el polinomio cuadrático con raíz doble $p(z) = (z-1)^2$ ($m=2$). Aplicando las familias $M_1$ y $M_2$ a $p(z)$, se obtienen los operadores racionales $R_1(z, \beta)$ y $R_2(z, \beta)$. Para ambos esquemas, el punto fijo asociado a la solución $z^* = 1$ satisface analíticamente:
-\[ |R_1'(1, \beta)| = 0 \quad \text{y} \quad |R_2'(1, \beta)| = 0, \quad \forall \beta \in \mathbb{R}\setminus\{0\}, \]
-demostrando que la raíz múltiple es invariablemente un \textbf{punto fijo superatractor} del sistema dinámico.
+\section{Estabilidad y dinámica en el plano complejo}
+Para comprender cómo afecta el parámetro libre $\beta$ a la convergencia, el artículo analiza el comportamiento de los métodos en el plano complejo sobre el polinomio cuadrático con raíz doble $p(z) = (z-1)^2$, donde $m=2$. Al aplicar el esquema iterativo a $p(z)$, se obtiene un operador racional de punto fijo $z_{k+1} = R(z, \beta)$. En la raíz $z^* = 1$, la derivada del operador vale exactamente cero ($R'(1, \beta) = 0$), lo que significa que la raíz es un \textbf{punto fijo superatractor}: cualquier trayectoria que inicie suficientemente cerca de 1 convergerá con gran velocidad.
+
+Sin embargo, el operador también contiene puntos críticos libres (puntos donde la derivada se anula pero que no son la raíz). En la variante M2, estos puntos críticos libres escalan de manera inversamente proporcional a la raíz cuadrada de $\beta$. Esto tiene una consecuencia práctica fundamental: si elegimos un valor grande como $\beta = 1.0$ o $\beta = 5.0$, esos puntos críticos se acercan a la raíz, fragmentan las cuencas de atracción e introducen fronteras fractales de Julia, atrayendo las trayectorias hacia el infinito o hacia ciclos oscilatorios.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth]{dinamica_compleja_m1_m2.png}
-\caption{Planos dinámicos y cuencas de atracción de $M_1$ y $M_2$ sobre $p(z)=(z-1)^2$ en el dominio $[-2, 2] \times [-2, 2] \subset \mathbb{C}$. El color representa las iteraciones requeridas para converger hacia la raíz superatractora $z^*=1$ (estrella roja). Se aprecia la estabilidad y continuidad de $\beta=0.01$ frente a la fragmentación fractal de Julia inducida por $\beta=1.0$.}
+\caption{Planos dinámicos y cuencas de atracción de M1 y M2 para $p(z)=(z-1)^2$ en el dominio $[-2, 2] \times [-2, 2] \subset \mathbb{C}$. El color representa las iteraciones requeridas para converger hacia la raíz $z^*=1$ (estrella roja). Se aprecia claramente la regularidad y amplitud de la cuenca con $\beta=0.01$, frente a la fragmentación fractal y pérdida de convergencia con $\beta=1.0$.}
 \label{fig:dinamica}
 \end{figure}
 
-Sin embargo, el comportamiento global de las cuencas de atracción (conjuntos de Fatou) y las fronteras de bifurcación (conjuntos de Julia) depende de manera determinante del parámetro libre $\beta$. En $M_2$, al resolver la ecuación de puntos críticos libres $R_2'(z, \beta) = 0$, emergen soluciones que escalan inversamente con $\sqrt{\beta}$:
-\[ z_{2-5}^C = 1 \pm \frac{\sqrt{3} \sqrt[3]{2} \sqrt[6]{-6 \pm \sqrt{43}}}{\sqrt{\beta}}, \quad z_{6-7}^C = 1 \pm \frac{\sqrt{3} \sqrt[3]{2} \sqrt[6]{7}}{\sqrt{\beta}}. \]
-La Figura~\ref{fig:dinamica} ilustra el plano dinámico generado computacionalmente para una malla de $350 \times 350$ números complejos. Cuando $\beta = 0.01$ (valor propuesto por Jerezano et al.), los puntos críticos libres se sitúan geométricamente distantes de la raíz, dando lugar a cuencas de atracción continuas, lisas y dominantes en prácticamente todo el plano complejo. Por el contrario, al aumentar el parámetro a $\beta = 1.0$ (o valores mayores como $\beta=5.0$), los puntos críticos libres migran hacia la vecindad de $z^*=1$, provocando una severa fragmentación fractal, ciclos oscilatorios y divergencias hacia el infinito. Este resultado computacional valida rigurosamente la recomendación del artículo de fijar $\beta = 0.01$.
+Para comprobar esto computacionalmente, programamos una malla de $350 \times 350$ números complejos en $[-2, 2] \times [-2, 2]$. La Figura~\ref{fig:dinamica} muestra los planos dinámicos obtenidos para M1 y M2 con $\beta=0.01$ y $\beta=1.0$. La gráfica confirma de forma visual lo que plantea el artículo: con $\beta=0.01$ la cuenca de atracción hacia la raíz es ancha, lisa y cubre casi todo el recuadro analizado; en cambio, al pasar a $\beta=1.0$ aparecen regiones oscuras de no convergencia y bordes fractales caóticos. Esto justifica plenamente por qué el parámetro debe fijarse en un valor pequeño como $\beta=0.01$.
 
 \section{Funciones deterministas y diseño experimental}
-Para contrastar los métodos bajo condiciones reproducibles, se adoptaron los tres problemas benchmark descritos en el artículo científico:
+Usamos las funciones de prueba descritas en el artículo:
 \begin{enumerate}
-\item $g_1(x) = x^3 - 5.22x^2 + 9.0825x - 5.2675$: caso particular de la ecuación de Van der Waals que modela el volumen de un gas real. Posee una raíz doble objetivo en $\alpha_1 = 1.75$ ($m=2$) y una raíz simple vecina en $\alpha_2 = 1.72$. Semillas de evaluación: $x_0 \in \{1.9, 3.0\}$.
-\item $g_2(x) = (e^{-x} - 1 + x/5)^3$: problema físico de la longitud de onda que maximiza la densidad de energía según la Ley de Radiación de Planck. La función corresponde a la ecuación base elevada al cubo, teniendo una raíz triple positiva en $\alpha \approx 4.96511423174428$ ($m=3$). Semillas: $x_0 \in \{5.3, 10.0\}$.
-\item $g_3(x) = x^9 - 29x^8 + 349x^7 - 2261x^6 + 8455x^5 - 17663x^4 + 15927x^3 + 6993x^2 - 24732x + 12960$: polinomio característico de una matriz cuadrada $9\times 9$ con una raíz de multiplicidad cuatro en $\alpha = 3$ ($m=4$). Semillas: $x_0 \in \{2.8, 3.5\}$.
+\item El polinomio cúbico $g_1(x)=x^3-5.22x^2+9.0825x-5.2675$, derivado de la ecuación de Van der Waals, con raíz doble objetivo en $\alpha_1 = 1.75$ ($m=2$) y una raíz simple vecina en $\alpha_2 = 1.72$. Semillas de prueba: $x_0 \in \{1.9, 3.0\}$.
+\item La función $g_2(x)=(e^{-x}-1+x/5)^3$, correspondiente a la ecuación de radiación de Planck elevada al cubo, con una raíz triple positiva en $\alpha \approx 4.96511423$ ($m=3$). El término lineal es $x/5$, no $x^3/5$. La función también se anula en cero, pero esa raíz no es la que se analiza con las semillas escogidas ($x_0 \in \{5.3, 10.0\}$).
+\item El polinomio $g_3(x)$ de grado nueve derivado de los valores propios de una matriz de tamaño $9\times 9$, con una raíz de multiplicidad cuatro en $\alpha = 3$ ($m=4$). Semillas: $x_0 \in \{2.8, 3.5\}$.
 \end{enumerate}
 
-Las funciones y semillas son completamente deterministas; las raíces analíticas de referencia se utilizan exclusivamente para cuantificar el error absoluto $|x_k - \alpha|$ y no constituyen datos de entrada para los algoritmos iterativos.
+Las funciones y semillas son deterministas, por lo que no hay muestreo aleatorio ni semillas pseudoaleatorias que controlar. Las raíces conocidas se usan únicamente para medir el error absoluto; los solucionadores no reciben esa solución.
 
 \section{Implementación reproducible, precisión y límites numéricos}
-El entorno computacional se desarrolló en Python 3 utilizando la biblioteca de aritmética de precisión arbitraria \texttt{mpmath}, fijando una mantisa de 150 dígitos decimales (\texttt{mp.dps = 150}). Se estableció una cota de parada dual estricta: tanto el incremento de paso entre iterados sucesivos $|x_{k+1}-x_k|$ como el residuo funcional $|g(x_{k+1})|$ deben ser simultáneamente inferiores a $\mathrm{TOL} = 10^{-25}$, con un tope máximo de 100 iteraciones. La exigencia simultánea en paso y residuo es indispensable en problemas con raíces múltiples: dado que cerca de la raíz el residuo decae aproximadamente como $|x-\alpha|^m$, para $m=4$ un residuo diminuto de $10^{-100}$ únicamente garantiza un error en la variable del orden de $10^{-25}$.
+El cuaderno de trabajo se organiza de manera secuencial: configuración, funciones, solucionadores, corridas, tablas y gráficas. Requiere Python 3 y los paquetes \texttt{mpmath}, \texttt{numpy}, \texttt{pandas} y \texttt{matplotlib}. Se eligen 150 dígitos de precisión decimal (\texttt{mp.dps = 150}) y una tolerancia dual de $\mathrm{TOL} = 10^{-25}$, con un máximo de 100 iteraciones. Las constantes decimales se crean directamente desde texto para evitar introducir redondeos binarios innecesarios.
 
-\textbf{Diagnóstico en precisión estándar IEEE-754 (\texttt{float64}).} En la familia propuesta, la perturbación secante $w_k = x_k + \beta [g(x_k)]^2$ escala cuadráticamente con el residuo. En precisión estándar de 64 bits (donde el épsilon de máquina es $\epsilon_{\mathrm{mach}} \approx 2.22 \times 10^{-16}$), tan pronto como el residuo desciende de $10^{-8}$, la cantidad $\beta [g(x_k)]^2$ cae por debajo de $\epsilon_{\mathrm{mach}} |x_k|$. En ese instante ocurre \textbf{absorción en punto flotante}: numéricamente $w_k == x_k$, anulando el denominador de la diferencia dividida ($w_k - x_k = 0$). Nuestro código intercepta este evento y clasifica la salida como \texttt{'Estancamiento w=x'}, evitando divisiones por cero artificiales. El uso de 150 dígitos mitiga este efecto en las primeras iteraciones, permitiendo observar la convergencia asintótica de orden cuatro.
+Para raíces múltiples, el residuo decae aproximadamente como $|x-\alpha|^m$. Esto significa que con $m=4$, un residuo de $10^{-100}$ solamente garantiza un error en la variable de $10^{-25}$. Por eso nuestro criterio de parada exige de manera estricta que tanto el paso $|x_{k+1}-x_k|$ como el residuo $|g(x_{k+1})|$ sean menores que la tolerancia.
+
+\textbf{Absorción en punto flotante y manejo de fallos.} En la familia propuesta, el nuevo punto $w_k$ se obtiene sumando a $x_k$ la cantidad $\beta g(x_k)^2$. A medida que nos acercamos a la raíz, esa perturbación se hace extremadamente pequeña. En aritmética de precisión finita, si $|w_k - x_k|$ cae por debajo de la resolución de la máquina frente a la magnitud de $x$, ocurre absorción: numéricamente $w_k == x_k$. Esto provocaría una división por cero en la secante $g[w_k, x_k]$. Nuestro código detecta explícitamente cuando $w_k == x_k$ y clasifica el resultado como \texttt{'Estancamiento w=x'} sin recurrir al artificio de cambiar a una derivada. Del mismo modo, el solucionador captura divisiones por cero ante pendientes secantes nulas, derivadas nulas en Newton o polos en $H_2(t)$ ($1-2t=0$), deteniendo la corrida de forma controlada y reportando el diagnóstico en la tabla de resultados.
 
 \section{Criterios de comparación y validación experimental del orden (ACOC)}
-Para verificar computacionalmente el orden de convergencia se utiliza el orden computacional aproximado (ACOC) propuesto por Cordero y Torregrosa \cite{jerezano}:
-\[ \mathrm{ACOC} \approx \frac{\log(|x_{k+1}-x_k| / |x_k-x_{k-1}|)}{\log(|x_k-x_{k-1}| / |x_{k-1}-x_{k-2}|)}. \]
-\textbf{Validación del estimador.} Previo a la evaluación en raíces múltiples, la implementación del ACOC se validó experimentalmente sobre el problema canónico de la Semana 9 del curso, $f(x)=x^3-x-2=0$ (raíz simple $\alpha \approx 1.5213797$): el método de Newton estándar convergió con $\mathrm{ACOC} \to 2.0000$ (orden cuadrático teórico), mientras que el método de la secante clásica convergió con $\mathrm{ACOC} \to 1.6162$, coincidiendo con la razón áurea superlineal teórica $p = \frac{1+\sqrt{5}}{2} \approx 1.6180$.
+Se guardan el número de iteraciones, las evaluaciones de $g$ y de $g'$, el error absoluto frente a la raíz de referencia, el residuo final, el ACOC y el tiempo de cómputo. El ACOC estima computacionalmente el orden asintótico usando tres diferencias sucesivas:
+\[ \mathrm{ACOC}\approx\frac{\log(|x_{k+1}-x_k|/|x_k-x_{k-1}|)}{\log(|x_k-x_{k-1}|/|x_{k-1}-x_{k-2}|)}. \]
 
-En raíces múltiples, el cálculo del ACOC es altamente sensible: exige al menos cuatro iteraciones monótonas en el régimen asintótico terminal antes de que los incrementos alcancen el piso de la tolerancia. Cuando un método converge de forma ultrarrápida en solo tres o cuatro iteraciones, el paso pasa abruptamente de $10^{-2}$ a $10^{-10}$ y luego a $10^{-35}$, provocando lecturas transitorias atípicas o indefiniciones matemáticas. Por ello, el algoritmo restringe el reporte de ACOC a trayectorias plenamente convergentes con diferencias sucesivas no nulas.
+\textbf{Validación pedagógica previa.} Para comprobar que la rutina de cálculo de ACOC estaba bien programada antes de estudiar multiplicidad, evaluamos los métodos canónicos de la Semana 9 sobre $f(x)=x^3-x-2=0$ (raíz simple $\alpha\approx 1.5213797$): Newton convergió con $\mathrm{ACOC} \to 2.0000$ (orden cuadrático teórico) y la secante clásica convergió con $\mathrm{ACOC} \to 1.6162$, coincidiendo con la razón áurea teórica $p \approx 1.6180$.
 
-\section{Resultados de la corrida de referencia y contraste con el artículo}
-El Cuadro~\ref{tab:resultados_finales} consolida el comportamiento de los métodos bajo la configuración de 150 dígitos, tolerancia $10^{-25}$ y $\beta=0.01$. Los tiempos corresponden al promedio de corridas deterministas para eliminar variabilidad de carga del sistema operativo.
+En raíces múltiples, el ACOC solo es significativo cuando el método está en su régimen asintótico terminal y los pasos aún superan la precisión finita. Si un método converge de golpe en 3 o 4 pasos, los incrementos caen más rápido que el régimen asintótico, produciendo lecturas transitorias atípicas o valores no calculables. Por ello, restringimos el ACOC a iteraciones exitosamente convergentes con al menos cuatro iterados válidos, utilizándolo como una herramienta de diagnóstico y no como una prueba automática de que el orden se cumplió.
+
+\section{Resultados de la corrida de referencia}
+El Cuadro~\ref{tab:resultados_finales} resume el desempeño comparativo obtenido en la corrida con 150 dígitos decimales, tolerancia $10^{-25}$ y $\beta=0.01$. Los tiempos corresponden al promedio de corridas deterministas para amortiguar fluctuaciones del sistema operativo.
 \begin{table}[H]
 \centering
-\caption{Desempeño numérico comparativo (150 dígitos decimales, $\mathrm{TOL}=10^{-25}$, $\beta=0.01$).}
+\caption{Comparación de corridas representativas con precisión de 150 dígitos y tolerancia $10^{-25}$.}
 \label{tab:resultados_finales}
 \small
 \begin{tabular}{llrrrrrrl}
 \toprule
-Problema & Método & Iter. & $g$ ev. & $g'$ ev. & Error abs. & Residuo & ACOC & Estado \\
+Problema & Método & Iter. & $g$ eval. & $g'$ eval. & Error abs. & Residuo & ACOC & Estado \\
 \midrule
 $g_1$, $x_0=1.9$ & M1 & 5 & 17 & 0 & $1.32\times10^{-35}$ & $5.26\times10^{-72}$ & 8.81 & Convergió \\
 $g_1$, $x_0=1.9$ & M2 & 4 & 14 & 0 & $2.03\times10^{-50}$ & $1.24\times10^{-101}$ & -- & Estancamiento $w=x$ \\
@@ -116,35 +114,42 @@ $g_3$, $x_0=3.5$ & M1 & 3 & 11 & 0 & $3.71\times10^{-18}$ & $1.52\times10^{-68}$
 \end{tabular}
 \end{table}
 
-\textbf{Contraste metodológico con las tablas de Jerezano et al. (2026).} Las Tablas 1, 2 y 3 del artículo reportan para $g_1$ con $x_0=1.9$ siete iteraciones ($k=7$) para $M_1$ y $M_2$ con ACOC exacto de $4.0000$, empleando Matlab con 4000 dígitos de mantisa y una tolerancia extrema de $|x_{k+1}-x_k| + |g(x_k)| < 10^{-200}$. La comparación directa frente a nuestros resultados evidencia dos lecciones esenciales:
-1. \emph{Influencia del umbral de parada:} Bajo nuestra tolerancia práctica de ingeniería ($10^{-25}$), $M_1$ satisface el criterio dual en 5 iteraciones. En $g_3$, $M_1$ y $M_2$ convergen en solo 3 pasos frente a los 4 reportados en el artículo, corroborando que una tolerancia más accesible detiene el algoritmo antes de explorar la escala infinitesimal de $10^{-200}$.
-2. \emph{Absorción y soporte de dígitos:} En $M_2$ para $g_1$ y $g_2$, la perturbación decae a tal velocidad que la diferencia $w_k - x_k$ se anula numéricamente tras alcanzar residuos de $10^{-101}$ y $10^{-87}$. Los autores del artículo no experimentaron este fenómeno gracias a la reserva hiperprecisa de 4000 dígitos. Documentar este estancamiento refleja un análisis científico honesto de los límites computacionales de la máquina frente a la teoría analítica.
-
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.92\textwidth]{convergencia_residuos.png}
-\caption{Perfiles de decaimiento del residuo $|g(x_k)|$ en escala logarítmica para los tres problemas benchmark.}
+\includegraphics[width=0.90\textwidth]{convergencia_residuos.png}
+\caption{Evolución del residuo $|g(x_k)|$ en escala logarítmica a través de las iteraciones para los problemas de prueba.}
 \label{fig:convergencia}
 \end{figure}
 
+\section{Lectura comparativa y contraste con el artículo}
+El Cuadro~\ref{tab:resultados_finales} muestra que, para $g_1$ con semilla $1.9$, M1 y M2 alcanzan aproximaciones con errores menores que $10^{-35}$. M1 cumple los dos criterios de parada en 5 iteraciones. M2 llega a un error aún menor ($10^{-50}$), pero se detiene por estancamiento: la perturbación secante se absorbe antes de cumplir el paso conjunto. Esta diferencia ilustra por qué registramos por separado el estado, el residuo y el error, en vez de calificar los métodos únicamente por una cifra.
+
+En el mismo problema, las dos líneas base llegan a errores de $10^{-57}$ en ocho iteraciones, pero sus evaluaciones de derivadas quedan registradas aparte: Newton modificado usó 8 evaluaciones de $g'$, mientras que M1 y M2 no usan ninguna. Steffensen requirió 18 evaluaciones de $g$ para alcanzar la misma cota. Por ello no concluimos que un método sea superior solo porque termina en menos iteraciones: hay que tener en cuenta que M1 y M2 evalúan tres veces la función en cada paso.
+
+\textbf{Contraste con las tablas del artículo original.} Las Tablas 1, 2 y 3 de Jerezano et al. reportan 7 iteraciones para M1 y M2 en $g_1$ con semilla 1.9, y 4 iteraciones en $g_3$. En nuestra corrida, M1 tomó 5 iteraciones en $g_1$, y en $g_3$ tanto M1 como M2 necesitaron 3 pasos. Esta diferencia no significa que nuestra implementación sea más rápida:
+\begin{enumerate}
+\item El artículo utilizó 4000 dígitos de precisión en MATLAB y una tolerancia de parada extrema de $|x_{k+1}-x_k| + |g(x_k)| < 10^{-200}$. Con una cota tan exigente, el algoritmo necesita más iteraciones para llegar a residuos de $10^{-200}$. Nosotros fijamos una tolerancia de $10^{-25}$, que es más que suficiente para aplicaciones prácticas y detiene la corrida más temprano.
+\item En nuestro experimento, M2 experimentó absorción en punto flotante ($w=x$) con residuos de $10^{-101}$; en el artículo eso no ocurrió porque con 4000 dígitos de mantisa la perturbación secante nunca cayó por debajo del épsilon de máquina. Registrar con transparencia este estancamiento permite entender los límites reales de la precisión en un computador.
+\end{enumerate}
+
 \section{Extensión a sistemas de ecuaciones no lineales (Semana 9)}
-En consonancia con los contenidos de la Semana 9 del curso, la resolución de sistemas no lineales $\mathbf{F}(\mathbf{x}) = \mathbf{0}$, donde $\mathbf{F}: \mathbb{R}^n \to \mathbb{R}^n$, generaliza la derivada escalar a la matriz Jacobiana $\mathbf{J}(\mathbf{x}) \in \mathbb{R}^{n \times n}$. El método de Newton multivariable calcula en cada paso el vector de corrección $\mathbf{s}_k$ resolviendo el sistema lineal $\mathbf{J}(\mathbf{x}_k)\mathbf{s}_k = -\mathbf{F}(\mathbf{x}_k)$ mediante factorización $LU$ ($O(n^3)$ operaciones de punto flotante).
+Siguiendo los temas de la Semana 9 del curso y el texto de Turner et al. (Cap.~5) \cite{turner}, resolver un sistema no lineal $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ con $n$ incógnitas generaliza la derivada escalar a la matriz Jacobiana $\mathbf{J}(\mathbf{x}) \in \mathbb{R}^{n \times n}$. El método de Newton multivariable calcula en cada paso el vector de corrección resolviendo $\mathbf{J}(\mathbf{x}_k)\mathbf{s}_k = -\mathbf{F}(\mathbf{x}_k)$ mediante eliminación gaussiana o factorización $LU$, lo que cuesta $O(n^3)$ operaciones y requiere evaluar $n^2$ derivadas parciales en cada iteración.
 
-Para evaluar las ventajas de los enfoques libres de derivadas en dimensiones superiores, implementamos un experimento comparativo sobre el sistema no lineal de dos ecuaciones:
+Para ilustrar las ventajas de los esquemas libres de derivadas en varias dimensiones, probamos un experimento computacional resolviendo el sistema de dos variables:
 \[ \mathbf{F}(x_1, x_2) = \begin{pmatrix} x_1^2 + x_2^2 - 4 \\ x_1 x_2 - 1 \end{pmatrix} = \mathbf{0}, \quad \text{con semilla inicial } \mathbf{x}_0 = (1.5, 0.8)^T. \]
-Newton multivariable convergió a la raíz $(\sqrt{2+\sqrt{3}}, \sqrt{2-\sqrt{3}})^T \approx (1.93185, 0.51764)^T$ en 5 iteraciones, alcanzando un residuo de $3.92\times 10^{-15}$; sin embargo, requirió evaluar 20 derivadas parciales y computar 5 factorizaciones matriciales completas. Por su parte, el método secante multivariable de Broyden (esquema cuasi-Newton libre de derivadas) convergió en 10 iteraciones con residuo final de $4.25\times 10^{-15}$, prescindiendo por completo de derivadas analíticas mediante actualizaciones de rango uno de costo computacional cuadrático $O(n^2)$. Este resultado demuestra que extender las familias libres de derivadas a problemas multidimensionales elimina la necesidad de ensamblar Jacobianos explícitos y previene divergencias por mal condicionamiento matricial cuando $\det(\mathbf{J})\approx 0$.
+Newton multivariable convergió a la raíz $(\sqrt{2+\sqrt{3}}, \sqrt{2-\sqrt{3}})^T \approx (1.93185, 0.51764)^T$ en 5 iteraciones con residuo de $3.92\times 10^{-15}$, pero necesitó evaluar 20 derivadas parciales y resolver 5 sistemas matriciales. Por otro lado, implementamos el método secante de Broyden (un método cuasi-Newton libre de derivadas que actualiza la matriz con costo cuadrático $O(n^2)$), el cual convergió en 10 iteraciones con residuo $4.25\times 10^{-15}$ sin calcular ninguna derivada analítica. Este ensayo muestra que las ideas libres de derivadas son muy valiosas cuando calcular la matriz Jacobiana es demasiado costoso o cuando la matriz se vuelve casi singular ($\det(\mathbf{J})\approx 0$).
 
-\section{Relevancia en Ciencia de Datos y Optimización Numérica}
-En el pregrado de Ciencia de Datos, el entrenamiento de modelos de aprendizaje automático y redes neuronales profundas consiste en minimizar una función de pérdida empírica $L(\boldsymbol{\theta})$ mediante la condición de primer orden:
+\section{Alcance, aplicaciones en ciencia de datos y optimización}
+En Ciencia de Datos, gran parte del aprendizaje automático consiste en entrenar modelos minimizando una función de pérdida $L(\boldsymbol{\theta})$ mediante la búsqueda de puntos críticos donde el gradiente se anula:
 \[ \nabla L(\boldsymbol{\theta}) = \mathbf{0}. \]
-En paisajes de pérdida altamente no lineales, la presencia de valles degenerados, mesetas casi planas y puntos de ensilladura produce regiones donde la matriz Hessiana $\mathbf{H}(\boldsymbol{\theta}) = \mathbf{J}(\nabla L)$ es semidefinida positiva con múltiples autovalores iguales o muy próximos a cero. Esta condición corresponde geométricamente a un \textbf{punto estacionario con multiplicidad $m > 1$}.
+En problemas reales con muchas variables o datos correlacionados (como redes neuronales profundas o regresiones mal condicionadas), suelen aparecer valles planos, mesetas y puntos de ensilladura. En esas regiones, la matriz Hessiana $\mathbf{H}(\boldsymbol{\theta})$ (que es el Jacobiano del gradiente) tiene autovalores nulos o casi nulos. Esto equivale exactamente a encontrarse en un \textbf{punto crítico con multiplicidad $m > 1$}.
 
-En tales configuraciones, el algoritmo clásico de descenso de gradiente sufre una ralentización exponencial y el método clásico de Newton colapsa a una convergencia lineal asintótica. Los esquemas multipaso acelerados por multiplicidad que evitan segundas derivadas (matrices Hessianas), como la familia estudiada en este proyecto, proporcionan el fundamento analítico y computacional para diseñar optimizadores de segundo orden escalables capaces de escapar eficientemente de mesetas degeneradas en alta dimensión.
+En esas zonas planas, el descenso de gradiente clásico se frena drásticamente y Newton estándar colapsa a velocidad lineal lenta. Los métodos multipaso libres de derivadas con aceleración por multiplicidad estudiados en este proyecto proporcionan la base teórica para diseñar optimizadores de segundo orden más rápidos que no dependan del cálculo de segundas derivadas analíticas y puedan atravesar mesetas difíciles en optimización de gran escala.
 
-\section{Limitaciones, trabajo futuro y declaración de integridad académica}
-Entre las principales limitaciones identificadas se destaca la exigencia de conocer de antemano la multiplicidad exacta $m$. En problemas empíricos de ciencia de datos, $m$ rara vez está disponible a priori. Como trabajo futuro, se proyecta incorporar estimadores dinámicos de multiplicidad en tiempo de ejecución (como el estimador de Traub basado en cocientes de residuos consecutivos) acoplados al esquema predictor-corrector. Asimismo, se plantea extender los operadores en diferencias divididas hacia optimización estocástica con mini-batches.
+\section{Cierre e integridad académica}
+Como limitación del trabajo se destaca que los métodos asumen conocida la multiplicidad exacta $m$. En problemas reales de ciencia de datos, $m$ no se conoce con anticipación. Como trabajo futuro, sería muy provechoso incorporar técnicas para estimar $m$ dinámicamente durante las primeras iteraciones y estudiar la generalización de estas familias para optimización estocástica.
 
-\textbf{Declaración de Integridad Académica.} El desarrollo del presente trabajo se acogió plenamente a las normas de integridad académica de la Universidad Externado de Colombia. Se utilizaron herramientas de inteligencia artificial exclusivamente como soporte metodológico y de redacción técnica, sin sustituir la comprensión conceptual, el rigor matemático ni la implementación y sustentación del código por parte de los integrantes del equipo.
+En la preparación de este cuaderno, los scripts y el informe se utilizó una herramienta de IA como apoyo para revisar el plan de trabajo, organizar el código y pulir la redacción. La guía del proyecto \cite{guia} permite este apoyo siempre que se declare explícitamente y no sustituya la comprensión conceptual ni la implementación del equipo. Todos los integrantes verificamos las fórmulas, comprendemos los resultados obtenidos y estamos en plena capacidad de sustentar el trabajo desarrollado.
 
 \begin{thebibliography}{9}\small
 \bibitem{jerezano} J. H. Jerezano, F. I. Chicharro y N. Garrido-S\'aez, ``Derivative-free optimal multiple-root finding family of iterative methods'', \emph{Computational and Applied Mathematics}, vol. 45, art. 304, 2026. doi: \href{https://doi.org/10.1007/s40314-026-03702-8}{10.1007/s40314-026-03702-8}.
