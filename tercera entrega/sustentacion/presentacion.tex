@@ -53,21 +53,35 @@
 % Diapositiva 3: La Familia de Jerezano et al. (2026) (1 min 30 s)
 % -----------------------------------------------------------------------------
 \begin{frame}{2. Familia Libre de Derivadas (Jerezano et al., 2026)}
-  \begin{block}{Esquema Predictor-Corrector de Dos Pasos}
-    \begin{align*}
-      w_k &= x_k + \beta [g(x_k)]^2, \quad \beta \in \mathbb{R}\setminus\{0\}\\
-      D_k &= g[w_k, x_k] = \frac{g(w_k) - g(x_k)}{w_k - x_k} \quad \text{(secante con paso cuadrático)}\\
-      y_k &= x_k - m \frac{g(x_k)}{D_k}\\
-      t_k &= \left(\frac{g(y_k)}{g(x_k)}\right)^{1/m} = \exp\left(\frac{1}{m}\operatorname{Log}\left(\frac{g(y_k)}{g(x_k)}\right)\right) \quad \text{con } \operatorname{Arg}(z)\in(-\pi, \pi]\\
-      x_{k+1} &= x_k - m H(t_k) \frac{g(x_k)}{D_k}
-    \end{align*}
-  \end{block}
-  \begin{itemize}
-    \item \textbf{Condiciones Teorema 2 (Orden 4):} $H(0)=1, \quad H'(0)=1, \quad H''(0)=4, \quad \text{y} \quad |H'''(0)| < \infty$.
-    \item \textbf{Variante M1 (Polinomial):} $H_1(t) = 1 + t + 2t^2 \implies H_1'''(0) = 0 < \infty$.
-    \item \textbf{Variante M2 (Racional):} $H_2(t) = \frac{1-t}{1-2t} \implies H_2'''(0) = 24 < \infty$ \quad (Polo en $t = 1/2$).
-    \item \alert{\textbf{Nota de implementación:}} En aritmética finita, $w_k = x_k$ puede ocurrir por absorción numérica de la perturbación $\beta g(x_k)^2$. La rama principal del logaritmo asegura cálculo univaluado en $\mathbb{C}$, reconociendo su corte de rama.
-  \end{itemize}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Esquema Predictor-Corrector de Dos Pasos}
+      \small
+      \begin{align*}
+        w_k &= x_k + \beta [g(x_k)]^2, \quad \beta \in \mathbb{R}\setminus\{0\}\\
+        D_k &= \frac{g(w_k) - g(x_k)}{w_k - x_k}, \quad y_k = x_k - m \frac{g(x_k)}{D_k}\\
+        t_k &= \left(\frac{g(y_k)}{g(x_k)}\right)^{1/m} = \exp\left(\frac{1}{m}\operatorname{Log}\left(\frac{g(y_k)}{g(x_k)}\right)\right)\\
+        x_{k+1} &= x_k - m H(t_k) \frac{g(x_k)}{D_k}
+      \end{align*}
+    \end{block}
+    \column{0.45\textwidth}
+    \begin{block}{Condiciones Teorema 2 ($p=4$)}
+      \footnotesize
+      $H(0)=1, \quad H'(0)=1, \quad H''(0)=4, \quad |H'''(0)| < \infty$
+    \end{block}
+    \begin{itemize}\footnotesize
+      \item \textbf{M1 (Polinomial):} $H_1(t) = 1 + t + 2t^2 \implies H_1'''(0) = 0 < \infty$.
+      \item \textbf{M2 (Racional):} $H_2(t) = \frac{1-t}{1-2t} \implies H_2'''(0) = 24 < \infty$ \ (Polo en $t = 1/2$).
+    \end{itemize}
+  \end{columns}
+  \vspace{0.2cm}
+  \begin{alertblock}{Notas Cruciales de Implementación}
+    \footnotesize
+    \begin{itemize}
+      \item \textbf{Absorción numérica:} En aritmética finita, $w_k = x_k$ puede ocurrir si la perturbación $\beta g(x_k)^2$ es menor que la resolución relativa de $x_k$.
+      \item \textbf{Rama principal en $\mathbb{C}$:} Se fija $\operatorname{Arg}(z)\in(-\pi,\pi]$ para evaluar bases negativas en etapas transitorias, reconociendo el corte de rama sobre el semieje real negativo.
+    \end{itemize}
+  \end{alertblock}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -111,21 +125,21 @@
 % Diapositiva 5: Dinámica Compleja y Planos de Estabilidad (1 min 15 s)
 % -----------------------------------------------------------------------------
 \begin{frame}{4. Estabilidad y Dinámica Compleja en $\mathbb{C}$ (Sección 3)}
-  \begin{columns}
-    \column{0.5\textwidth}
-    \includegraphics[width=\textwidth]{dinamica_compleja_m1_m2.png}
-    \column{0.5\textwidth}
-    \begin{itemize}
-      \item \textbf{Polinomio Canónico:} $p(z)=(z-1)^2$ ($m=2$).
-      \item \textbf{Operador Racional:} $z_{k+1} = R(z, \beta)$. En la raíz $z^*=1$:
-      $$R'(1, \beta) = 0 \implies \text{\textbf{Punto fijo superatractor}}$$
-      Garantiza convergencia local de orden superior en su vecindad.
-      \item \textbf{Observación en la malla examinada ($350\times 350$, máx. 30 iter.):}
-      \begin{itemize}
-        \item Con $\beta=0.01$, una mayor proporción de puntos alcanza el criterio de convergencia en la malla examinada, según los resultados obtenidos.
-        \item Con $\beta=1.0$, se incrementan los puntos sin converger en 30 pasos.
-      \end{itemize}
-      \item \alert{Rigor:} El ensayo delimita cuencas numéricas finitas; no constituye una caracterización analítica completa de conjuntos de Fatou y Julia.
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{dinamica_compleja_m1_m2.png}
+    \column{0.52\textwidth}
+    \begin{block}{Punto Fijo Superatractor ($p(z)=(z-1)^2$)}
+      \small
+      Operador racional $z_{k+1} = R(z, \beta)$. En la raíz $z^*=1$:
+      $$R'(1, \beta) = 0 \implies \text{Convergencia local de orden superior}$$
+    \end{block}
+    \vspace{0.1cm}
+    \begin{itemize}\footnotesize
+      \item \textbf{Malla uniforme examinada:} $350\times 350$ puntos en $[-2,2]\times[-2,2]$ con cota de 30 iteraciones.
+      \item \textbf{Efecto de $\beta$ observado:} Con $\beta=0.01$, una mayor proporción de puntos alcanza convergencia frente a $\beta=1.0$, donde aumentan los puntos sin converger en 30 pasos.
+      \item \alert{\textbf{Rigor conceptual:}} Delimita cuencas numéricas finitas; no constituye una demostración de caos ni de conjuntos de Julia.
     \end{itemize}
   \end{columns}
 \end{frame}
@@ -182,22 +196,24 @@
 % Diapositiva 8: Análisis Crítico de g3 y Validación de ACOC (1 min)
 % -----------------------------------------------------------------------------
 \begin{frame}{7. Hallazgo en $g_3$ ($m=4$) y Comportamiento del ACOC}
-  \begin{columns}
-    \column{0.52\textwidth}
-    \begin{block}{Terminación vs. Precisión Efectiva en $g_3$}
+  \begin{columns}[T]
+    \column{0.49\textwidth}
+    \begin{block}{Terminación vs. Precisión en $g_3$ ($m=4$)}
+      \footnotesize
       \begin{itemize}
         \item Cerca de $\alpha=3$, $g_3(x) \approx -80(x-3)^4$.
-        \item Un error de $10^{-18}$ produce un residuo de orden $(10^{-18})^4 \approx 10^{-72}$.
-        \item El paso colapsa ($|\Delta x_3| < 10^{-59}$) y cumple operativamente el criterio dual en 3 iteraciones.
-        \item \alert{\textbf{Honestidad técnica:}} Como el error real frente a $\alpha=3$ supera $10^{-25}$, no se declara convergencia plena sino terminación anticipada por criterio dual.
+        \item Un error de $10^{-18}$ produce un residuo de $(10^{-18})^4 \approx 10^{-72}$.
+        \item El paso colapsa ($|\Delta x_3| < 10^{-59}$) y cumple formalmente el criterio dual en 3 iteraciones.
+        \item \alert{\textbf{Honestidad técnica:}} Como el error real supera $10^{-25}$, no se declara convergencia plena sino terminación anticipada por criterio dual (\texttt{Error > TOL}).
       \end{itemize}
     \end{block}
-    \column{0.48\textwidth}
+    \column{0.49\textwidth}
     \begin{block}{Orden Computacional Aproximado (ACOC)}
+      \footnotesize
       $$\mathrm{ACOC} \approx \frac{\ln(|\Delta x_{k+1}|/|\Delta x_k|)}{\ln(|\Delta x_k|/|\Delta x_{k-1}|)}$$
       \begin{itemize}
         \item \textbf{Validación canónica ($x^3-x-2=0$):}
-        Newton: $\mathrm{ACOC}\approx 2.0000$; secante: $\mathrm{ACOC}\approx 1.6162$, cercano al orden teórico de la razón áurea ($1.6180$).
+        Newton: $\mathrm{ACOC}\approx 2.0000$; secante: $\mathrm{ACOC}\approx 1.6162$, cercano a la razón áurea ($1.6180$).
         \item \textbf{Límite en raíces múltiples:} Con pocas iteraciones (3 a 5), la drástica contracción distorsiona el cociente logarítmico (ej. 8.81 en M1), lo que no prueba orden superior a cuatro.
       \end{itemize}
     \end{block}
