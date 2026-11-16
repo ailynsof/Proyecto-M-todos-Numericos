@@ -1,11 +1,11 @@
 Problema,x0,Metodo,k_Paper (4000 dps),ACOC_Paper,k_Nuestro (150 dps),ACOC_Nuestro,Estado_Nuestro
-g1 (m=2),1.9,M1,7,4.0,5,8.81*,Convergio
+g1 (m=2),1.9,M1,7,4.0,5,8.81,Convergio
 g1 (m=2),1.9,M2,7,4.0,4,-,Estancamiento w=x
 g1 (m=2),1.9,KK,6,4.0,4,-,Pendiente secante nula
-g1 (m=2),3.0,M1,8,4.0,100,-,Limite iteraciones
-g1 (m=2),3.0,KK,7,4.0,8,4.00,Convergio
+g1 (m=2),3.0,M1,8,4.0,5,-,Pendiente secante nula
+g1 (m=2),3.0,KK,7,4.0,6,5.91,Convergio
 g2 (m=3),5.3,M1,5,4.0,2,-,Estancamiento w=x
-g2 (m=3),5.3,KK,5,4.0,3,-,Convergio
-g3 (m=4),2.8,M1,4,4.0,3,-,Convergio
+g2 (m=3),5.3,KK,5,4.0,3,3.97,Convergio
+g3 (m=4),2.8,M1,4,4.0,3,16.14,Convergio
 g3 (m=4),2.8,M2,4,4.0,3,-,Convergio
-g3 (m=4),3.5,M1,4,4.0,3,-,Convergio
+g3 (m=4),3.5,M1,4,4.0,100,-,Limite de iteraciones

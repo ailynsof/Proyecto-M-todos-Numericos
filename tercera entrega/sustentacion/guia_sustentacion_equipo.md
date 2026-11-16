@@ -54,32 +54,17 @@ Para asegurar una participación equitativa y demostrar dominio conceptual colec
 
 ---
 
-### P4. En el análisis de estabilidad en $\mathbb{C}$, ¿qué es un punto fijo superatractor y qué papel juega el parámetro $\beta$?
+### P4. ¿Qué es un punto fijo superatractor y qué observamos al cambiar beta?
 * **Respuesta del equipo:**  
-  Dado el operador racional $z_{k+1} = R(z)$, un punto fijo $z^*$ satisface $R(z^*) = z^*$. Su multiplicador asintótico es $|R'(z^*)|$.  
-  Si $|R'(z^*)| = 0$, la convergencia en la vecindad del punto fijo es al menos cuadrática o superior, denominándose **superatractor**. En nuestro caso, para $p(z)=(z-1)^2$, se cumple analíticamente que $|R'(1)| = 0$.  
-  Sin embargo, el operador racional también posee **puntos críticos libres** (soluciones de $R'(z)=0$ distintas de la raíz) y polos.  
-  El parámetro $\beta$ modula la magnitud del paso de secante:  
-  - Con $\beta=0.01$, los puntos críticos libres no interfieren con la dinámica local, resultando en cuencas de atracción casi globales, continuas y lisas.  
-  - Con $\beta=1.0$ o $\beta=5.0$, los puntos críticos libres generan cuencas fractales de Julia y bifurcaciones caóticas que atrapan trayectorias o las desvían a infinito. Por eso, el artículo selecciona $\beta=0.01$.
+  Para el operador $z_{k+1}=R(z)$, un punto fijo $z^*$ cumple $R(z^*)=z^*$. Si $R'(z^*)=0$, se denomina superatractor; para $p(z)=(z-1)^2$, el cálculo da $R'(1)=0$. En nuestras gráficas comparamos M1 y M2 en una malla finita. Dentro del dominio y del máximo de iteraciones usados, con beta=1.0 quedan más puntos sin converger que con beta=0.01. Es una observación numérica acotada: no demuestra que beta=0.01 sea óptimo en todo el plano ni prueba por sí sola la existencia de caos o conjuntos de Julia.
 
----
-
-### P5. En los resultados, ¿por qué su implementación tardó 5 iteraciones en $g_1$ mientras que el artículo reporta 7 iteraciones?
+### P5. ¿Por qué M1 tomó cinco iteraciones en g1 mientras el artículo reporta siete?
 * **Respuesta del equipo:**  
-  Esta es una de las conclusiones metodológicas más valiosas de nuestro trabajo. No se trata de un error ni de que nuestro método sea más rápido: se debe a la **escala de tolerancia**.  
-  El artículo de Jerezano et al. utilizó Matlab con 4000 dígitos de precisión y una tolerancia extrema de $10^{-200}$. Bajo ese criterio, el método necesita 7 pasos para alcanzar un residuo inferior a $10^{-200}$.  
-  En nuestra implementación reproducible fijamos 150 dígitos de precisión y una tolerancia de parada de $10^{-25}$. El método alcanza $10^{-25}$ en la iteración 5 (con residuo de $5.26\times 10^{-72}$). Si hubiésemos exigido $10^{-200}$, habríamos requerido exactamente las 7 iteraciones del artículo, pero demostramos que para fines prácticos y de computación científica, 150 dígitos y $10^{-25}$ ofrecen un balance óptimo de precisión sin el costo exorbitante de 4000 dígitos.
+  Las corridas usan criterios diferentes: nuestro notebook emplea 150 dígitos y tolerancia dual $10^{-25}$; el artículo reporta 4000 dígitos y un criterio cercano a $10^{-200}$. Esa diferencia puede explicar parte del conteo, pero no hemos repetido el experimento con precisión y criterio iguales. Además, 150 dígitos no bastan para verificar un residuo de $10^{-200}$, así que no debemos afirmar cuántas iteraciones daría esa corrida con nuestra configuración.
 
----
-
-### P6. ¿Por qué en $M_2$ se reporta "Estancamiento $w=x$"?
+### P6. ¿Por qué aparece "Estancamiento w=x" en M2?
 * **Respuesta del equipo:**  
-  La perturbación secante es $w_k = x_k + \beta [g(x_k)]^2$. En $M_2$, tras 4 iteraciones el residuo $|g(x_k)|$ ya es del orden de $10^{-50}$, por lo que $[g(x_k)]^2 \approx 10^{-100}$.  
-  En precisión finita (incluso con 150 dígitos), cuando sumamos $x_k + \beta [g(x_k)]^2$, la diferencia entre $w_k$ y $x_k$ cae por debajo de la resolución numérica de la máquina frente a la magnitud de $x_k$ (fenómeno de absorción en punto flotante).  
-  Al cumplirse $w_k == x_k$, el denominador de la diferencia dividida $w_k - x_k$ se vuelve exactamente cero. Nuestro código detecta explícitamente esta pérdida de perturbación y emite el diagnóstico honesto `'Estancamiento w=x'`, en lugar de disfrazarlo cambiando artificialmente a una derivada.
-
----
+  La perturbación secante es $w_k=x_k+\beta[g(x_k)]^2$. Cuando esta diferencia queda por debajo de la resolución disponible con 150 dígitos, ambos valores se representan igual y el denominador de la diferencia dividida se anula. El código detecta esa situación y la reporta, sin sustituirla por una derivada. Es una limitación de esa corrida con precisión finita, no de la aritmética de doble precisión habitual.
 
 ### P7. ¿Por qué el orden experimental ACOC dio 8.81 en $M_1$ en lugar del 4 teórico?
 * **Respuesta del equipo:**  
@@ -90,9 +75,6 @@ Para asegurar una participación equitativa y demostrar dominio conceptual colec
 
 ---
 
-### P8. ¿Cómo se relaciona este proyecto con problemas reales de Ciencia de Datos y Optimización?
+### P8. ¿Cómo se relaciona el proyecto con Ciencia de Datos y optimización?
 * **Respuesta del equipo:**  
-  En Ciencia de Datos, entrenar modelos complejos (como redes neuronales o modelos de regresión no lineal) implica encontrar los mínimos de una función de pérdida $L(\boldsymbol{\theta})$ mediante la condición de primer orden $\nabla L(\boldsymbol{\theta}) = \mathbf{0}$.  
-  En problemas reales con multicolinealidad, sobreparametrización o valles planos, la matriz Hessiana $\mathbf{H}(\boldsymbol{\theta})$ (que es el Jacobiano del gradiente) tiene autovalores iguales o muy cercanos a cero. Esto equivale exactamente a que el punto crítico tiene **multiplicidad $m > 1$**.  
-  En estas regiones planas, el algoritmo de descenso de gradiente estándar se ralentiza enormemente y Newton clásico colapsa a velocidad lineal. Los conceptos estudiados en este proyecto —aceleración por conocimiento de multiplicidad y aproximación secante de orden superior sin calcular matrices de derivadas analíticas— son el fundamento teórico para diseñar optimizadores cuasi-Newton avanzados y métodos de segundo orden escalables en Machine Learning.
-
+  Algunos problemas de optimización tienen direcciones planas o Hessianas mal condicionadas. Eso puede motivar el estudio de métodos para raíces múltiples, pero una Hessiana singular no demuestra por sí sola que el gradiente tenga una raíz de multiplicidad $m>1$. Nuestro trabajo resuelve ecuaciones escalares con multiplicidad conocida; no valida una aplicación directa a modelos de aprendizaje automático. Para dar ese paso habría que formular una extensión para el gradiente y probarla en problemas concretos.

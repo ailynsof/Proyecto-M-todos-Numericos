@@ -116,8 +116,8 @@
       $$|R'(1, \beta)| = 0 \implies \text{\textbf{Superatractor}}$$
       \item \textbf{Efecto del par\'ametro $\beta$:}
       \begin{itemize}
-        \item $\beta = 0.01$ (propuesto): Cuencas amplias, lisas y globales hacia $z^*=1$.
-        \item $\beta = 1.0$: Fragmentaci\'on fractal, caos de Julia y atracci\'on a ciclos extra\~nos.
+        \item $\beta=0.01$: en la malla evaluada, más puntos convergen dentro del límite fijado.
+        \item $\beta=1.0$: aparecen más puntos sin converger; la gráfica no prueba por sí sola caos ni ciclos.
       \end{itemize}
       \item \alert{Justifica formalmente la selecci\'on de $\beta=0.01$.}
     \end{itemize}
@@ -171,7 +171,8 @@
   \end{table}
   \begin{itemize}
     \item \textbf{¿Por qu\'e menos iteraciones?} El art\'iculo exige tolerancia extrema $10^{-200}$ con 4000 d\'igitos en Matlab; con $10^{-25}$ se alcanza convergencia en 3 a 5 pasos.
-    \item \textbf{Absorci\'on en M2:} El decaimiento ultrarr\'apido de $\beta g(x_k)^2$ produce absorci\'on secante ($w=x$) antes de colapsar al residuo final en 150 d\'igitos.
+     \item \textbf{Absorción en M2:} con 150 dígitos, la perturbación puede quedar por debajo de la resolución disponible y producir $w=x$.
+     \item La tabla muestra casos representativos; el CSV registra también estancamientos y corridas que llegaron al límite de iteraciones.
   \end{itemize}
 \end{frame}
 
@@ -213,15 +214,15 @@
     \centering\small
     \begin{tabular}{lcccc}
       \toprule
-      M\'etodo & Iteraciones & Factorizaciones $LU$ & Evaluaciones derivadas & Residuo final \\
+      Método & Iteraciones & Sistemas lineales resueltos & Evaluaciones derivadas & Residuo final \\
       \midrule
-      Newton Multivariable & 5 & 5 ($O(n^3)$) & 20 ($n^2$ por paso) & $3.92\times 10^{-15}$ \\
-      Secante Multivariable (Broyden) & 10 & 0 (Rango 1, $O(n^2)$) & \textbf{0 (Libre de derivadas)} & $4.25\times 10^{-15}$ \\
+      Newton Multivariable & 5 & 5 densos & 20 entradas Jacobianas & $3.92\times 10^{-15}$ \\
+      Secante Multivariable (Broyden) & 10 & 10 densos & 0 derivadas analíticas & $4.25\times 10^{-15}$ \\
       \bottomrule
     \end{tabular}
   \end{table}
   \begin{block}{Impacto de la Familia \'Optima Libre de Derivadas}
-    Eliminar el ensamble expl\'icito de $\mathbf{J}(\mathbf{x})$ evita colapsos por matrices singulares ($\det(\mathbf{J}) \approx 0$) y reduce dr\'asticamente el costo en alta dimensi\'on.
+    En esta prueba pequeña, Broyden evita evaluar el Jacobiano exacto; ambos métodos resuelven sistemas lineales en cada paso.
   \end{block}
 \end{frame}
 
@@ -235,12 +236,12 @@
     $$\nabla L(\boldsymbol{\theta}) = \mathbf{0}$$
     \begin{itemize}
       \item En Machine Learning y Deep Learning, los paisajes de p\'erdida presentan mesetas degeneradas y puntos silla planos.
-      \item La matriz Hessiana $\mathbf{H}(\boldsymbol{\theta}) = \mathbf{J}(\nabla L)$ tiene autovalores nulos o casi nulos $\implies$ \textbf{Puntos cr\'iticos con multiplicidad $m > 1$}.
+      \item Una Hessiana singular puede señalar degeneración, pero no demuestra por sí sola que el gradiente tenga una raíz múltiple.
       \item El descenso de gradiente y Newton cl\'asico se estancan en estas zonas.
     \end{itemize}
     \column{0.45\textwidth}
     \begin{block}{Relevancia Metodol\'ogica}
-      Los esquemas acelerados con conocimiento o adaptaci\'on a multiplicidad $m$ y libres de segundas derivadas (Hessianas) son el fundamento de los optimizadores de segundo orden cuasi-Newton modernos.
+      Los métodos estudiados motivan explorar algoritmos que aprovechen la multiplicidad. Este proyecto no implementa ni valida su aplicación directa a aprendizaje automático.
     \end{block}
   \end{columns}
 \end{frame}
@@ -250,8 +251,8 @@
 % -----------------------------------------------------------------------------
 \begin{frame}{10. Conclusiones y Trabajo Futuro}
   \begin{itemize}
-    \item \textbf{Cumplimiento riguroso:} Se reprodujo, valid\'o y extendi\'o la familia \'optima libre de derivadas de Jerezano et al. (2026), logrando una soluci\'on num\'erica completa y reproducible.
-    \item \textbf{Estabilidad din\'amica en $\mathbb{C}$:} Se verific\'o computacionalmente la superioridad de $\beta=0.01$ en la preservaci\'on de cuencas de atracci\'on amplias y no ca\'oticas.
+    \item \textbf{Implementación y análisis:} Se compararon métodos de cuarto orden con líneas base y se documentaron tanto convergencias como estancamientos y límites de iteración.
+    \item \textbf{Dinámica compleja:} En la malla estudiada, $\beta=0.01$ dejó menos puntos sin converger que $\beta=1.0$; no se afirma un óptimo global.
     \item \textbf{Rigor conceptual:} Se identificaron y documentaron con transparencia los l\'imites de precisi\'on finita (absorci\'on $w=x$ y sensibilidad del ACOC).
     \item \textbf{Trabajo futuro:}
     \begin{enumerate}

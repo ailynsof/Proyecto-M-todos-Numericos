@@ -365,16 +365,14 @@ cells.append(nbf.v4.new_markdown_cell("""## 4. Dinámica Compleja y Planos de Es
 Uno de los aportes teóricos centrales de Jerezano et al. (2026) es el estudio de la estabilidad del operador racional de punto fijo $R(z, \\beta)$ en el plano complejo sobre el polinomio canónico cuadrático con raíz doble:
 $$p(z) = (z-1)^2, \\quad m=2$$
 
-Para cualquier valor de $\\beta$, la raíz $z^* = 1$ es un **punto fijo superatractor** ($|R'(1)| = 0$). Sin embargo, la elección de $\\beta$ modifica drásticamente las cuencas de atracción (Fatou) y las fronteras caóticas (Julia):
-- **$\\beta = 0.01$ (Valor propuesto en el artículo):** Genera cuencas de atracción lisas, anchas y estables alrededor de la raíz, minimizando la atracción hacia puntos extraños o ciclos periódicos.
-- **$\\beta = 1.0$ (Valor grande):** Induce severa fragmentación fractal, bifurcaciones de puntos críticos libres y divergencia o ciclos oscilatorios.
+Para los dos operadores implementados, la raíz $z^*=1$ es un **punto fijo superatractor** ($R'(1)=0$). El valor de $\\beta$ cambia el patrón numérico observado. En la malla y con el límite de iteraciones usados aquí, $\\beta=1.0$ deja más puntos sin converger que $\\beta=0.01$. Esta comparación describe el experimento finito; por sí sola no demuestra caos ni identifica formalmente un conjunto de Julia.
 """))
 
 # ==============================================================================
 # Celda 10: Planos Dinámicos (Código)
 # ==============================================================================
-cells.append(nbf.v4.new_code_cell("""# ===== 6. Generación de planos dinámicos (Cuencas de atracción en C) =====
-def calcular_plano(metodo, beta_val, res=300):
+cells.append(nbf.v4.new_code_cell("""# ===== 6. Planos dinamicos en C: M1 y M2, dos valores de beta =====
+def calcular_plano(metodo, beta_val, res=350, max_it=30):
     x = np.linspace(-2, 2, res)
     y = np.linspace(-2, 2, res)
     X, Y = np.meshgrid(x, y)
@@ -382,8 +380,7 @@ def calcular_plano(metodo, beta_val, res=300):
     iters = np.zeros(Z.shape, dtype=int)
     conv = np.zeros(Z.shape, dtype=bool)
     Z_act = Z.copy()
-    
-    for k in range(1, 26):
+    for k in range(1, max_it + 1):
         act = ~conv & (np.abs(Z_act) < 30.0)
         if not np.any(act):
             break
@@ -395,43 +392,47 @@ def calcular_plano(metodo, beta_val, res=300):
         valid = np.abs(denD) > 1e-14
         D = np.zeros_like(denD)
         D[valid] = (pw[valid] - pz[valid]) / denD[valid]
-        vD = valid & (np.abs(D) > 1e-14)
+        valid_D = valid & (np.abs(D) > 1e-14)
         y_step = np.zeros_like(z)
-        y_step[vD] = z[vD] - 2.0 * (pz[vD] / D[vD])
+        y_step[valid_D] = z[valid_D] - 2.0 * (pz[valid_D] / D[valid_D])
         py = (y_step - 1.0)**2
-        c = np.zeros_like(z)
-        vpz = vD & (np.abs(pz) > 1e-14)
-        c[vpz] = py[vpz] / pz[vpz]
-        t = np.sqrt(c)
+        ratio = np.zeros_like(z)
+        valid_pz = valid_D & (np.abs(pz) > 1e-14)
+        ratio[valid_pz] = py[valid_pz] / pz[valid_pz]
+        t = np.sqrt(ratio)
         if metodo == "M1":
-            H = 1.0 + t + 2.0*(t**2)
+            H = 1.0 + t + 2.0 * (t**2)
         else:
-            denH = 1.0 - 2.0*t
-            vH = np.abs(denH) > 1e-14
+            denH = 1.0 - 2.0 * t
+            valid_H = np.abs(denH) > 1e-14
             H = np.zeros_like(t)
-            H[vH] = (1.0 - t[vH]) / denH[vH]
-            vD = vD & vH
+            H[valid_H] = (1.0 - t[valid_H]) / denH[valid_H]
+            valid_D &= valid_H
         z_next = z.copy()
-        z_next[vD] = z[vD] - 2.0 * H[vD] * (pz[vD] / D[vD])
+        z_next[valid_D] = z[valid_D] - 2.0 * H[valid_D] * (pz[valid_D] / D[valid_D])
         Z_act[act] = z_next
-        cercanos = np.abs(Z_act - 1.0) < 1e-4
-        nuevos = cercanos & ~conv
+        nuevos = (np.abs(Z_act - 1.0) < 1e-4) & ~conv
         iters[nuevos] = k
         conv[nuevos] = True
-    iters[~conv] = 25
+    iters[~conv] = max_it
     return X, Y, iters
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-for b_val, ax, tit in [(0.01, axes[0], "M1 con beta=0.01 (Estable/Optimo)"),
-                       (1.0,  axes[1], "M1 con beta=1.0 (Caos y Julia)")]:
-    X, Y, it = calcular_plano("M1", b_val, res=250)
-    im = ax.pcolormesh(X, Y, it, cmap="viridis_r", shading="auto", vmin=1, vmax=25)
-    ax.plot(1, 0, 'r*', markersize=12, label="Raíz z*=1")
-    ax.set_title(tit, fontweight="bold")
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+casos = [
+    ("M1", 0.01, axes[0, 0], "M1, beta=0.01 (valor del artículo)"),
+    ("M1", 1.0, axes[0, 1], "M1, beta=1.0"),
+    ("M2", 0.01, axes[1, 0], "M2, beta=0.01 (valor del artículo)"),
+    ("M2", 1.0, axes[1, 1], "M2, beta=1.0"),
+]
+for metodo, beta_val, ax, titulo in casos:
+    X, Y, it = calcular_plano(metodo, beta_val)
+    im = ax.pcolormesh(X, Y, it, cmap="viridis_r", shading="auto", vmin=1, vmax=30)
+    ax.plot(1, 0, "r*", markersize=11, label="Raíz doble z*=1")
+    ax.set_title(titulo, fontweight="bold")
     ax.set_xlabel("Re(z)")
     ax.set_ylabel("Im(z)")
     ax.legend(loc="upper left")
-    plt.colorbar(im, ax=ax, label="Iteraciones")
+    fig.colorbar(im, ax=ax, label="Iteraciones (30 = no converge en el límite)")
 plt.tight_layout()
 plt.show()
 """))
@@ -445,7 +446,7 @@ En dimensiones múltiples $\\mathbf{F}(\\mathbf{x}) = \\mathbf{0}$ con $\\mathbf
 Newton multivariable requiere resolver el sistema lineal:
 $$\\mathbf{J}(\\mathbf{x}_k) \\mathbf{s}_k = -\\mathbf{F}(\\mathbf{x}_k), \\quad \\mathbf{x}_{k+1} = \\mathbf{x}_k + \\mathbf{s}_k$$
 
-El costo de evaluar $n^2$ derivadas parciales y computar la factorización $LU$ ($O(n^3)$ operaciones) se vuelve prohibitivo en problemas de gran escala. Comparemos Newton multivariable con el método de Broyden (actualización secante libre de derivadas) en el sistema no lineal:
+Newton multivariable requiere evaluar derivadas y resolver un sistema lineal en cada paso. Broyden evita recalcular el Jacobiano exacto y lo actualiza con una corrección de rango uno, pero también resuelve un sistema lineal; con la resolución densa usada aquí no medimos una ventaja asintótica de costo. Comparamos ambos métodos en el sistema no lineal:
 $$\\mathbf{F}(x_1, x_2) = \\begin{pmatrix} x_1^2 + x_2^2 - 4 \\\\ x_1 x_2 - 1 \\end{pmatrix} = \\mathbf{0}$$
 """))
 
@@ -500,12 +501,9 @@ cells.append(nbf.v4.new_markdown_cell("""## 6. Aplicaciones en Ciencia de Datos 
 En Machine Learning y Ciencia de Datos, el entrenamiento de modelos consiste en optimizar una función de pérdida $L(\\boldsymbol{\\theta})$ resolviendo la condición de primer orden:
 $$\\nabla L(\\boldsymbol{\\theta}) = \\mathbf{0}$$
 
-En presencia de valles planos o degeneraciones (como puntos silla o mínimos degenerados en redes neuronales profundas), la **matriz Hessiana** $\\mathbf{H}(\\boldsymbol{\\theta}) = \\mathbf{J}(\\nabla L(\\boldsymbol{\\theta}))$ es semidefinida positiva con autovalores nulos. Esto corresponde matemáticamente a **puntos críticos con multiplicidad $m > 1$**.
+En algunos problemas de optimización aparecen direcciones planas o Hessianas mal condicionadas. Estas situaciones motivan estudiar métodos para raíces múltiples, pero una Hessiana singular, por si sola, no demuestra que el gradiente tenga una raíz múltiple. La relación con aprendizaje automático se presenta aqui como una posible motivacion, no como una aplicación validada por nuestros experimentos.
 
-En tales escenarios:
-1. El descenso de gradiente estándar sufre una ralentización exponencial.
-2. Los métodos de Newton clásicos pierden su orden cuadrático y decaen a convergencia lineal lenta.
-3. Las familias libres de derivadas de orden óptimo con aceleración por multiplicidad proporcionan una herramienta conceptual y algorítmica de gran valor para superar estancamientos en superficies de pérdida no convexas.
+Los métodos analizados requieren conocer la multiplicidad y resuelven ecuaciones escalares. Para trasladarlos a un problema de optimización real haria falta formular y validar una extensión adecuada al gradiente y sus dimensiones.
 """))
 
 # ==============================================================================

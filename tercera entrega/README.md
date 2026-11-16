@@ -86,7 +86,7 @@ Genera un archivo PDF panorámico (16:9) listo para proyectar durante la sustent
 ## 5. Resumen de Aportes de la Entrega Final
 
 1. **Optimalidad de Kung-Traub demostrada:** Las familias $M_1$ y $M_2$ alcanzan orden 4 con solo 3 evaluaciones escalares y 0 derivadas, logrando un índice de eficiencia $\mathcal{I} = 4^{1/3} \approx 1.587$, superior a Newton modificado ($\mathcal{I} \approx 1.414$).
-2. **Estabilidad Dinámica en $\mathbb{C}$:** Se comprueba computacionalmente que la raíz $z^*=1$ es superatractora y que $\beta=0.01$ es la opción óptima para preservar cuencas amplias y evitar la fragmentación fractal de Julia observada con $\beta=1.0$.
+2. **Estabilidad dinámica en $\mathbb{C}$:** Se verifica que $z^*=1$ es un punto fijo superatractor y se comparan M1 y M2 en una malla finita para $\beta=0.01$ y $\beta=1.0$. El gráfico muestra puntos que no convergen dentro del límite; no pretende demostrar caos ni un óptimo global.
 3. **Contraste honesto de precisión:** Se explica la diferencia entre los 4000 dígitos con tolerancia $10^{-200}$ del artículo en Matlab frente a los 150 dígitos con $10^{-25}$ en Python, justificando las variaciones en el conteo de iteraciones y documentando la absorción de perturbación en punto flotante ($w=x$).
-4. **Extensión a Sistemas y Optimización:** Se ilustra la transición hacia sistemas no lineales $\mathbf{F}(\mathbf{x})=\mathbf{0}$ comparando el costo del Jacobiano vs. secantes multivariables tipo Broyden, y se articula su importancia para valles degenerados y Hessianas singulares en aprendizaje automático.
+4. **Extensión a sistemas y optimización:** Se compara Newton y Broyden en un sistema pequeño, observando convergencia y evaluaciones de derivadas. El ejemplo no mide una ventaja asintótica ni valida una aplicación directa a aprendizaje automático.
 

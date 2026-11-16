@@ -293,18 +293,35 @@ print(f"[OK] CSV generado: {RES_DIR / 'resultados_fase3.csv'}")
 # 6. CONTRASTE FRENTE A LAS TABLAS 1, 2 Y 3 DEL ARTÍCULO (Jerezano et al., 2026)
 # ==============================================================================
 print("--> Generando tabla comparativa frente al artículo científico ...")
-comparativa = [
-    {"Problema": "g1 (m=2)", "x0": "1.9", "Metodo": "M1", "k_Paper (4000 dps)": 7, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 5, "ACOC_Nuestro": "8.81*", "Estado_Nuestro": "Convergio"},
-    {"Problema": "g1 (m=2)", "x0": "1.9", "Metodo": "M2", "k_Paper (4000 dps)": 7, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 4, "ACOC_Nuestro": "-", "Estado_Nuestro": "Estancamiento w=x"},
-    {"Problema": "g1 (m=2)", "x0": "1.9", "Metodo": "KK", "k_Paper (4000 dps)": 6, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 4, "ACOC_Nuestro": "-", "Estado_Nuestro": "Pendiente secante nula"},
-    {"Problema": "g1 (m=2)", "x0": "3.0", "Metodo": "M1", "k_Paper (4000 dps)": 8, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 100, "ACOC_Nuestro": "-", "Estado_Nuestro": "Limite iteraciones"},
-    {"Problema": "g1 (m=2)", "x0": "3.0", "Metodo": "KK", "k_Paper (4000 dps)": 7, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 8, "ACOC_Nuestro": "4.00", "Estado_Nuestro": "Convergio"},
-    {"Problema": "g2 (m=3)", "x0": "5.3", "Metodo": "M1", "k_Paper (4000 dps)": 5, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 2, "ACOC_Nuestro": "-", "Estado_Nuestro": "Estancamiento w=x"},
-    {"Problema": "g2 (m=3)", "x0": "5.3", "Metodo": "KK", "k_Paper (4000 dps)": 5, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 3, "ACOC_Nuestro": "-", "Estado_Nuestro": "Convergio"},
-    {"Problema": "g3 (m=4)", "x0": "2.8", "Metodo": "M1", "k_Paper (4000 dps)": 4, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 3, "ACOC_Nuestro": "-", "Estado_Nuestro": "Convergio"},
-    {"Problema": "g3 (m=4)", "x0": "2.8", "Metodo": "M2", "k_Paper (4000 dps)": 4, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 3, "ACOC_Nuestro": "-", "Estado_Nuestro": "Convergio"},
-    {"Problema": "g3 (m=4)", "x0": "3.5", "Metodo": "M1", "k_Paper (4000 dps)": 4, "ACOC_Paper": 4.0, "k_Nuestro (150 dps)": 3, "ACOC_Nuestro": "-", "Estado_Nuestro": "Convergio"},
+casos_articulo = [
+    ("g1 (m=2)", "Van der Waals (g1)", "1.9", "M1", 7, 4.0),
+    ("g1 (m=2)", "Van der Waals (g1)", "1.9", "M2", 7, 4.0),
+    ("g1 (m=2)", "Van der Waals (g1)", "1.9", "KK", 6, 4.0),
+    ("g1 (m=2)", "Van der Waals (g1)", "3.0", "M1", 8, 4.0),
+    ("g1 (m=2)", "Van der Waals (g1)", "3.0", "KK", 7, 4.0),
+    ("g2 (m=3)", "Ley de Planck al cubo (g2)", "5.3", "M1", 5, 4.0),
+    ("g2 (m=3)", "Ley de Planck al cubo (g2)", "5.3", "KK", 5, 4.0),
+    ("g3 (m=4)", "Polinomio grado 9 (g3)", "2.8", "M1", 4, 4.0),
+    ("g3 (m=4)", "Polinomio grado 9 (g3)", "2.8", "M2", 4, 4.0),
+    ("g3 (m=4)", "Polinomio grado 9 (g3)", "3.5", "M1", 4, 4.0),
 ]
+comparativa = []
+for problema_corto, problema_largo, x0_ref, metodo_ref, k_paper, acoc_paper in casos_articulo:
+    actual = df_res[
+        (df_res["Problema"] == problema_largo)
+        & (df_res["x0"] == x0_ref)
+        & (df_res["Metodo"] == metodo_ref)
+    ].iloc[0]
+    comparativa.append({
+        "Problema": problema_corto,
+        "x0": x0_ref,
+        "Metodo": metodo_ref,
+        "k_Paper (4000 dps)": k_paper,
+        "ACOC_Paper": acoc_paper,
+        "k_Nuestro (150 dps)": actual["Iter"],
+        "ACOC_Nuestro": actual["ACOC"],
+        "Estado_Nuestro": actual["Estado"],
+    })
 df_comp = pd.DataFrame(comparativa)
 df_comp.to_csv(RES_DIR / "comparacion_paper.csv", index=False)
 print(f"[OK] CSV de comparativa generado: {RES_DIR / 'comparacion_paper.csv'}")
@@ -420,10 +437,10 @@ def generar_plano_dinamico(metodo, beta_val, res_grid=400, x_lim=(-2, 2), y_lim=
 fig, axes = plt.subplots(2, 2, figsize=(11, 10))
 
 casos = [
-    ("M1", 0.01, axes[0, 0], r"M1 con $\beta=0.01$ (Óptimo)"),
-    ("M1", 1.0,  axes[0, 1], r"M1 con $\beta=1.0$ (Caos/Julia)"),
-    ("M2", 0.01, axes[1, 0], r"M2 con $\beta=0.01$ (Óptimo)"),
-    ("M2", 1.0,  axes[1, 1], r"M2 con $\beta=1.0$ (Caos/Julia)")
+    ("M1", 0.01, axes[0, 0], r"M1 con $\beta=0.01$ (valor del artículo)"),
+    ("M1", 1.0,  axes[0, 1], r"M1 con $\beta=1.0$ (más puntos sin convergencia)"),
+    ("M2", 0.01, axes[1, 0], r"M2 con $\beta=0.01$ (valor del artículo)"),
+    ("M2", 1.0,  axes[1, 1], r"M2 con $\beta=1.0$ (más puntos sin convergencia)")
 ]
 
 for met, b_val, ax, tit in casos:
@@ -434,7 +451,7 @@ for met, b_val, ax, tit in casos:
     ax.set_xlabel(r"$\mathrm{Re}(z)$")
     ax.set_ylabel(r"$\mathrm{Im}(z)$")
     ax.legend(loc="upper left", fontsize=9)
-    plt.colorbar(im, ax=ax, label="Iteraciones hasta convergencia")
+    plt.colorbar(im, ax=ax, label="Iteraciones (30 = no converge en el límite)")
 
 plt.tight_layout()
 fig.savefig(RES_DIR / "dinamica_compleja_m1_m2.png", dpi=300)
@@ -488,3 +505,9 @@ print(f"  Newton Multivariable: {len(hist_newton)-1} iteraciones, residuo final 
 print(f"  Broyden (Libre derivadas): {len(hist_broyden)-1} iteraciones, residuo final = {hist_broyden[-1]:.2e}")
 print("\n[ÉXITO] Todo el procesamiento de la Fase 3 se ha completado correctamente.")
 
+
+# Mantener sincronizadas las copias que usan el informe y las diapositivas.
+import shutil
+for nombre in ("convergencia_residuos.png", "dinamica_compleja_m1_m2.png"):
+    for destino in (ENTREGABLES_DIR, BASE_DIR / "sustentacion"):
+        shutil.copy2(RES_DIR / nombre, destino / nombre)

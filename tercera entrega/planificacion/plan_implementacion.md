@@ -20,11 +20,11 @@ A partir de los desarrollos aprobados de las Fases 1 y 2, esta entrega final tie
 2. **Estabilidad y Dinámica Compleja en $\mathbb{C}$ (Aporte Teórico Central del Artículo):**
    - Implementar el análisis dinámico del operador racional de punto fijo $R(z, \beta)$ sobre polinomios con raíces múltiples (caso $p(z)=(z-1)^2$, $m=2$).
    - Generar los **planos dinámicos (cuencas de atracción)** en una malla del plano complejo, visualizando la convergencia hacia la raíz superatractora $z^*=1$ y los conjuntos caóticos de Julia.
-   - Evaluar computacionalmente el efecto del parámetro de aceleración $\beta$, demostrando por qué $\beta=0.01$ es dinámicamente superior a valores grandes ($\beta=1.0, \beta=5.0$) que fragmentan las cuencas e inducen caos.
+   - Comparar el comportamiento de beta=0.01 y beta=1.0 en una malla finita, contando los puntos que convergen dentro del límite fijado. La figura no se interpreta como prueba de caos.
 
 3. **Extensión a Sistemas No Lineales Multidimensionales (Semana 9):**
    - Demostración numérica de la solución de sistemas $\mathbf{F}(\mathbf{x}) = \mathbf{0}$ en $\mathbb{R}^2$.
-   - Análisis comparativo del costo computacional de evaluar y factorizar la matriz Jacobiana $\mathbf{J}(\mathbf{x}) \in \mathbb{R}^{n\times n}$ ($O(n^3)$ en LU) frente a esquemas libres de derivadas basados en diferencias divididas multidimensionales.
+   - Comparar en un sistema de R^2 las iteraciones, residuos y evaluaciones de derivadas de Newton y Broyden. La prueba no establece una ventaja asintótica de costo: ambos resuelven sistemas lineales.
 
 4. **Informe Técnico Final en LaTeX:**
    - Cumplimiento riguroso de las directrices de formato de la Universidad: extensión neta entre 3 y 5 páginas de texto continuo (excluyendo portada, bibliografía, tablas y figuras).
