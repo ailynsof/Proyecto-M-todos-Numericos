@@ -6,8 +6,8 @@ g1 (m=2),3.0,M1,8,4.0,5,-,Pendiente secante nula
 g1 (m=2),3.0,KK,7,4.0,6,5.91,Convergio
 g2 (m=3),5.3,M1,5,4.0,2,-,Estancamiento w=x
 g2 (m=3),5.3,KK,5,4.0,3,3.97,Convergio
-g3 (m=4),2.8,M1,4,4.0,3,16.14,Convergio
-g3 (m=4),2.8,M2,4,4.0,3,-,Convergio
-g3 (m=4),3.4,M1,6,4.0,4,14.17,Convergio
-g3 (m=4),3.4,M2,6,4.0,4,-,Convergio
+g3 (m=4),2.8,M1,4,4.0,3,-,Criterio dual; error > TOL
+g3 (m=4),2.8,M2,4,4.0,3,-,Criterio dual; error > TOL
+g3 (m=4),3.4,M1,6,4.0,4,-,Criterio dual; error > TOL
+g3 (m=4),3.4,M2,6,4.0,4,-,Criterio dual; error > TOL
 g3 (m=4),3.5,M1,4,4.0,100,-,Limite de iteraciones

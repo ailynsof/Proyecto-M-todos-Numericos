@@ -234,6 +234,11 @@ def resolver(metodo, prob, x0, beta=DEFAULT_BETA, tol=TOL, max_iter=MAX_ITER):
             estado = "Convergio"
 
     err_abs = abs(x - alpha)
+    # Distinción entre terminación por criterio dual y precisión efectiva frente a la raíz:
+    if estado == "Convergio" and err_abs > tol:
+        estado = "Criterio dual; error > TOL"
+
+    err_abs = abs(x - alpha)
     acoc = calcular_acoc(iterados) if estado == "Convergio" else None
 
     return {
