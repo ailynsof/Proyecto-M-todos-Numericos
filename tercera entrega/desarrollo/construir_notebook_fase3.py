@@ -51,7 +51,7 @@ cells.append(nbf.v4.new_markdown_cell("""# Proyecto Integrador — Entrega Final
 # ==============================================================================
 # Celda 1: Marco Teórico
 # ==============================================================================
-cells.append(nbf.v4.new_markdown_cell("""## 1. Métodos y Fundamentación Teórica
+cells.append(nbf.v4.new_markdown_cell("""## 1. Planteamiento del Problema, Métodos y Fundamentación Teórica
 
 Para una ecuación no lineal $g(x)=0$ con una raíz $\\alpha$ de multiplicidad conocida $m \\ge 1$, el método estándar de Newton decae a orden lineal ($p=1$) debido al aplanamiento local de la función ($g'(x) \\to 0$).
 
