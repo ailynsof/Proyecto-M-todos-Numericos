@@ -40,7 +40,7 @@ PROBLEMAS = {
         "g": lambda x: (exp(-x) - 1 + x/5)**3,
         "dg": lambda x: 3 * (exp(-x) - 1 + x/5)**2 * (-exp(-x) + mpf("0.2")),
         "m": 3,
-        "alpha": mpf("4.96511423174427630369875913132289394405558142"),
+        "alpha": mp.findroot(lambda z: mp.exp(-z) - 1 + z/5, (mpf("4.5"), mpf("5.5")), tol=mpf("1e-140")),
         "semillas": [mpf("5.3"), mpf("10.0")]
     },
     "g3": {

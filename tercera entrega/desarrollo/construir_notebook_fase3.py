@@ -121,7 +121,7 @@ PROBLEMAS = {
         "g": lambda x: (exp(-x) - 1 + x/5)**3,
         "dg": lambda x: 3 * (exp(-x) - 1 + x/5)**2 * (-exp(-x) + mpf("0.2")),
         "m": 3,
-        "alpha": mpf("4.96511423174427630369875913132289394405558142"),
+        "alpha": mp.findroot(lambda z: mp.exp(-z) - 1 + z/5, (mpf("4.5"), mpf("5.5")), tol=mpf("1e-140")),
         "semillas": [mpf("5.3"), mpf("10.0")]
     },
     "g3": {
@@ -281,10 +281,11 @@ def resolver(metodo, prob, x0, beta=DEFAULT_BETA, tol=TOL, max_iter=MAX_ITER):
 
     err_abs = abs(x - alpha)
     acoc = calcular_acoc(iterados) if estado == "Convergio" else None
+    paso_final = abs(iterados[-1] - iterados[-2]) if len(iterados) > 1 else mpf("inf")
     return {
         "estado": estado, "iter": len(iterados) - 1, "g_evals": g_evals,
-        "dg_evals": dg_evals, "err_abs": err_abs, "residuo": res_final,
-        "acoc": acoc, "residuos": residuos
+        "dg_evals": dg_evals, "err_abs": err_abs, "paso_final": paso_final,
+        "residuo": res_final, "acoc": acoc, "residuos": residuos
     }
 print("Solucionador cargado exitosamente.")
 """))
@@ -307,6 +308,7 @@ for pkey, prob in PROBLEMAS.items():
                 "Problema": pkey, "m": prob["m"], "x0": str(x0), "Metodo": met,
                 "Iter": r["iter"], "g_eval": r["g_evals"], "dg_eval": r["dg_evals"],
                 "Error_abs": f"{float(r['err_abs']):.2e}",
+                "Paso_final": f"{float(r['paso_final']):.2e}",
                 "Residuo": mp.nstr(r["residuo"], 3) if float(r["residuo"]) == 0 and r["residuo"] > 0 else f"{float(r['residuo']):.2e}",
                 "ACOC": f"{r['acoc']:.2f}" if r["acoc"] else "-",
                 "Tiempo_ms": f"{t_prom*1000:.2f}", "Estado": r["estado"]
@@ -515,6 +517,7 @@ El desarrollo de este proyecto integrador se realizó bajo las normas de integri
 
 ### Referencias Bibliográficas
 1. J. H. Jerezano, F. I. Chicharro, N. Garrido-Sáez, *Derivative-free optimal multiple-root finding family of iterative methods*, **Computational and Applied Mathematics**, vol. 45, art. 304, 2026. DOI: [10.1007/s40314-026-03702-8](https://doi.org/10.1007/s40314-026-03702-8).
+2. A. Cordero, J. R. Torregrosa, *Variants of Newton's method using fifth-order quadrature formulas*, **Applied Mathematics and Computation**, 190(1): 686–698, 2007. DOI: [10.1016/j.amc.2007.01.062](https://doi.org/10.1016/j.amc.2007.01.062).
 2. S. Kumar, D. Kumar, J. R. Sharma, C. Cesarano, P. Agarwal, Y. M. Chu, *An optimal fourth order derivative-free numerical algorithm for multiple roots*, **Symmetry**, 12(6): 1038, 2020. DOI: [10.3390/sym12061038](https://doi.org/10.3390/sym12061038).
 3. P. R. Turner, T. Arildsen, K. Kavanagh, *Applied Scientific Computing: With Python*, Springer, Cham, 2018.
 4. H. T. Kung, J. F. Traub, *Optimal order of one-point and multipoint iteration*, **Journal of the ACM**, 21(4): 643–651, 1974.
